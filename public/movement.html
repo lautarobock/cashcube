@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CubeCash</title>
+
+    <link href="./css/examples-offline.css" rel="stylesheet">
+    <link href="./css/kendo.common.min.css" rel="stylesheet">
+    <link href="./css/kendo.default.min.css" rel="stylesheet">
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/kendo.web.min.js"></script>
+    <script src="./js/common.js"></script>
+    <!--<script src="../../content/shared/js/console.js"></script>-->
+</head>
+<body>
+<a class="offline-button-selected" href="movement.html">Movimientos</a>
+<a class="offline-button" href="account.html">Cuentas</a>
+<a class="offline-button" href="currency.html">Moneda</a>
+<a class="offline-button" href="category.html">Categorias</a>
+<a class="offline-button" href="resume.html">Resume</a>
+<a class="offline-button" href="graph.html">Graficos</a>
+<div id="example" class="k-content">
+    <div id="grid"></div>
+
+    <script>
+        var ds;
+        function getAccount(id) {
+            var data = ds.account.data();
+            for ( var i in data ) {
+                if ( data[i]._id == id ) return data[i];
+            }
+            return {name:'-'};
+        }
+        function getAccountName(id) {
+            var data = ds.account.data();
+            for ( var i in data ) {
+                if ( data[i]._id == id ) return data[i].name;
+            }
+            return "-";
+        }
+        function getCurrency(id) {
+            var data = ds.currency.data();
+            for ( var i in data ) {
+                if ( data[i]._id == id ) return data[i];
+            }
+            return {name:'none',value:1};
+        }
+        function accountDropDownEditor(container, options) {
+            $('<input data-text-field="name" data-value-field="_id" data-bind="value:' + options.field + '"/>')
+                    .appendTo(container).kendoDropDownList({
+                        autoBind:false,
+                        dataSource:ds.account,
+                        change: function() {
+                            var account_id = options.model.get("account");
+                            var currency = getCurrency(getAccount(account_id).get("currency"));
+                            console.log(currency.get("value"));
+                            options.model.set("accountCurrency",currency.get("value"));
+                        }
+                    });
+        }
+        function getAccountTargetName(id) {
+            var data = ds.accountTarget.data();
+            for ( var i in data ) {
+                if ( data[i]._id == id ) return data[i].name;
+            }
+            return "-";
+        }
+        function getAccountTarget(id) {
+            var data = ds.accountTarget.data();
+            for ( var i in data ) {
+                if ( data[i]._id == id ) return data[i];
+            }
+            return {name:'-'};
+        }
+        function accountTargetDropDownEditor(container, options) {
+            $('<input data-text-field="name" data-value-field="_id" data-bind="value:' + options.field + '"/>')
+                    .appendTo(container).kendoDropDownList({
+                        autoBind: false,
+                        dataSource: ds.accountTarget,
+                        change: function() {
+                            var account_id = options.model.get("accountTarget");
+                            var currency = getCurrency(getAccountTarget(account_id).get("currency"));
+                            console.log(currency.get("value"));
+                            options.model.set("accountTargetCurrency",currency.get("value"));
+                        }
+                    });
+        }
+        function createGrid() {
+            var dataSource = new kendo.data.DataSource({
+                transport: buildTransport("movement"),
+                batch: true,
+                pageSize: 30,
+                aggregate: [ { field: "amount", aggregate: "sum" }],
+                schema: {
+                    model: {
+                        id: "_id",
+                        fields: {
+                            _id: { editable: true, nullable: false },
+                            date: {type: "date"},
+                            description: { editable: true, nullable: true },
+                            amount: { editable: true, nullable: true,type:"numeric"},
+                            account: { field: "account"},
+                            accountCurrency: { editable: true, type:"numeric" },
+                            accountTarget: { field: "accountTarget"},
+                            accountTargetCurrency: { editable: true, type:"numeric" },
+                            ref: {type:"string"},
+                            tags: {field:"tags"}
+                        }
+                    }
+                }
+            });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                height: 750,
+                sortable: true,
+                filterable: true,
+                resizable: true,
+                toolbar: ["create"],
+                columns: [
+                    { field: "_id", title: "ID",editable: false, width: "70px",hidden:true},
+                    { field: "date", title: "Fecha",template:"#= getFormatDate(date) #",format: "{0:dd/MM/yyyy}",width:"100px"},
+                    { field: "description", title: "Descripcion"},
+                    { field: "amount", title: "Monto",width:"100px", footerTemplate: "Total: #= Math.round(sum) # €"},
+                    { field: "account", title: "Cuenta Origen", editor: accountDropDownEditor, template: "#= getAccountName(account) #"},
+                    { field: "accountCurrency", title: "Cambio",width:"70px"},
+                    { field: "accountTarget", title: "Cuenta Destino", editor: accountTargetDropDownEditor, template: "#= getAccountTargetName(accountTarget) #"},
+                    { field: "accountTargetCurrency", title: "Cambio",width:"70px"},
+                    { field: "tags", title: "Tags"},
+                    { field: "ref", title:"Ref"},
+                    { command: ["edit", "destroy"], title: "&nbsp;", width: "210px" }
+                ],
+                editable: "inline"
+            });
+        };
+        $(document).ready(function() {
+            loadDataSources(["account",{name:"accountTarget",url:"account"},"currency"],function(dataSources) {
+                ds = dataSources;
+                createGrid();
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>

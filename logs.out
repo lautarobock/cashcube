@@ -1,0 +1,10 @@
+====> /logs/staging.log <====
+
+# Logfile created on 2013-02-16 12:17:41 +0000 by logger.rb/25413
+Skipping npm support: npm-shrinkwrap.json is not provided
+
+====> /logs/stdout.log <====
+
+Express server listening on port 50108
+
+

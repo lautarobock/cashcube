@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CubeCash</title>
+
+    <link href="./css/examples-offline.css" rel="stylesheet">
+    <link href="./css/kendo.common.min.css" rel="stylesheet">
+    <link href="./css/kendo.default.min.css" rel="stylesheet">
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/kendo.web.min.js"></script>
+    <!--<script src="../../content/shared/js/console.js"></script>-->
+</head>
+<body>
+<a class="offline-button" href="cube.html">Back</a>
+<a class="offline-button" href="account.html">Cuentas</a>
+<div id="example" class="k-content">
+    <div id="grid"></div>
+
+    <script>
+        $(document).ready(function () {
+            var crudServiceBaseUrl = "http://localhost:3000",
+                    dataSource = new kendo.data.DataSource({
+                        transport: {
+                            read:  {
+                                url: crudServiceBaseUrl + "/user",
+                                type: "GET"
+                            },
+                            update: {
+                                url: function(user) {
+                                    return crudServiceBaseUrl + "/user/" + user.models[0]._id
+                                },
+                                type: "PUT"
+                            },
+                            destroy: {
+                                url: function(user) {
+                                    return crudServiceBaseUrl + "/user/" + user.models[0]._id
+                                },
+                                type: "DELETE"
+                            },
+                            create: {
+                                url: crudServiceBaseUrl + "/user",
+                                type: "POST"
+                            },
+                            parameterMap: function(options, operation) {
+//                                if (operation !== "read" && options.models) {
+//                                    return {models: kendo.stringify(options.models)};
+//                                }
+                                if (operation == "create" && options.models) {
+                                    var model = options.models[0];
+                                    model._id = undefined;
+                                    return model;
+                                }
+                                if ( operation == "update" && options.models) {
+                                    return options.models[0];
+                                }
+                            }
+                        },
+                        batch: true,
+                        pageSize: 30,
+                        schema: {
+                            model: {
+                                id: "_id",
+                                fields: {
+                                    _id: { editable: true, nullable: false },
+                                    name: { editable: true, nullable: true }
+                                }
+                            }
+                        }
+                    });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                height: 400,
+                toolbar: ["create"],
+                columns: [
+                    { field: "_id", title: "ID",editable: false, width: "70px",hidden:true},
+                    { field: "name", title: "Nombre"},
+                    { field: "lastname", title: "Apellido"},
+                    { command: ["edit", "destroy"], title: "&nbsp;", width: "210px" }
+                ],
+                editable: "inline"
+            });
+        });
+    </script>
+</div>
+
+</body>
+</html>

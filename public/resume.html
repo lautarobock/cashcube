@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CubeCash - Resume</title>
+
+    <link href="./css/examples-offline.css" rel="stylesheet">
+    <link href="./css/kendo.common.min.css" rel="stylesheet">
+    <link href="./css/kendo.default.min.css" rel="stylesheet">
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/kendo.web.min.js"></script>
+    <script src="./js/common.js"></script>
+    <!--<script src="../../content/shared/js/console.js"></script>-->
+    <script>
+        var ds;
+        var dataSource;
+        var groupDataSource;
+        function getAccount(id) {
+            var data = ds.account.data();
+            for ( var i in data ) {
+                if ( data[i]._id == id ) return data[i];
+            }
+            return {name:'-'};
+        }
+        function getAccountName(id) {
+            return getAccount(id).name;
+        }
+        function getCategoryName(account_id) {
+            var account = getAccount(account_id);
+            var data = ds.category.data();
+            for ( var i in data ) {
+                if ( data[i]._id == account.category ) return data[i].name;
+            }
+            return "-";
+        }
+
+        function createGrid() {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read:  {
+                        url: function() {
+                            var query = "params=yes";
+                            if ( $('#fromDate').val() ) {
+                                query += '&fromDate=' + encodeURIComponent($('#fromDate').data("kendoDatePicker").value());
+                            }
+                            if ( $('#toDate').val() ) {
+                                query += '&toDate=' + encodeURIComponent($('#toDate').data("kendoDatePicker").value());
+                            }
+                            if ( $('#category').val() ) {
+                                query += '&category=' + encodeURIComponent($('#category').val());
+                            }
+                            return "resume?" + query;
+                        },
+                        type: "GET"
+                    }
+                },
+                batch: true,
+                pageSize: 30,
+                aggregate: [
+                    { field: "credit", aggregate: "sum" },
+                    { field: "debit", aggregate: "sum" },
+                    { field: "amount", aggregate: "sum" }
+                ],
+                schema: {
+                    model: {
+                        id: "account",
+                        fields: {
+                            account: { editable: false },
+                            credit: { editable: false, type:"numeric"},
+                            debit: { editable: false, type:"numeric"},
+                            amount: { editable: false, type:"numeric"}
+                        }
+                    }
+                }
+            });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                height: 350,
+                sortable: true,
+                filterable: true,
+                resizable: true,
+                columns: [
+                    { field: "account", title: "Cuenta Origen", width:"200px", template: "#= getAccountName(account) #"},
+                    { field: "category", title: "Categoria", width:"200px", template: "#= getCategoryName(account) #"},
+                    { field: "credit", title: "Haber", footerTemplate: "Total: #= sum # €"},
+                    { field: "debit", title: "Deber", footerTemplate: "Total: #= sum # €"},
+                    { field: "amount", title: "Monto", footerTemplate: "Total: #= sum # €"}
+                ]
+            });
+        };
+
+        function createGroupGrid() {
+            groupDataSource = new kendo.data.DataSource({
+                transport: {
+                    read:  {
+                        url: function() {
+                            var query = "params=yes";
+                            if ( $('#fromDate').val() ) {
+                                query += '&fromDate=' + encodeURIComponent($('#fromDate').data("kendoDatePicker").value());
+                            }
+                            if ( $('#toDate').val() ) {
+                                query += '&toDate=' + encodeURIComponent($('#toDate').data("kendoDatePicker").value());
+                            }
+                            if ( $('#category').val() ) {
+                                query += '&category=' + encodeURIComponent($('#category').val());
+                            }
+                            return "group?" + query;
+                        },
+                        type: "GET"
+                    }
+                },
+                batch: true,
+                pageSize: 30,
+//                aggregate: [ { field: "amount", aggregate: "sum" }],
+                schema: {
+                    model: {
+                        id: "_id",
+                        fields: {
+                            _id: { editable: true, nullable: false },
+                            date: {type: "date"},
+                            week: {type:"numeric"},
+                            description: { editable: true, nullable: true },
+                            amount: { editable: true, nullable: true,type:"numeric"},
+                            account: { field: "account"},
+                            accountCurrency: { editable: true, type:"numeric" },
+                            accountTarget: { field: "accountTarget"},
+                            accountTargetCurrency: { editable: true, type:"numeric" },
+                            ref: {type:"string"},
+                            tags: {field:"tags"}
+                        }
+                    }
+                }
+            });
+
+            $("#group").kendoGrid({
+                dataSource: groupDataSource,
+                pageable: true,
+                height: 350,
+                sortable: true,
+                filterable: true,
+                groupable: true,
+                resizable: true,
+                columns: [
+                    { field: "_id", title: "ID",editable: false, width: "70px",hidden:true},
+                    { field: "date", title: "Fecha",template:"#= getFormatDate(date) #",format: "{0:dd/MM/yyyy}",width:"100px"},
+                    { field: "week", title: "Semana" },
+                    { field: "description", title: "Descripcion"},
+//                    { field: "amount", title: "Monto",width:"100px", footerTemplate: "Total: #= Math.round(sum) # €"},
+                    { field: "amount", title: "Monto",width:"100px"},
+//                    { field: "account", title: "Cuenta Origen", editor: accountDropDownEditor, template: "#= getAccountName(account) #"},
+                    { field: "account", title: "Cuenta Origen"},
+                    { field: "accountCurrency", title: "Cambio",width:"70px"},
+//                    { field: "accountTarget", title: "Cuenta Destino", editor: accountTargetDropDownEditor, template: "#= getAccountTargetName(accountTarget) #"},
+                    { field: "accountTarget", title: "Cuenta Destino"},
+                    { field: "accountTargetCurrency", title: "Cambio",width:"70px"}
+                ]
+            });
+        };
+        $(document).ready(function() {
+            $("#fromDate").kendoDatePicker({
+                format: "{0:dd/MM/yyyy}",
+                value: getFirstDayMonth(),
+                change: function() {
+                    dataSource.read();
+                    groupDataSource.read();
+                }
+            });
+            $("#toDate").kendoDatePicker({
+                format: "{0:dd/MM/yyyy}",
+                value: new Date(),
+                change: function() {
+                    dataSource.read();
+                    groupDataSource.read();
+                }
+            });
+
+            loadDataSources(["account","category"],function(dataSources) {
+                ds = dataSources;
+                $('#category').kendoDropDownList({
+                    dataTextField: "name",
+                    dataValueField: "_id",
+                    dataSource: ds.category,
+                    optionLabel: 'Seleccione una... ',
+                    change: function() {
+                        dataSource.read();
+                        groupDataSource.read();
+                    }
+                });
+                createGrid();
+                createGroupGrid();
+            });
+        });
+    </script>
+</head>
+<body>
+<a class="offline-button" href="movement.html">Movimientos</a>
+<a class="offline-button" href="account.html">Cuentas</a>
+<a class="offline-button" href="currency.html">Moneda</a>
+<a class="offline-button" href="category.html">Categorias</a>
+<a class="offline-button-selected" href="resume.html">Resume</a>
+<a class="offline-button" href="graph.html">Graficos</a>
+<div>
+        <label style="width:100px">Desde Fecha: </label>
+        <input id="fromDate" style="width:150px;" />
+        <label style="width:100px">Hasta Fecha: </label>
+        <input id="toDate" style="width:150px;" />
+        <label style="width:100px">Categoria: </label>
+        <input id="category" style="width:150px;" />
+    </div>
+<div id="example" class="k-content">
+
+    <div id="grid"></div>
+
+
+</div>
+<div id="example2" class="k-content">
+    <div id="group"></div>
+</div>
+
+</body>
+</html>
