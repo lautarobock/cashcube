@@ -7,7 +7,7 @@ module.exports = rest.build("movement",false,{date:-1});
 
 module.exports.pre = function(req,res,next,operation) {
     if ( operation == 'add' || operation == 'update' ) {
-        req.body.amount = parseFloat(req.body.amount.replace(',','.'));
+        req.body.amount = parseFloat(eval('('+req.body.amount.replace(',','.')+')'));
         req.body.accountCurrency = parseFloat(req.body.accountCurrency);
         req.body.accountTargetCurrency = parseFloat(req.body.accountTargetCurrency);
         req.body.date = new Date(req.body.date);
