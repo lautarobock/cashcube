@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html ng-app="cashcube">
+<head>
+    <title>CubeCash - Resume</title>
+
+    <link href="./css/examples-offline.css" rel="stylesheet">
+    <link href="./css/kendo.common.min.css" rel="stylesheet">
+    <link href="./css/kendo.default.min.css" rel="stylesheet">
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/kendo.web.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+    <script>
+        var cashcube = angular.module('cashcube',[]);
+        cashcube.controller("ProjectionController", function($scope) {
+            $scope.name = "Lautaro";
+        });
+    </script>
+</head>
+<body>
+<a class="offline-button" href="movement.html">Movimientos</a>
+<a class="offline-button" href="account.html">Cuentas</a>
+<a class="offline-button" href="currency.html">Moneda</a>
+<a class="offline-button" href="category.html">Categorias</a>
+<a class="offline-button-selected" href="resume.html">Resume</a>
+<a class="offline-button" href="graph.html">Graficos</a>
+<div>
+    <label style="width:100px">Desde Fecha: </label>
+    <input id="fromDate" style="width:150px;" />
+    <label style="width:100px">Hasta Fecha: </label>
+    <input id="toDate" style="width:150px;" />
+    <label style="width:100px">Categoria: </label>
+    <input id="category" style="width:150px;" />
+</div>
+<div id="example" class="k-content" ng-controller="ProjectionController">
+
+    <p>Nothing here {{'yet' + '!'}}</p>
+    my name is: {{name}}
+
+
+</div>
+
+</body>
+</html>
