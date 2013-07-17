@@ -70,6 +70,62 @@ module.exports.findGroup = function(req,res,next) {
     });
 }
 
+
+module.exports.findCube = function(req,res,next) {
+    db.collection("movement", function(err, collection) {
+        var filter = {};
+
+
+        filter.date={};
+
+        filter.date['$gte'] = new Date(req.query.year,req.query.month-1,1)
+        var to = new Date(req.query.year,req.query.month,1);
+//        to.setDate(to.getDate()-1);
+        filter.date['$lt'] = to;
+
+        collection.find(filter).sort({date:1}).toArray(function (err, items) {
+            var results = {};
+            for( var i in items) {
+                var item = items[i];
+                var day = item.date.getDate();
+                if ( day < 10 ) {
+                    day = "0" + day;
+                }
+                if ( !results[day] ) {
+                    results[day] = {};
+                }
+                if ( !results[day][item.account] ) {
+                    results[day][item.account] = item.amount;
+                } else {
+                    results[day][item.account] += item.amount;
+                }
+
+                if ( !results[day][item.accountTarget] ) {
+                    results[day][item.accountTarget] = -item.amount;
+                } else {
+                    results[day][item.accountTarget] -= item.amount;
+                }
+            }
+            res.send(results);
+//            var firstDate;
+//            var week;
+//            for( var i in items) {
+//                var item = items[i];
+//                if (!firstDate) {
+//                    firstDate = new Date(item.date);
+//                    week = item.week = 0;
+//                } else {
+//                    var actual = Math.round(getDaysFrom(firstDate,new Date(item.date))/7);
+//                    item.week = actual;
+//                }
+//            }
+//            res.send(items);
+        });
+
+
+    });
+}
+
 module.exports.findAll = function(req,res,next) {
     db.collection("movement", function(err, collection) {
         var filter = {};

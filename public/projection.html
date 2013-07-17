@@ -4,26 +4,27 @@
 <head>
     <title>CubeCash - Resume</title>
 
-    <link href="./css/examples-offline.css" rel="stylesheet">
-    <link href="./css/kendo.common.min.css" rel="stylesheet">
-    <link href="./css/kendo.default.min.css" rel="stylesheet">
-
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/kendo.web.min.js"></script>
     <script src="./js/common.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
     <script src="./js/angular-resource.js"></script>
     <script>
         var cashcube = angular.module('cashcube',['ngResource']);
-        cashcube.controller("ProjectionController", function($scope) {
+        cashcube.controller("ProjectionController", function($scope,Movement) {
             $scope.name = "Lautaro";
+            $scope.movements = Movement.query();
+
         });
 	
 	cashcube.factory('Movement',function($resource) {
-		return $resource('movement',{}, {
-			query: { method: 'GET', params: {  },isArray:true  }
+		return $resource('cube?year=2013&month=7',{}, {
+			query: { method: 'GET', params: {  },isArray:false  }
 		});
 	});
+    cashcube.factory('Account',function($resource) {
+        return $resource('account',{},{
+            query: { method: 'GET', params: {}, isArray:true  }
+        });
+    });
     </script>
 </head>
 <body>
@@ -45,7 +46,30 @@
 
     <p>Nothing here {{'yet' + '!'}}</p>
     my name is: {{name}}
+    <div>
+        <table border=1>
+            <tr>
+                <th ng-repeat="account in accounts">
 
+                </th>
+            </tr>
+            <tr ng-repeat="(day,values) in movements">
+                <td ng-repeat="(account,value) in values">
+                    {{account}}= {{value}}
+                </td>
+            </tr>
+            <!--<tr ng-repeat="(day,values) in movements">-->
+                <!--<td ng-repeat="(account,value) in values">-->
+                    <!--{{account}}= {{value}}-->
+                <!--</td>-->
+            <!--</tr>-->
+        </table>
+        <div >
+            {{day}})
+
+        </div>
+
+    </div>
 
 </div>
 

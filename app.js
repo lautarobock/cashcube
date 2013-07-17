@@ -36,17 +36,17 @@ app.configure('development', function(){
 
 
 //Session verification interceptor
-app.all('/*.html', function(req,res,next){
-    var s = req.session;
-    if (s.user || req.url == "/index.html" ) {
-        next();
-    } else if ( !s.user && req.query["user"] == "lautaro" ) {
-        s.user = "jose";
-        next();
-    } else {
-        res.redirect("/index.html");
-    }
-});
+//app.all('/*.html', function(req,res,next){
+//    var s = req.session;
+//    if (s.user || req.url == "/index.html" ) {
+//        next();
+//    } else if ( !s.user && req.query["user"] == "lautaro" ) {
+//        s.user = "jose";
+//        next();
+//    } else {
+//        res.redirect("/index.html");
+//    }
+//});
 
 //REST servces configuration
 //var rest = require("./util/rest.js");
@@ -66,6 +66,7 @@ for ( var i in services) {
 var resume = require("./routes/resume.js");
 app.get('/resume',resume.findAll);
 app.get('/group',resume.findGroup);
+app.get('/cube',resume.findCube);
 
 //require("./util/rest.js").buildExpress(app,"tour");
 
