@@ -19,43 +19,50 @@
 
             $scope.weekMovements = [
                 {
-                    from:1,
-                    to: 7,
+                    days:[1,2,3,4,5,6,7],
                     values: {
                         cash: 1,
                         debito_rio: 2
-                    },
-                    from:8,
-                    to: 14,
+                    }
+                },
+                {
+                    days:[8,9,10,11,12,13,14],
                     values: {
                         cash: 1,
                         debito_rio: 2
-                    },
-                    from:15,
-                    to: 21,
+                    }
+                },
+                {
+                    days: [15,16,17,18,19,20,21],
                     values: {
                         cash: 1,
                         debito_rio: 2
-                    },
-                    from:22,
-                    to: 28,
+                    }
+                },
+                {
+                    days: [22,23,24,25,26,27,28],
                     values: {
                         cash: 1,
                         debito_rio: 2
-                    },
-                    from:29,
-                    to: 31,
+                    }
+                },
+                {
+                    days: [29,30,31],
                     values: {
                         cash: 1,
                         debito_rio: 2
                     }
                 }
+
             ];
 
             $scope.navigateTo = function(href) {
                 window.location.href = href;
             };
 
+            $scope.isSub = function(day) {
+                return Boolean($scope.weekMovements[day]);
+            };
         });
 	
 	cashcube.factory('Movement',function($resource) {
@@ -81,6 +88,9 @@
     <button class="btn" ng-click="navigateTo('resume.html')">Resume</button>
     <button class="btn" ng-click="navigateTo('graph.html')">Graficos</button>
     <button class="btn btn-info" ng-click="navigateTo('projection.html')">Cubo</button>
+    <week ng-repeat="week in weekMovements">
+        {{week.days}}<br/>
+        </week>
     <div id="example" class="k-content" >
         <div>
             <table border=1>
@@ -92,14 +102,25 @@
                         {{account.name}}
                     </th>
                 </tr>
-                <tr ng-repeat="(day,values) in movements">
-                    <td>
-                        <strong>{{day}}</strong>
-                    </td>
-                    <td ng-repeat="account in accounts">
-                        {{movements[day][account._id].toFixed(2)}}
-                    </td>
-                </tr>
+                <week ng-repeat="week in weekMovements">
+                    <tr ng-repeat="d in week.days">
+                        {{d}}
+                        <!--<td>-->
+                            <!--<strong>{{day}}</strong>-->
+                        <!--</td>-->
+                        <!--<td ng-repeat="account in accounts">-->
+                            <!--{{movements[day][account._id].toFixed(2)}}-->
+                        <!--</td>-->
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td>-->
+                            <!--<strong>Subtotal</strong>-->
+                        <!--</td>-->
+                        <!--<td ng-repeat="account in accounts">-->
+                            <!--{{weekMovements[week.days[0]].values[account._id].toFixed(2)}}-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                </week>
             </table>
         </div>
     </div>
