@@ -12,15 +12,57 @@
     <script>
         var cashcube = angular.module('cashcube',['ngResource']);
         cashcube.controller("ProjectionController", function($scope,Movement,Account) {
-            $scope.name = "Lautaro";
+
             $scope.movements = Movement.query();
+
             $scope.accounts = Account.query();
-            
+
+            $scope.weekMovements = [
+                {
+                    from:1,
+                    to: 7,
+                    values: {
+                        cash: 1,
+                        debito_rio: 2
+                    },
+                    from:8,
+                    to: 14,
+                    values: {
+                        cash: 1,
+                        debito_rio: 2
+                    },
+                    from:15,
+                    to: 21,
+                    values: {
+                        cash: 1,
+                        debito_rio: 2
+                    },
+                    from:22,
+                    to: 28,
+                    values: {
+                        cash: 1,
+                        debito_rio: 2
+                    },
+                    from:29,
+                    to: 31,
+                    values: {
+                        cash: 1,
+                        debito_rio: 2
+                    }
+                }
+            ];
+
+            $scope.navigateTo = function(href) {
+                window.location.href = href;
+            };
 
         });
 	
 	cashcube.factory('Movement',function($resource) {
-		return $resource('cube?year=2013&month=7',{}, {
+        var today = new Date();
+        var year = today.getYear()+1900;
+        var month = today.getMonth()+1;
+		return $resource('cube?year='+year+'&month=' + month,{}, {
 			query: { method: 'GET', params: {  },isArray:false  }
 		});
 	});
@@ -31,58 +73,36 @@
     });
     </script>
 </head>
-<body>
-<button class="btn btn-info" ng-click="location=navigateTo('movement.html')">Movimientos</button>
-<!--<a class="offline-button" href="movement.html"></a>-->
-<a class="offline-button" href="account.html">Cuentas</a>
-<a class="offline-button" href="currency.html">Moneda</a>
-<a class="offline-button" href="category.html">Categorias</a>
-<a class="offline-button-selected" href="resume.html">Resume</a>
-<a class="offline-button" href="graph.html">Graficos</a>
-<div>
-    <label style="width:100px">Desde Fecha: </label>
-    <input id="fromDate" style="width:150px;" />
-    <label style="width:100px">Hasta Fecha: </label>
-    <input id="toDate" style="width:150px;" />
-    <label style="width:100px">Categoria: </label>
-    <input id="category" style="width:150px;" />
-</div>
-<div id="example" class="k-content" ng-controller="ProjectionController">
-
-    <p>Nothing here {{'yet' + '!'}}</p>
-    my name is: {{name}}
-    <div>
-        <table border=1>
-            <tr>
-                <th>
-                   Dia
-                </th>
-                <th ng-repeat="account in accounts">
-                    {{account.name}}
-                </th>
-            </tr>
-            <tr ng-repeat="(day,values) in movements">
-                <td>
-                    <strong>{{day}}</strong>
-                </td>
-                <td ng-repeat="account in accounts">
-                    {{movements[day][account._id].toFixed(2)}}
-                </td>
-            </tr>
-            <!--<tr ng-repeat="(day,values) in movements">-->
-                <!--<td ng-repeat="(account,value) in values">-->
-                    <!--{{account}}= {{value}}-->
-                <!--</td>-->
-            <!--</tr>-->
-        </table>
-        <div >
-            {{day}}
-
+<body ng-controller="ProjectionController">
+    <button class="btn" ng-click="navigateTo('movement.html')">Movimientos</button>
+    <button class="btn" ng-click="navigateTo('account.html')">Cuentas</button>
+    <button class="btn" ng-click="navigateTo('currency.html')">Moneda</button>
+    <button class="btn" ng-click="navigateTo('category.html')">Categorias</button>
+    <button class="btn" ng-click="navigateTo('resume.html')">Resume</button>
+    <button class="btn" ng-click="navigateTo('graph.html')">Graficos</button>
+    <button class="btn btn-info" ng-click="navigateTo('projection.html')">Cubo</button>
+    <div id="example" class="k-content" >
+        <div>
+            <table border=1>
+                <tr>
+                    <th>
+                       Dia
+                    </th>
+                    <th ng-repeat="account in accounts">
+                        {{account.name}}
+                    </th>
+                </tr>
+                <tr ng-repeat="(day,values) in movements">
+                    <td>
+                        <strong>{{day}}</strong>
+                    </td>
+                    <td ng-repeat="account in accounts">
+                        {{movements[day][account._id].toFixed(2)}}
+                    </td>
+                </tr>
+            </table>
         </div>
-
     </div>
-
-</div>
 
 </body>
 </html>
