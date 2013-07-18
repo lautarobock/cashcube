@@ -614,21 +614,21 @@ var m = [
 ];
 
 module.exports.findCube = function(req,res,next) {
-//    db.collection("movement", function(err, collection) {
+    db.collection("movement", function(err, collection) {
         var filter = {};
 
 
         filter.date={};
 
-        filter.date['$gte'] = new Date(req.query.year,req.query.month-1,1)
+        filter.date['$gte'] = new Date(req.query.year,req.query.month-1,1);
         var to = new Date(req.query.year,req.query.month,1);
 
         filter.date['$lt'] = to;
 
-//        collection.find(filter).sort({date:1}).toArray(function (err, items) {
+        collection.find(filter).sort({date:1}).toArray(function (err, items) {
             var results = {};
-            for( var i in m) {
-                var item = m[i];
+            for( var i in items) {
+                var item = items[i];
                 var day = item.date.getDate();
                 if ( day < 10 ) {
                     day = "0" + day;
@@ -649,10 +649,10 @@ module.exports.findCube = function(req,res,next) {
                 }
             }
             res.send(results);
-  //      });
+        });
 
 
-  //  });
+    });
 }
 
 module.exports.findAll = function(req,res,next) {
