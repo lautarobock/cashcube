@@ -48,6 +48,7 @@ app.configure('development', function(){
 //    }
 //});
 
+
 //REST servces configuration
 //var rest = require("./util/rest.js");
 var services = ["user","account","currency","movement","category"];
