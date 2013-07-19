@@ -2,7 +2,7 @@ module.exports.findCube = function(items) {
     var results = {};
     for( var i in items) {
         var item = items[i];
-        var day = item.date.getUTCDate();
+        var day = item.date.getDate();
 
         if ( !results[day] ) {
             results[day] = {};
