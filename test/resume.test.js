@@ -14,16 +14,20 @@ var resume = require("../routes/resume.js");
 exports.testFindCube = function(test) {
 	var res = {
 		send: function(value) {
-			test.equal(value[1].caixa,9.9,'caixa dia 1');
-			test.equal(value[1].bonus,-3.9,'bonus dia 1');
-			test.equal(value[1].cash,3.19,'cash dia 1');
-			test.equal(value[1]['super'],-3.19,'super dia 1');
-			test.equal(value[1].vicio,-6,'vicio dia 1');
+			console.log(value);
+			console.log("fin value");
+			console.log(new Date(2013,6,1).toString());
+			test.equal(value[new Date(2013,6,1).toString()].caixa,9.9,'caixa dia 1');
+			test.equal(value[new Date(2013,6,1).toString()].bonus,-3.9,'bonus dia 1');
+			test.equal(value[new Date(2013,6,1).toString()].cash,3.19,'cash dia 1');
+			test.equal(value[new Date(2013,6,1).toString()]['super'],-3.19,'super dia 1');
+			test.equal(value[new Date(2013,6,1).toString()].vicio,-6,'vicio dia 1');
 
-			test.equal(value[17].caixa,46.150000000000006,'caixa dia 17');
-			test.equal(value[17].deudas_general,-0.3000000000000007,'deudas dia 17');
-			test.equal(value[17].cash,-19,'cash dia 17');
-			test.equal(value[17].salidas,-26.85,'vicio dia 17');
+			console.log(new Date(2013,6,17).toString());
+			test.equal(value[new Date(2013,6,17).toString()].caixa,46.150000000000006,'caixa dia 17');
+			test.equal(value[new Date(2013,6,17).toString()].deudas_general,-0.3000000000000007,'deudas dia 17');
+			test.equal(value[new Date(2013,6,17).toString()].cash,-19,'cash dia 17');
+			test.equal(value[new Date(2013,6,17).toString()].salidas,-26.85,'vicio dia 17');
 
 		    test.done();
 		}
