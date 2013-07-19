@@ -93,9 +93,6 @@
                 window.location.href = href;
             };
 
-            $scope.isSub = function(day) {
-                return Boolean($scope.weekMovements[day]);
-            };
         });
 	
 	cashcube.factory('Movement',function($resource) {

@@ -11,6 +11,7 @@ var util = require("../public/js/util.js");
 //Nodeunit
 exports.testCreateFirstDay = function(test) {
     var date = util.createFirstDay(2013,7);
+    console.log('GENERATE DATE: ' + date);
     test.equal(date.getDay(),1);
     test.equal(date.getMonth(),6);
     test.equal(date.getYear(),113);
