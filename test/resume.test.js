@@ -14,9 +14,6 @@ var resume = require("../routes/resume.js");
 exports.testFindCube = function(test) {
 	var res = {
 		send: function(value) {
-			console.log(value);
-			console.log("fin value");
-			
 			test.equal(value[1].caixa,9.9,'caixa dia 1');
 			test.equal(value[1].bonus,-3.9,'bonus dia 1');
 			test.equal(value[1].cash,3.19,'cash dia 1');
