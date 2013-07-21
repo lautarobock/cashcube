@@ -17,3 +17,26 @@ exports.testCreateFirstDay = function(test) {
     test.equal(date.getYear(),113);
     test.done();
 };
+
+
+exports.testGetWeek = function(test) {
+    var week = util.getWeek(1);
+    test.equal(week,1);
+
+    week = util.getWeek(2);
+    test.equal(week,1);
+    week = util.getWeek(6);
+    test.equal(week,1);
+    week = util.getWeek(7);
+    test.equal(week,1);
+
+    week = util.getWeek(8);
+    test.equal(week,2);
+
+    week = util.getWeek(13);
+    test.equal(week,2);
+    week = util.getWeek(14);
+    test.equal(week,2);
+
+    test.done();
+};

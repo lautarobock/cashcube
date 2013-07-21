@@ -73,27 +73,26 @@ module.exports.findGroup = function(req,res,next) {
 
 
 module.exports.findCube = function(req,res,next) {
-	/*
+
     db.collection("movement", function(err, collection) {
         var filter = {};
 
         filter.date={};
 
-        filter.date['$gte'] = new Date(req.query.year,req.query.month-1,1);
-        var to = new Date(req.query.year,req.query.month,1);
+        filter.date['$gte'] = new Date(req.params.year,req.params.month-1,1);
+        filter.date['$gte'].setHours(filter.date['$gte'].getHours()-2);
+        var to = new Date(req.params.year,req.params.month,1);
+        to.setHours(to.getHours()-2);
 
         filter.date['$lt'] = to;
 
         collection.find(filter).sort({date:1}).toArray(function (err, items) {
-            var results = require("../services/cube.sh").findCube(items);
+            var results = require("../services/cube.js").findCube(items);
             res.send(results);
         });
 
 
-    });*/
-	var items = require("../test/resources.js").movements;
-    var results = require("../services/cube.js").findCube(items);
-    res.send(results);
+    });
 }
 
 module.exports.findAll = function(req,res,next) {

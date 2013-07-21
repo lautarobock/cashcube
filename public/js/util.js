@@ -16,4 +16,8 @@
         return new Date(year,month,1);
     };
 
+    exports.getWeek = function(day) {
+        return Math.floor((day-1) / 7) + 1;
+    };
+
 })(typeof exports === 'undefined'? this['util'] = {} : exports );

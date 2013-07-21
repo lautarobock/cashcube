@@ -67,7 +67,7 @@ for ( var i in services) {
 var resume = require("./routes/resume.js");
 app.get('/resume',resume.findAll);
 app.get('/group',resume.findGroup);
-app.get('/cube',resume.findCube);
+app.get('/cube/:year/:month',resume.findCube);
 
 //require("./util/rest.js").buildExpress(app,"tour");
 
