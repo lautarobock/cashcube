@@ -68,6 +68,8 @@ var resume = require("./routes/resume.js");
 app.get('/resume',resume.findAll);
 app.get('/group',resume.findGroup);
 app.get('/cube/:year/:month',resume.findCube);
+app.get('/cubedefinition/:id',resume.findCubeDefinition);
+app.post('/cubedefinition',resume.saveCubeDefinition);
 
 //require("./util/rest.js").buildExpress(app,"tour");
 

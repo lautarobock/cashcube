@@ -2,9 +2,9 @@
 var cashcube = angular.module('cashcube',['ngResource','ui.bootstrap']);
 
 cashcube.filter("valueFilter",function() {
-    return function(value) {
+    return function(value,max) {
         if ( !value ) return '';
-        return -value;
+        return -value + (max?' ('+max+')':'');
     };
 });
 
@@ -55,6 +55,14 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
     r.push({from:22,to:28});
     r.push({from:29,to:31});
 
+    var formatMonth= function(month) {
+        if ( m<10 ) {
+            return '0'+m;
+        } else {
+            return m;
+        }
+    };
+
     for ( var y=yearStart; y<=yearEnd; y++ ) {
         for ( var m=monthStart; m<=monthEnd; m++ ) {
             //last day of month
@@ -63,7 +71,7 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
             var month = {
                 year: y,
                 month: m,
-				id: ''+y+m,
+				id: ''+y+formatMonth(m),
                 value: MONTHS[m-1] + ' de ' + y,
                 lastDay: dummy.getDate()
             };
@@ -72,7 +80,7 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
         }
     }
 
-	$scope.definition = CubeDefinition.query();
+	$scope.definition = CubeDefinition.get({id:$scope.selected.id});
 
     $scope.movements = Cube.query($scope.selected);
 
@@ -88,7 +96,9 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
             r.push({from:29,to:month.lastDay});
         }
 
+        $scope.definition = CubeDefinition.get({id:$scope.selected.id});
         $scope.movements = Cube.query($scope.selected);
+
     };
 
     $scope.accounts = Account.query();
@@ -110,11 +120,25 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
         return days;
     };
 
-    $scope.getClass = function(value,account) {
+    $scope.getClassForWeek = function(value,account) {
         if ( !value  ) return '';
-		if ( account.maxDay && -value > account.maxDay ) return 'alert alert-error';
+        if ( account.maxWeek && -value > account.maxWeek ) return 'text-error';
+        //if ( value < -10 ) return 'alert';
+        return 'text-success';
+    };
+
+    $scope.getClassForTotal = function(value,account) {
+        if ( !value  ) return '';
+        if ( account.maxMonth && -value > account.maxMonth ) return 'alert alert-error';
         //if ( value < -10 ) return 'alert';
         return 'alert alert-success';
+    };
+
+    $scope.getClass = function(value,account) {
+        if ( !value  ) return '';
+		if ( account.maxDay && -value > account.maxDay ) return 'text-error';
+        //if ( value < -10 ) return 'alert';
+        return 'text-success';
     }
 
     $scope.getPopover = function(items) {
@@ -134,6 +158,10 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
         window.location.href = href;
     };
 
+    $scope.saveDefinition = function() {
+        $scope.definition.$save();
+    };
+
 });
 
 cashcube.factory('Cube',function($resource) {
@@ -151,7 +179,8 @@ cashcube.factory('Account',function($resource) {
     });
 });
 cashcube.factory('CubeDefinition',function($resource) {
-    return $resource('cubedefinition',{},{
-        query: { method: 'GET', params: {}, isArray:true  }
+    return $resource('cubedefinition/:id',{},{
+        get: { method: 'GET', params: {}, isArray:false },
+        save: { method: 'POST', params: {}}
     });
 });

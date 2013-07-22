@@ -1,8 +1,15 @@
 var util = require("../public/js/util.js");
+var resource = require("../test/resources.js");
+
+//module.exports.findDefinition = function(id) {
+//    return resource.cubedefinition[0];
+//};
+
 
 module.exports.findCube = function(items) {
     var results = {
         days: {},
+        totalDay: {},
         weeks: {},
         month: {}
     };
@@ -36,6 +43,7 @@ module.exports.findCube = function(items) {
         } else {
             results.days[day][item.account].value += item.amount;
             results.days[day][item.account].items.push(item);
+
         }
         if ( !results.weeks[week][item.account] ) {
             results.weeks[week][item.account] = {
@@ -51,6 +59,9 @@ module.exports.findCube = function(items) {
         } else {
             results.month[item.account].value += item.amount;
         }
+
+//        results.totalDay[day] = results.totalDay[day] || 0;
+//        results.totalDay[day] += item.amount;
 
 
 
@@ -82,6 +93,7 @@ module.exports.findCube = function(items) {
         } else {
             results.month[item.accountTarget].value -= item.amount;
         }
+
     }
     return results;
 }

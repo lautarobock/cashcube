@@ -28,15 +28,67 @@
                     <select ng-model="selected" ng-options="month.value for month in months" ng-change="toMonth(selected)"></select>
                 </div>
 
-		        <table class="table table-bordered table-hover ">
+                <table class="table table-condensed table-bordered ">
+                    <thead>
+                        <tr>
+                            <th style="width:50px">
+                                Opcion
+                            </th>
+                            <th ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                                {{values.name}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td >
+                                Mx/dia
+                            </td>
+                            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                                <input type="text" ng-model="values.maxDay" class="input-mini"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                Mx/sem
+                            </td>
+                            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                                <input type="text" ng-model="values.maxWeek" class="input-mini"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                Mx/mes
+                            </td>
+                            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                                <input type="text" ng-model="values.maxMonth" class="input-mini"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                Resto
+                            </td>
+                            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                                <input type="text" ng-model="values.trail" class="input-mini"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button ng-click="saveDefinition()">Guardar</button>
+
+
+		        <table class="table table-condensed table-bordered table-hover ">
 					<thead>
 						<tr>
-				            <th style="width:20px">
+				            <th style="width:50px">
 				               Dia
 				            </th>
-				            <th ng-repeat="(accountid,values) in definition[0].accounts" style="width:{{values.width||100}}px">
+				            <th ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
 				                {{values.name}}
 				            </th>
+                            <th style="width:50px">
+                                <strong>Total</strong>
+                            </th>
 				        </tr>
 					</thead>
                     <tbody ng-repeat="w in weeks()">
@@ -44,19 +96,22 @@
                             <td>
                                 <strong>{{day}}</strong>
                             </td>
-                            <td ng-repeat="(accountid,values) in definition[0].accounts" ng-class="getClass(movements.days[day][accountid].value,values)" >
-                                <span popover-placement="top" Popover-animation="true"  popover="{{getPopover(movements.days[day][accountid].items)}}">
-                                    {{movements.days[day][accountid].value.toFixed(2)|valueFilter}}
+                            <td ng-repeat="values in definition.accounts" ng-class="getClass(movements.days[day][values.account].value,values)" >
+                                <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
+                                    {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
                                 </span>
                             </td>
+                            <th style="width:50px">
+                                <strong>{{movements.totalDay[day].toFixed(2)|valueFilter}}</strong>
+                            </th>
                         </tr>
                         <tr class="info">
                             <td>
                                 <strong>W: {{$index+1}}</strong>
                             </td>
-                            <td ng-repeat="(accountid,values) in definition[0].accounts">
+                            <td ng-repeat="values in definition.accounts" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
                                 <strong>
-                                    {{movements.weeks[(w.from-1)/7+1][accountid].value.toFixed(2)|valueFilter}}
+                                    {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
                                 </strong>
                             </td>
                         </tr>
@@ -66,9 +121,9 @@
                             <td>
                                 <strong>Total</strong>
                             </td>
-                            <td ng-repeat="(accountid,values) in definition[0].accounts">
+                            <td ng-repeat="values in definition.accounts" ng-class="getClassForTotal(movements.month[values.account].value,values)">
                                 <strong>
-                                    {{movements.month[accountid].value.toFixed(2)|valueFilter}}
+                                    {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
                                 </strong>
                             </td>
                         </tr>

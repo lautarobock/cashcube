@@ -8,6 +8,7 @@
 
 var mongo = require('mongodb');
 //var rest = require('../util/rest.js');
+var cube = require("../services/cube.js");
 
 var Server = mongo.Server,
     Db = mongo.Db,
@@ -70,9 +71,119 @@ module.exports.findGroup = function(req,res,next) {
     });
 }
 
+module.exports.saveCubeDefinition = function(req,res,next) {
+    db.collection("cubedefinition", function(err, collection) {
+        collection.findOne({"_id":req.body._id},function(err, item) {
+            if ( !item ) {
+                collection.insert(req.body, {safe:true}, function (err, result) {
+                    res.send(result[0]);
+                });
+            } else  {
+                collection.update({_id:req.body._id}, req.body, {safe:true}, function (err, result) {
+                    res.send(req.body);
+                });
+            }
+        });
 
+    });
+};
+
+var defaultDefinition =  [
+        {
+            "account": "super",
+            "name": "Super",
+            "width": "70",
+            "maxDay": 10,
+            "maxWeek": 70,
+            "maxMonth": null,
+            "maxRest": 10,
+            "trail": 45,
+            "order": 1
+        },
+        {
+            "account": "vicio",
+            "name": "Vicio",
+            "width": "70",
+            "maxDay": null,
+            "maxWeek": 20,
+            "maxMonth": null,
+            "maxRest": 0,
+            "trail": 4,
+            "order": 2
+        },
+        {
+            "account":"bonus",
+            "name": "Bonus",
+            "width": "70",
+            "maxDay": null,
+            "maxWeek": null,
+            "maxMonth": 80,
+            "maxRest": 0,
+            "trail": 0,
+            "order": 3
+        },
+        {
+            "account": "salidas",
+            "name": "Salidas",
+            "width": "70",
+            "maxWeek": 35,
+            "maxMonth": 150,
+            "maxRest": 10,
+            "order": 4
+        },
+        {
+            "account": "extra",
+            "name": "Extra",
+            "width": "70",
+            "order": 5
+        },
+        {
+            "account": "fijos",
+            "name": "Fijos",
+            "width": "70",
+            "maxMonth": 800,
+            "order": 6
+        },
+        {
+            "account": "viajes",
+            "name": "Viajes",
+            "width": "70",
+            "order": 7
+        }
+    ];
+
+module.exports.findCubeDefinition = function(req,res,next) {
+    db.collection("cubedefinition", function(err, collection) {
+        collection.findOne({"_id":req.params.id},function(err, item) {
+            if ( item ) {
+                res.send(item);
+            } else {
+                db.collection("cubedefinition", function(err, collection) {
+                    collection.find({}).sort({_id:0}).toArray(function(err, items) {
+                        if ( items.length > 0 ) {
+                            items[0]._id = req.params.id;
+                            res.send(items[0]);
+                        } else {
+                            var def = {
+                                _id: req.params.id,
+                                accounts: defaultDefinition
+                            };
+                            res.send(def);
+                        }
+                    });
+                });
+            }
+        });
+    });
+};
 
 module.exports.findCube = function(req,res,next) {
+
+    var m = req.params.month;
+    if ( m<10) m='0'+m;
+    var def_id = req.params.year+m;
+    //TODO, find definition to know accounts
+
 
     db.collection("movement", function(err, collection) {
         var filter = {};
@@ -87,7 +198,7 @@ module.exports.findCube = function(req,res,next) {
         filter.date['$lt'] = to;
 
         collection.find(filter).sort({date:1}).toArray(function (err, items) {
-            var results = require("../services/cube.js").findCube(items);
+            var results = cube.findCube(items);
             res.send(results);
         });
 
