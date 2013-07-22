@@ -31,11 +31,11 @@
 		        <table class="table table-bordered table-hover ">
 					<thead>
 						<tr>
-				            <th>
+				            <th style="width:20px">
 				               Dia
 				            </th>
-				            <th ng-repeat="account in accounts  | base">
-				                {{account.name}}
+				            <th ng-repeat="(accountid,values) in definition[0].accounts" style="width:{{values.width||100}}px">
+				                {{values.name}}
 				            </th>
 				        </tr>
 					</thead>
@@ -44,9 +44,9 @@
                             <td>
                                 <strong>{{day}}</strong>
                             </td>
-                            <td ng-repeat="account in accounts | base" ng-class="getClass(movements.days[day][account._id].value)" >
-                                <span popover-placement="top" Popover-animation="true"  popover="{{getPopover(movements.days[day][account._id].items)}}">
-                                    {{movements.days[day][account._id].value.toFixed(2)|valueFilter}}
+                            <td ng-repeat="(accountid,values) in definition[0].accounts" ng-class="getClass(movements.days[day][accountid].value,values)" >
+                                <span popover-placement="top" Popover-animation="true"  popover="{{getPopover(movements.days[day][accountid].items)}}">
+                                    {{movements.days[day][accountid].value.toFixed(2)|valueFilter}}
                                 </span>
                             </td>
                         </tr>
@@ -54,9 +54,9 @@
                             <td>
                                 <strong>W: {{$index+1}}</strong>
                             </td>
-                            <td ng-repeat="account in accounts | base">
+                            <td ng-repeat="(accountid,values) in definition[0].accounts">
                                 <strong>
-                                    {{movements.weeks[(w.from-1)/7+1][account._id].value.toFixed(2)|valueFilter}}
+                                    {{movements.weeks[(w.from-1)/7+1][accountid].value.toFixed(2)|valueFilter}}
                                 </strong>
                             </td>
                         </tr>
@@ -66,9 +66,9 @@
                             <td>
                                 <strong>Total</strong>
                             </td>
-                            <td ng-repeat="account in accounts | base">
+                            <td ng-repeat="(accountid,values) in definition[0].accounts">
                                 <strong>
-                                    {{movements.month[account._id].value.toFixed(2)|valueFilter}}
+                                    {{movements.month[accountid].value.toFixed(2)|valueFilter}}
                                 </strong>
                             </td>
                         </tr>

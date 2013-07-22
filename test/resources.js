@@ -542,55 +542,62 @@ module.exports.movements = [
 ];
 
 var cubedefinition = [{
-    account: 'super',
-    maxDay: null, //color de fondo
-    maxWeek: 70,  //color de los numeros
-    maxMonth: null, //color de los numeros
-    maxRest: 10, //color de los numeros
-    trailing: { //sobra al final del mes
-        "20135": 40,
-        "20136": 35
-    }
-}, {
-    account: 'vicio',
-    maxDay: null, //color de fondo
-    maxWeek: 20,  //color de los numeros
-    maxMonth: null, //color de los numeros
-    maxRest: 0, //color de los numeros
-    trailing: { //sobra al final del mes
-        "20135": 4,
-        "20136": 3.5
-    }
-}, {
-    account: 'bonus',
-    maxDay: null, //color de fondo
-    maxWeek: null,  //color de los numeros
-    maxMonth: 80, //color de los numeros
-    maxRest: 0, //color de los numeros
-    trailing: { //sobra al final del mes
-    }
-}, {
-    account: 'salidas',
-    maxDay: null, //color de fondo
-    maxWeek: 35,  //color de los numeros
-    maxMonth: 150, //color de los numeros
-    maxRest: 10, //color de los numeros
-    trailing: { //sobra al final del mes
-    }
-}, {
-    account: 'extra',
-    maxDay: null, //color de fondo
-    maxWeek: null,  //color de los numeros
-    maxMonth: null, //color de los numeros
-    maxRest: null, //color de los numeros
-    trailing: { //sobra al final del mes
-    }
-}, {
-    account: 'fijos',
-    maxDay: null, //color de fondo
-    maxWeek: null,  //color de los numeros
-    maxMonth: 800, //color de los numeros
-    maxRest: null, //color de los numeros
-    trailing: { //sobra al final del mes
-    }
-}];
+"_id": "201307",
+"accounts": {
+	"super": {
+		"name": "Super",
+		"width": "70",
+		"maxDay": 10, 
+		"maxWeek": 70,  
+		"maxMonth": null, 
+		"maxRest": 10, 
+		"trail": 45,
+		"order": 1
+		},
+	"vicio": {
+		"name": "Vicio",
+		"width": "70",
+		"maxDay": null, 
+		"maxWeek": 20,  
+		"maxMonth": null, 
+		"maxRest": 0, 
+		"trail": 4,
+		"order": 2
+		},
+	"bonus": {
+		"name": "Bonus",
+		"width": "70",
+		"maxDay": null, 
+		"maxWeek": null,
+		"maxMonth": 80, 
+		"maxRest": 0, 
+		"trail": 0,
+		"order": 3
+		},
+	"salidas": {
+		"name": "Salidas",
+		"width": "70",
+		"maxWeek": 35, 
+		"maxMonth": 150,
+		"maxRest": 10,
+		"order": 4
+		},
+	"extra": {
+		"name": "Extra",
+		"width": "70",
+		"order": 5
+		},
+	"fijos": {
+		"name": "Fijos",
+		"width": "70",
+		"maxMonth": 800,
+		"order": 6
+		},
+	"viajes": {
+		"name": "Viajes",
+		"width": "70",
+		"order": 7
+		}
+	}
+}
+];

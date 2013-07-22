@@ -8,6 +8,9 @@ cashcube.filter("valueFilter",function() {
     };
 });
 
+/**
+ * @deprecated
+ */
 cashcube.filter('base',function() {
     return function(accounts) {
         var filtered = [];
@@ -32,7 +35,7 @@ cashcube.filter('base',function() {
 
 var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
 
-cashcube.controller("ProjectionController", function($scope,Movement,Account) {
+cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDefinition) {
 
     $scope.selected = null;
 
@@ -60,6 +63,7 @@ cashcube.controller("ProjectionController", function($scope,Movement,Account) {
             var month = {
                 year: y,
                 month: m,
+				id: ''+y+m,
                 value: MONTHS[m-1] + ' de ' + y,
                 lastDay: dummy.getDate()
             };
@@ -68,8 +72,9 @@ cashcube.controller("ProjectionController", function($scope,Movement,Account) {
         }
     }
 
+	$scope.definition = CubeDefinition.query();
 
-    $scope.movements = Movement.query($scope.selected);
+    $scope.movements = Cube.query($scope.selected);
 
     $scope.toMonth = function(month) {
         $scope.selected = month;
@@ -83,7 +88,7 @@ cashcube.controller("ProjectionController", function($scope,Movement,Account) {
             r.push({from:29,to:month.lastDay});
         }
 
-        $scope.movements = Movement.query($scope.selected);
+        $scope.movements = Cube.query($scope.selected);
     };
 
     $scope.accounts = Account.query();
@@ -105,10 +110,10 @@ cashcube.controller("ProjectionController", function($scope,Movement,Account) {
         return days;
     };
 
-    $scope.getClass = function(value) {
-        if ( !value ) return '';
-        if ( value < -100 ) return 'alert alert-error';
-        if ( value < -10 ) return 'alert';
+    $scope.getClass = function(value,account) {
+        if ( !value  ) return '';
+		if ( account.maxDay && -value > account.maxDay ) return 'alert alert-error';
+        //if ( value < -10 ) return 'alert';
         return 'alert alert-success';
     }
 
@@ -131,7 +136,7 @@ cashcube.controller("ProjectionController", function($scope,Movement,Account) {
 
 });
 
-cashcube.factory('Movement',function($resource) {
+cashcube.factory('Cube',function($resource) {
     var today = new Date();
     var year = today.getYear()+1900;
     var month = today.getMonth()+1;
@@ -142,6 +147,11 @@ cashcube.factory('Movement',function($resource) {
 cashcube.factory('Account',function($resource) {
     //return $resource('data/account.json',{},{
     return $resource('account',{},{
+        query: { method: 'GET', params: {}, isArray:true  }
+    });
+});
+cashcube.factory('CubeDefinition',function($resource) {
+    return $resource('cubedefinition',{},{
         query: { method: 'GET', params: {}, isArray:true  }
     });
 });
