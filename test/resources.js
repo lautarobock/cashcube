@@ -540,3 +540,57 @@ module.exports.movements = [
     "accountTargetCurrency": 1
   }
 ];
+
+var cubedefinition = [{
+    account: 'super',
+    maxDay: null, //color de fondo
+    maxWeek: 70,  //color de los numeros
+    maxMonth: null, //color de los numeros
+    maxRest: 10, //color de los numeros
+    trailing: { //sobra al final del mes
+        "20135": 40,
+        "20136": 35
+    }
+}, {
+    account: 'vicio',
+    maxDay: null, //color de fondo
+    maxWeek: 20,  //color de los numeros
+    maxMonth: null, //color de los numeros
+    maxRest: 0, //color de los numeros
+    trailing: { //sobra al final del mes
+        "20135": 4,
+        "20136": 3.5
+    }
+}, {
+    account: 'bonus',
+    maxDay: null, //color de fondo
+    maxWeek: null,  //color de los numeros
+    maxMonth: 80, //color de los numeros
+    maxRest: 0, //color de los numeros
+    trailing: { //sobra al final del mes
+    }
+}, {
+    account: 'salidas',
+    maxDay: null, //color de fondo
+    maxWeek: 35,  //color de los numeros
+    maxMonth: 150, //color de los numeros
+    maxRest: 10, //color de los numeros
+    trailing: { //sobra al final del mes
+    }
+}, {
+    account: 'extra',
+    maxDay: null, //color de fondo
+    maxWeek: null,  //color de los numeros
+    maxMonth: null, //color de los numeros
+    maxRest: null, //color de los numeros
+    trailing: { //sobra al final del mes
+    }
+}, {
+    account: 'fijos',
+    maxDay: null, //color de fondo
+    maxWeek: null,  //color de los numeros
+    maxMonth: 800, //color de los numeros
+    maxRest: null, //color de los numeros
+    trailing: { //sobra al final del mes
+    }
+}];
