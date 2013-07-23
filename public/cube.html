@@ -101,9 +101,9 @@
                                     {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
                                 </span>
                             </td>
-                            <th style="width:50px">
+                            <td style="width:50px">
                                 <strong>{{movements.totalDay[day].toFixed(2)|valueFilter}}</strong>
-                            </th>
+                            </td>
                         </tr>
                         <tr class="info">
                             <td>
@@ -113,6 +113,9 @@
                                 <strong>
                                     {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
                                 </strong>
+                            </td>
+                            <td style="width:50px">
+                                <strong>{{movements.totalWeek[(w.from-1)/7+1].toFixed(2)|valueFilter}}</strong>
                             </td>
                         </tr>
                     </tbody>

@@ -5,12 +5,21 @@ var resource = require("../test/resources.js");
 //    return resource.cubedefinition[0];
 //};
 
+function contains(def,accountid) {
+    for ( var i=0; i<def.accounts.length; i++ ) {
+        if  ( def.accounts[i].account === accountid ) {
+            return true;
+        }
+    }
+    return false;
+}
 
-module.exports.findCube = function(items) {
+module.exports.findCube = function(items,def) {
     var results = {
         days: {},
         totalDay: {},
         weeks: {},
+        totalWeek: {},
         month: {}
     };
 
@@ -35,65 +44,84 @@ module.exports.findCube = function(items) {
         /*
         for accout
          */
-        if ( !results.days[day][item.account] ) {
-            results.days[day][item.account] = {
-                value: item.amount,
-                items: [item]
-            };
-        } else {
-            results.days[day][item.account].value += item.amount;
-            results.days[day][item.account].items.push(item);
+        if ( contains(def,item.account) ) {
+            if ( !results.days[day][item.account] ) {
+                results.days[day][item.account] = {
+                    value: item.amount,
+                    items: [item]
+                };
+            } else {
+                results.days[day][item.account].value += item.amount;
+                results.days[day][item.account].items.push(item);
 
+            }
+            if ( !results.weeks[week][item.account] ) {
+                results.weeks[week][item.account] = {
+                    value: item.amount
+                };
+            } else {
+                results.weeks[week][item.account].value += item.amount;
+            }
+            if ( !results.month[item.account] ) {
+                results.month[item.account] = {
+                    value: item.amount
+                };
+            } else {
+                results.month[item.account].value += item.amount;
+            }
+            if (!results.totalDay[day]) {
+                results.totalDay[day] = item.amount;
+            } else {
+                results.totalDay[day] += item.amount;
+            }
+            if (!results.totalWeek[week]) {
+                results.totalWeek[week] = item.amount;
+            } else {
+                results.totalWeek[week] += item.amount;
+            }
         }
-        if ( !results.weeks[week][item.account] ) {
-            results.weeks[week][item.account] = {
-                value: item.amount
-            };
-        } else {
-            results.weeks[week][item.account].value += item.amount;
-        }
-        if ( !results.month[item.account] ) {
-            results.month[item.account] = {
-                value: item.amount
-            };
-        } else {
-            results.month[item.account].value += item.amount;
-        }
-
-//        results.totalDay[day] = results.totalDay[day] || 0;
-//        results.totalDay[day] += item.amount;
-
 
 
         /*
          for accoutTarget
          */
-        if ( !results.days[day][item.accountTarget] ) {
-            results.days[day][item.accountTarget] = {
-                value: -item.amount,
-                items: [item]
-            };
-        } else {
-            results.days[day][item.accountTarget].value -= item.amount;
-            results.days[day][item.accountTarget].items.push(item);
-        }
+        if ( contains(def,item.accountTarget) ) {
+            if ( !results.days[day][item.accountTarget] ) {
+                results.days[day][item.accountTarget] = {
+                    value: -item.amount,
+                    items: [item]
+                };
+            } else {
+                results.days[day][item.accountTarget].value -= item.amount;
+                results.days[day][item.accountTarget].items.push(item);
+            }
 
-        if ( !results.weeks[week][item.accountTarget] ) {
-            results.weeks[week][item.accountTarget] = {
-                value: -item.amount
-            };
-        } else {
-            results.weeks[week][item.accountTarget].value -= item.amount;
-        }
+            if ( !results.weeks[week][item.accountTarget] ) {
+                results.weeks[week][item.accountTarget] = {
+                    value: -item.amount
+                };
+            } else {
+                results.weeks[week][item.accountTarget].value -= item.amount;
+            }
 
-        if ( !results.month[item.accountTarget] ) {
-            results.month[item.accountTarget] = {
-                value: -item.amount
-            };
-        } else {
-            results.month[item.accountTarget].value -= item.amount;
+            if ( !results.month[item.accountTarget] ) {
+                results.month[item.accountTarget] = {
+                    value: -item.amount
+                };
+            } else {
+                results.month[item.accountTarget].value -= item.amount;
+            }
+            if (!results.totalDay[day]) {
+                results.totalDay[day] = -item.amount;
+            } else {
+                results.totalDay[day] -= item.amount;
+            }
+            if (!results.totalWeek[week]) {
+                results.totalWeek[week] = -item.amount;
+            } else {
+                results.totalWeek[week] -= item.amount;
+            }
         }
-
     }
     return results;
 }

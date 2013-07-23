@@ -152,28 +152,33 @@ var defaultDefinition =  [
         }
     ];
 
-module.exports.findCubeDefinition = function(req,res,next) {
-    db.collection("cubedefinition", function(err, collection) {
-        collection.findOne({"_id":req.params.id},function(err, item) {
-            if ( item ) {
-                res.send(item);
+function innerFindCubeDefinition(id, cb) {
+    db.collection("cubedefinition", function (err, collection) {
+        collection.findOne({"_id":id}, function (err, item) {
+            if (item) {
+                cb(item);
             } else {
-                db.collection("cubedefinition", function(err, collection) {
-                    collection.find({}).sort({_id:0}).toArray(function(err, items) {
-                        if ( items.length > 0 ) {
-                            items[0]._id = req.params.id;
-                            res.send(items[0]);
+                db.collection("cubedefinition", function (err, collection) {
+                    collection.find({}).sort({_id:0}).toArray(function (err, items) {
+                        if (items.length > 0) {
+                            items[0]._id = id;
+                            cb(items[0]);
                         } else {
                             var def = {
-                                _id: req.params.id,
-                                accounts: defaultDefinition
+                                _id:id,
+                                accounts:defaultDefinition
                             };
-                            res.send(def);
+                            cb(def);
                         }
                     });
                 });
             }
         });
+    });
+}
+module.exports.findCubeDefinition = function(req,res,next) {
+    innerFindCubeDefinition(req.params.id, function(def) {
+        res.send(def);
     });
 };
 
@@ -182,27 +187,27 @@ module.exports.findCube = function(req,res,next) {
     var m = req.params.month;
     if ( m<10) m='0'+m;
     var def_id = req.params.year+m;
-    //TODO, find definition to know accounts
+
+    innerFindCubeDefinition(def_id,function(def) {
+        db.collection("movement", function(err, collection) {
+            var filter = {};
+
+            filter.date={};
+
+            filter.date['$gte'] = new Date(req.params.year,req.params.month-1,1);
+            filter.date['$gte'].setHours(filter.date['$gte'].getHours()-2);
+            var to = new Date(req.params.year,req.params.month,1);
+            to.setHours(to.getHours()-2);
+
+            filter.date['$lt'] = to;
+
+            collection.find(filter).sort({date:1}).toArray(function (err, items) {
+                var results = cube.findCube(items,def);
+                res.send(results);
+            });
 
 
-    db.collection("movement", function(err, collection) {
-        var filter = {};
-
-        filter.date={};
-
-        filter.date['$gte'] = new Date(req.params.year,req.params.month-1,1);
-        filter.date['$gte'].setHours(filter.date['$gte'].getHours()-2);
-        var to = new Date(req.params.year,req.params.month,1);
-        to.setHours(to.getHours()-2);
-
-        filter.date['$lt'] = to;
-
-        collection.find(filter).sort({date:1}).toArray(function (err, items) {
-            var results = cube.findCube(items);
-            res.send(results);
         });
-
-
     });
 }
 
