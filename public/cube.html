@@ -81,6 +81,15 @@
 					<thead>
 						<tr>
 				            <th style="width:50px">
+				            </th>
+				            <th colspan="{{section.count}}" ng-repeat="section in sections">
+				                {{section.name}}
+				            </th>
+                            <th style="width:50px">
+                            </th>
+				        </tr>
+						<tr>
+				            <th style="width:50px">
 				               Dia
 				            </th>
 				            <th ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">

@@ -8,34 +8,10 @@ cashcube.filter("valueFilter",function() {
     };
 });
 
-/**
- * @deprecated
- */
-cashcube.filter('base',function() {
-    return function(accounts) {
-        var filtered = [];
-        for ( var i=0; i<accounts.length; i++ ) {
-            if ( accounts[i].category === 'base' ) {
-                filtered.push(accounts[i]);
-            }
-        }
-        for ( var i=0; i<accounts.length; i++ ) {
-            if ( accounts[i].category === 'fijo' ) {
-                filtered.push(accounts[i]);
-            }
-        }
-        for ( var i=0; i<accounts.length; i++ ) {
-            if ( accounts[i].category === 'extra' ) {
-                filtered.push(accounts[i]);
-            }
-        }
-        return filtered;
-    };
-});
 
 var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
 
-cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDefinition) {
+cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition) {
 
     $scope.selected = null;
 
@@ -80,7 +56,24 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
         }
     }
 
-	$scope.definition = CubeDefinition.get({id:$scope.selected.id});
+	$scope.definition = CubeDefinition.get({id:$scope.selected.id},function() {
+		for ( var i=0; i<$scope.definition.accounts.length; i++ ) {
+			$scope.sections[$scope.definition.accounts[i].section].count++;
+		}
+	});
+
+	$scope.sections = [
+		{
+			name: 'Base',
+			count: 0
+		},
+		{
+			name: 'Extra',
+			count: 0
+		}
+	];
+	
+
 
     $scope.movements = Cube.query($scope.selected);
 
@@ -98,12 +91,6 @@ cashcube.controller("ProjectionController", function($scope,Cube,Account,CubeDef
 
         $scope.definition = CubeDefinition.get({id:$scope.selected.id});
         $scope.movements = Cube.query($scope.selected);
-
-    };
-
-    $scope.accounts = Account.query();
-
-    $scope.getAccounts = function() {
 
     };
 
@@ -170,12 +157,6 @@ cashcube.factory('Cube',function($resource) {
     var month = today.getMonth()+1;
     return $resource('cube/:year/:month',{}, {
         query: { method: 'GET', params: {   },isArray:false  }
-    });
-});
-cashcube.factory('Account',function($resource) {
-    //return $resource('data/account.json',{},{
-    return $resource('account',{},{
-        query: { method: 'GET', params: {}, isArray:true  }
     });
 });
 cashcube.factory('CubeDefinition',function($resource) {
