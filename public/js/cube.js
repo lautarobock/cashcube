@@ -8,21 +8,39 @@ cashcube.filter("valueFilter",function() {
     };
 });
 
-//cashcube.filter('section',function() {
-//    return function(accounts,section) {
-//        var filtered = [];
-//        for ( var i=0; i<accounts.length; i++ ) {
-//            if ( accounts[i].section === section ) {
-//                filtered.push(accounts[i]);
-//            }
-//        }
-//        return filtered;
-//    };
-//});
+cashcube.filter('sectionFilter',function() {
+    return function(accounts,section) {
+		if ( !accounts ) return;
+        var filtered = [];
+        for ( var i=0; i<accounts.length; i++ ) {
+            if ( accounts[i].section === section ) {
+                filtered.push(accounts[i]);
+            }
+        }
+        return filtered;
+    };
+});
 
 var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
+var DAYS = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
 
 cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition) {
+
+	$scope.getDaw = function(day) {
+		var date = new Date($scope.selected.year-1900,$scope.selected.month-1,day);
+		return DAYS[date.getDay()];
+	};
+
+	$scope.today = new Date();
+
+	$scope.getRowClass = function (day) {
+		if ( day === $scope.today.getDate() 
+			&& ($scope.selected.month-1) === $scope.today.getMonth() ) {
+			return 'warning';
+		} else {
+			'';
+		}
+	};
 
     $scope.selected = null;
 
