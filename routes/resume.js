@@ -98,7 +98,7 @@ var defaultDefinition =  [
             "maxMonth": null,
             "maxRest": 10,
             "trail": 45,
-            "order": 1
+            "section": 0
         },
         {
             "account": "vicio",
@@ -109,7 +109,7 @@ var defaultDefinition =  [
             "maxMonth": null,
             "maxRest": 0,
             "trail": 4,
-            "order": 2
+            "section": 0
         },
         {
             "account":"bonus",
@@ -120,7 +120,7 @@ var defaultDefinition =  [
             "maxMonth": 80,
             "maxRest": 0,
             "trail": 0,
-            "order": 3
+            "section": 0
         },
         {
             "account": "salidas",
@@ -129,26 +129,26 @@ var defaultDefinition =  [
             "maxWeek": 35,
             "maxMonth": 150,
             "maxRest": 10,
-            "order": 4
+            "section": 0
         },
         {
             "account": "extra",
             "name": "Extra",
             "width": "70",
-            "order": 5
+            "section": 1
         },
         {
             "account": "fijos",
             "name": "Fijos",
             "width": "70",
             "maxMonth": 800,
-            "order": 6
+            "section": 1
         },
         {
             "account": "viajes",
             "name": "Viajes",
             "width": "70",
-            "order": 7
+            "section": 1
         }
     ];
 
@@ -194,6 +194,7 @@ module.exports.findCube = function(req,res,next) {
 
             filter.date={};
 
+            //-2 is added to fix UTC change time. (ugly)
             filter.date['$gte'] = new Date(req.params.year,req.params.month-1,1);
             filter.date['$gte'].setHours(filter.date['$gte'].getHours()-2);
             var to = new Date(req.params.year,req.params.month,1);

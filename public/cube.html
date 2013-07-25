@@ -92,9 +92,18 @@
 				            <th style="width:50px">
 				               Dia
 				            </th>
-				            <th ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+				            <th ng-repeat="values in definition.accounts | section:0" style="width:{{values.width||100}}px">
 				                {{values.name}}
 				            </th>
+                            <th style="width:50px">
+                                <strong>Total</strong>
+                            </th>
+                            <th ng-repeat="values in definition.accounts | section:1" style="width:{{values.width||100}}px">
+                                {{values.name}}
+                            </th>
+                            <th style="width:50px">
+                                <strong>Total</strong>
+                            </th>
                             <th style="width:50px">
                                 <strong>Total</strong>
                             </th>
@@ -105,10 +114,21 @@
                             <td>
                                 <strong>{{day}}</strong>
                             </td>
-                            <td ng-repeat="values in definition.accounts" ng-class="getClass(movements.days[day][values.account].value,values)" >
+                            <td ng-repeat="values in definition.accounts | section:0" ng-class="getClass(movements.days[day][values.account].value,values)" >
                                 <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
                                     {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
                                 </span>
+                            </td>
+                            <td>
+                                <strong>--</strong>
+                            </td>
+                            <td ng-repeat="values in definition.accounts | section:1" ng-class="getClass(movements.days[day][values.account].value,values)" >
+                                <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
+                                    {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
+                                </span>
+                            </td>
+                            <td>
+                                <strong>--</strong>
                             </td>
                             <td style="width:50px">
                                 <strong>{{movements.totalDay[day].toFixed(2)|valueFilter}}</strong>
@@ -118,28 +138,53 @@
                             <td>
                                 <strong>W: {{$index+1}}</strong>
                             </td>
-                            <td ng-repeat="values in definition.accounts" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
+                            <td ng-repeat="values in definition.accounts | section:0" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
                                 <strong>
                                     {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
                                 </strong>
+                            </td>
+                            <td>
+                                <strong>--</strong>
+                            </td>
+                            <td ng-repeat="values in definition.accounts | section:1" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
+                                <strong>
+                                    {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
+                                </strong>
+                            </td>
+                            <td>
+                                <strong>--</strong>
                             </td>
                             <td style="width:50px">
                                 <strong>{{movements.totalWeek[(w.from-1)/7+1].toFixed(2)|valueFilter}}</strong>
                             </td>
                         </tr>
                     </tbody>
-                    <tbody>
-                        <tr>
+                    <tfoot>
+                        </th>
                             <td>
                                 <strong>Total</strong>
                             </td>
-                            <td ng-repeat="values in definition.accounts" ng-class="getClassForTotal(movements.month[values.account].value,values)">
+                            <td ng-repeat="values in definition.accounts | section:0" ng-class="getClassForTotal(movements.month[values.account].value,values)">
                                 <strong>
                                     {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
                                 </strong>
                             </td>
-                        </tr>
-                    </tbody>
+                            <td>
+                                <strong>--</strong>
+                            </td>
+                            <td ng-repeat="values in definition.accounts | section:1" ng-class="getClassForTotal(movements.month[values.account].value,values)">
+                                <strong>
+                                    {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
+                                </strong>
+                            </td>
+                            <td>
+                                <strong>--</strong>
+                            </td>
+                            <td>
+                                <strong>{{movements.total}}</strong>
+                            </td>
+                        </th>
+                    </tfoot>
 		        </table>
 		    </div>
 		</div>

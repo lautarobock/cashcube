@@ -8,10 +8,10 @@ var resource = require("../test/resources.js");
 function contains(def,accountid) {
     for ( var i=0; i<def.accounts.length; i++ ) {
         if  ( def.accounts[i].account === accountid ) {
-            return true;
+            return def.accounts[i];
         }
     }
-    return false;
+    return null;
 }
 
 module.exports.findCube = function(items,def) {
@@ -20,7 +20,9 @@ module.exports.findCube = function(items,def) {
         totalDay: {},
         weeks: {},
         totalWeek: {},
-        month: {}
+        month: {},
+        totalSection: [0,0],
+        total: 0
     };
 
     for( var i in items) {
@@ -44,7 +46,8 @@ module.exports.findCube = function(items,def) {
         /*
         for accout
          */
-        if ( contains(def,item.account) ) {
+        var defAccount = contains(def,item.account);
+        if ( defAccount ) {
             if ( !results.days[day][item.account] ) {
                 results.days[day][item.account] = {
                     value: item.amount,
@@ -79,13 +82,16 @@ module.exports.findCube = function(items,def) {
             } else {
                 results.totalWeek[week] += item.amount;
             }
+            results.total += item.amount;
+            results.totalSection[defAccount.section] += item.amount;
         }
 
 
         /*
          for accoutTarget
          */
-        if ( contains(def,item.accountTarget) ) {
+        var defAccountTarget = contains(def,item.accountTarget);
+        if ( defAccountTarget ) {
             if ( !results.days[day][item.accountTarget] ) {
                 results.days[day][item.accountTarget] = {
                     value: -item.amount,
@@ -121,6 +127,8 @@ module.exports.findCube = function(items,def) {
             } else {
                 results.totalWeek[week] -= item.amount;
             }
+            results.total -= item.amount;
+            results.totalSection[defAccountTarget.section] -= item.amount;
         }
     }
     return results;

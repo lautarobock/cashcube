@@ -8,6 +8,17 @@ cashcube.filter("valueFilter",function() {
     };
 });
 
+//cashcube.filter('section',function() {
+//    return function(accounts,section) {
+//        var filtered = [];
+//        for ( var i=0; i<accounts.length; i++ ) {
+//            if ( accounts[i].section === section ) {
+//                filtered.push(accounts[i]);
+//            }
+//        }
+//        return filtered;
+//    };
+//});
 
 var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
 
@@ -65,11 +76,11 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition)
 	$scope.sections = [
 		{
 			name: 'Base',
-			count: 0
+			count: 1
 		},
 		{
 			name: 'Extra',
-			count: 0
+			count: 1
 		}
 	];
 	
