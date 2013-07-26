@@ -1,0 +1,109 @@
+<table class="table table-condensed table-bordered table-hover ">
+    <thead>
+    <tr>
+        <th style="width:50px">
+        </th>
+        <th colspan="{{section.count}}" ng-repeat="section in sections">
+            {{section.name}}
+        </th>
+        <th style="width:50px">
+        </th>
+    </tr>
+    <tr>
+        <th style="width:50px">
+            Dia
+        </th>
+        <th ng-repeat="values in definition.accounts | sectionFilter:0" style="width:{{values.width||100}}px">
+            {{values.name}}
+        </th>
+        <th style="width:50px" class="alert alert-info">
+            <strong>Total</strong>
+        </th>
+        <th ng-repeat="values in definition.accounts | sectionFilter:1" style="width:{{values.width||100}}px">
+            {{values.name}}
+        </th>
+        <th style="width:50px"  class="alert alert-info">
+            <strong>Total</strong>
+        </th>
+        <th style="width:50px">
+            <strong>Total</strong>
+        </th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="w in weeks()">
+    <tr ng-repeat="day in days(w.from,w.to)" ng-class="getRowClass(day)">
+        <td>
+            <strong>{{getDaw(day)}} {{day}}</strong>
+        </td>
+        <td ng-repeat="values in definition.accounts | sectionFilter:0" ng-class="getClass(movements.days[day][values.account].value,values)" >
+                                <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
+                                    {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
+                                </span>
+        </td>
+        <td  class="alert alert-info">
+            <strong>--</strong>
+        </td>
+        <td ng-repeat="values in definition.accounts | sectionFilter:1" ng-class="getClass(movements.days[day][values.account].value,values)" >
+                                <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
+                                    {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
+                                </span>
+        </td>
+        <td  class="alert alert-info">
+            <strong>--</strong>
+        </td>
+        <td style="width:50px" class="alert alert-success">
+            <strong>{{movements.totalDay[day].toFixed(2)|valueFilter}}</strong>
+        </td>
+    </tr>
+    <tr class="info">
+        <td>
+            <strong>W: {{$index+1}}</strong>
+        </td>
+        <td ng-repeat="values in definition.accounts | sectionFilter:0" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
+            <strong>
+                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
+            </strong>
+        </td>
+        <td>
+            <strong>--</strong>
+        </td>
+        <td ng-repeat="values in definition.accounts | sectionFilter:1" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
+            <strong>
+                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
+            </strong>
+        </td>
+        <td>
+            <strong>--</strong>
+        </td>
+        <td style="width:50px" class="alert alert-success">
+            <strong>{{movements.totalWeek[(w.from-1)/7+1].toFixed(2)|valueFilter}}</strong>
+        </td>
+    </tr>
+    </tbody>
+    <tfoot>
+    </th>
+    <td>
+        <strong>Total</strong>
+    </td>
+    <td ng-repeat="values in definition.accounts | sectionFilter:0" ng-class="getClassForTotal(movements.month[values.account].value,values)">
+        <strong>
+            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
+        </strong>
+    </td>
+    <td  class="alert alert-info">
+        <strong>{{movements.totalSection[0].toFixed(2)|valueFilter}}</strong>
+    </td>
+    <td ng-repeat="values in definition.accounts | sectionFilter:1" ng-class="getClassForTotal(movements.month[values.account].value,values)">
+        <strong>
+            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
+        </strong>
+    </td>
+    <td  class="alert alert-info">
+        <strong>{{movements.totalSection[1].toFixed(2)|valueFilter}}</strong>
+    </td>
+    <td>
+        <strong>{{movements.total.toFixed(2)|valueFilter}}</strong>
+    </td>
+    </th>
+    </tfoot>
+</table>

@@ -1,0 +1,52 @@
+<div style="margin-bottom:30px">
+    <div style="margin-top: 10px">
+        <h4>Definiciones</h4>
+    </div>
+    <table class="table table-condensed table-bordered ">
+        <thead>
+        <tr>
+            <th style="width:50px">
+                Opcion
+            </th>
+            <th ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                {{values.name}}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td >
+                Mx/dia
+            </td>
+            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                <input type="text" ng-model="values.maxDay" class="input-mini"/>
+            </td>
+        </tr>
+        <tr>
+            <td >
+                Mx/sem
+            </td>
+            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                <input type="text" ng-model="values.maxWeek" class="input-mini"/>
+            </td>
+        </tr>
+        <tr>
+            <td >
+                Mx/mes
+            </td>
+            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                <input type="text" ng-model="values.maxMonth" class="input-mini"/>
+            </td>
+        </tr>
+        <tr>
+            <td >
+                Resto
+            </td>
+            <td ng-repeat="values in definition.accounts" style="width:{{values.width||100}}px">
+                <input type="text" ng-model="values.trail" class="input-mini"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button class="btn" ng-click="saveDefinition()">Guardar</button>
+</div>
