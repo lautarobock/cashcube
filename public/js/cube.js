@@ -24,7 +24,9 @@ cashcube.filter('sectionFilter',function() {
 var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
 var DAYS = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
 
-cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition) {
+cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,Account) {
+
+    $scope.accounts = Account.query();
 
 	$scope.getDaw = function(day) {
 		var date = new Date($scope.selected.year-1900,$scope.selected.month-1,day);
@@ -178,6 +180,16 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition)
         $scope.definition.$save();
     };
 
+    $scope.addNewAccount = function(addAccount,addAccountSection) {
+        var def = {
+            account: addAccount._id,
+            name: addAccount.name,
+            width: "70",
+            section: addAccountSection
+        };
+        $scope.definition.accounts.push(def);
+    };
+
 });
 
 cashcube.factory('Cube',function($resource) {
@@ -192,5 +204,10 @@ cashcube.factory('CubeDefinition',function($resource) {
     return $resource('cubedefinition/:id',{},{
         get: { method: 'GET', params: {}, isArray:false },
         save: { method: 'POST', params: {}}
+    });
+});
+cashcube.factory('Account',function($resource) {
+    return $resource('account',{},{
+        query: { method: 'GET', params: {   },isArray:true  }
     });
 });
