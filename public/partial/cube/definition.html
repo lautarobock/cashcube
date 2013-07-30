@@ -58,10 +58,10 @@
     </table>
     <button class="btn" ng-click="saveDefinition()">Guardar</button>
 
-    <div>
+    <form class="form-inline">
         <h5>Add new Account</h5>
         <select ng-model="addAccount" ng-options="account.name for account in accounts" ></select>
-        <input type="number" ng-model="addAccountSection"/>
+        <input type="number" ng-model="addAccountSection" class="input-mini"/>
         <button class="btn" ng-click="addNewAccount(addAccount,addAccountSection)">Add</button>
-    </div>
+    </form>
 </div>
