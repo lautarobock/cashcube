@@ -9,11 +9,11 @@ cashcube.filter("valueFilter",function() {
 });
 
 cashcube.filter('sectionFilter',function() {
-    return function(accounts,section) {
+    return function(accounts,section,movements) {
 		if ( !accounts ) return;
         var filtered = [];
         for ( var i=0; i<accounts.length; i++ ) {
-            if ( accounts[i].section === section ) {
+            if ( accounts[i].section === section && movements.month[accounts[i].account] && movements.month[accounts[i].account].value) {
                 filtered.push(accounts[i]);
             }
         }
@@ -88,10 +88,20 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     }
 
 	$scope.definition = CubeDefinition.get({id:$scope.selected.id},function() {
-		for ( var i=0; i<$scope.definition.accounts.length; i++ ) {
-			$scope.sections[$scope.definition.accounts[i].section].count++;
+		sectionCountReady++;
+		if ( sectionCountReady === 2 ) {
+			updateSectionCount();	
 		}
 	});
+
+	var sectionCountReady = 0;
+	function updateSectionCount() {
+		for ( var i=0; i<$scope.definition.accounts.length; i++ ) {
+			if ( $scope.movements.month[$scope.definition.accounts[i].account] && $scope.movements.month[$scope.definition.accounts[i].account].value ) {
+				$scope.sections[$scope.definition.accounts[i].section].count++;
+			}
+		}
+	}
 
 	$scope.sections = [
 		{
@@ -105,8 +115,12 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 	];
 	
 
-
-    $scope.movements = Cube.query($scope.selected);
+    $scope.movements = Cube.query($scope.selected,function() {
+		sectionCountReady++;
+		if ( sectionCountReady === 2 ) {
+			updateSectionCount();	
+		}
+	});
 
     $scope.toMonth = function(month) {
         $scope.selected = month;
@@ -120,8 +134,21 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
             r.push({from:29,to:month.lastDay});
         }
 
-        $scope.definition = CubeDefinition.get({id:$scope.selected.id});
-        $scope.movements = Cube.query($scope.selected);
+		$scope.sections[0].count = 1;
+		$scope.sections[1].count = 1;
+		sectionCountReady = 0;
+		$scope.movements = Cube.query($scope.selected,function() {
+			sectionCountReady++;
+			if ( sectionCountReady === 2 ) {
+				updateSectionCount();	
+			}
+		});
+		$scope.definition = CubeDefinition.get({id:$scope.selected.id},function() {
+			sectionCountReady++;
+			if ( sectionCountReady === 2 ) {
+				updateSectionCount();	
+			}
+		});
 
     };
 
