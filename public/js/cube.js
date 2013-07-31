@@ -29,7 +29,7 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     $scope.accounts = Account.query();
 
 	$scope.getDaw = function(day) {
-		var date = new Date($scope.selected.year-1900,$scope.selected.month-1,day);
+		var date = new Date($scope.selected.year,$scope.selected.month-1,day);
 		return DAYS[date.getDay()];
 	};
 
