@@ -59,17 +59,17 @@
         <td>
             <strong>W: {{$index+1}}</strong>
         </td>
-        <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
+        <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForWeek((w.from-1)/7+1,values)">
             <strong>
-                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
+                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:((w.from-1)/7+1 == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
             </strong>
         </td>
         <td>
             <strong>--</strong>
         </td>
-        <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForWeek(movements.weeks[(w.from-1)/7+1][values.account].value,values)">
+        <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForWeek((w.from-1)/7+1,values)">
             <strong>
-                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:values.maxWeek}}
+                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:((w.from-1)/7+1 == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
             </strong>
         </td>
         <td>
@@ -87,7 +87,7 @@
     </td>
     <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
         <strong>
-            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
+            {{movements.month[values.account].value.toFixed(2)|valueFilter:(values.maxMonth-(values.trail||0))}}
         </strong>
     </td>
     <td  class="alert alert-info">
@@ -95,7 +95,7 @@
     </td>
     <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
         <strong>
-            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
+            {{movements.month[values.account].value.toFixed(2)|valueFilter:(values.maxMonth-(values.trail||0))}}
         </strong>
     </td>
     <td  class="alert alert-info">

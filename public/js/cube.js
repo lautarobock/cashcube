@@ -144,17 +144,32 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
         return days;
     };
 
-    $scope.getClassForWeek = function(value,account) {
+    $scope.getClassForWeek = function(week,account) {
+		if ( !$scope.movements.weeks[week] ) return '';
+		if ( !$scope.movements.weeks[week][account.account] ) return '';
+		var value = $scope.movements.weeks[week][account.account].value;
         if ( !value  ) return '';
-        if ( account.maxWeek && -value > account.maxWeek ) return 'text-error';
-        //if ( value < -10 ) return 'alert';
+		if ( account.maxWeek ) {
+			if ( week === 1 ) {
+				var max = account.maxWeek - (account.trail||0);
+			}
+			if ( -value > max ) {
+				return 'text-error';
+			}
+		}
+//        if ( account.maxWeek && -value > account.maxWeek ) return 'text-error';
         return 'text-success';
     };
 
     $scope.getClassForTotal = function(value,account) {
         if ( !value  ) return '';
-        if ( account.maxMonth && -value > account.maxMonth ) return 'alert alert-error';
-        //if ( value < -10 ) return 'alert';
+        if ( account.maxMonth ) {
+			var max = account.maxMonth - (account.trail||0);
+			if ( -value > max ) {
+				return 'alert alert-error';
+			}
+		}		
+//        if ( account.maxMonth && -value > account.maxMonth ) return 'alert alert-error';
         return 'alert alert-success';
     };
 

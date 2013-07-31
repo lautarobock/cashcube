@@ -39,11 +39,19 @@
             </td>
         </tr>
         <tr>
-            <td >
-                Resto
+            <td>
+                Arrastre
             </td>
             <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
                 <input type="number" ng-model="values.trail" class="input-mini"/>
+            </td>
+        </tr>
+		<tr>
+            <td>
+                Sobrante
+            </td>
+            <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
+                <input type="number" ng-model="values.over" class="input-mini"/>
             </td>
         </tr>
         <tr>
