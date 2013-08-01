@@ -20,4 +20,8 @@
         return Math.floor((day-1) / 7) + 1;
     };
 
+    exports.getWeekFrom = function(date,fromDOW) {
+        return exports.getWeek(date.getDate());
+    };
+
 })(typeof exports === 'undefined'? this['util'] = {} : exports );

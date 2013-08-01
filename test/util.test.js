@@ -18,6 +18,18 @@ exports.testCreateFirstDay = function(test) {
     test.done();
 };
 
+exports.testGetWeekFrom = function(test) {
+    //Starting from Friday (#5)
+    //Jueves 1 de agosto 2013
+    var date = Date.UTC(2013,07,01);
+    var week = util.getWeekFrom(date,5);
+    test.equal(week,1);
+
+    //Viernes 2 de agosto 2013
+    date = Date.UTC(2013,07,02);
+    week = util.getWeekFrom(date,5);
+    test.equal(week,2);
+};
 
 exports.testGetWeek = function(test) {
     var week = util.getWeek(1);
