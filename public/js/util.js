@@ -30,7 +30,7 @@
         
         var actualWeek = 1;
         var weeks = [0,actualWeek]; //first day is allways first week
-        for ( var i=2; i<end.getDate(); i++ ) {
+        for ( var i=2; i<=end.getDate(); i++ ) {
             var actualDate = new Date(year,month,i);
             var dow = actualDate.getDay();
             if (dow === startDow) actualWeek++;

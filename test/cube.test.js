@@ -14,6 +14,9 @@
 exports.testFindCube = function(test) {
     var value = require("../services/cube.js").findCube(items,{
         _id:'201307',
+        year: 2013,
+        month: 6,
+        startDow: 5,
         accounts:defaultDefinition
     });
 
@@ -24,15 +27,12 @@ exports.testFindCube = function(test) {
     test.equal(value.days[1].vicio.value,-6,'vicio dia 1');
 
 
-//    test.equal(value.days[17].caixa.value,46.150000000000006,'caixa dia 17');
-//    test.equal(value.days[17].deudas_general.value,-0.3000000000000007,'deudas dia 17');
-//    test.equal(value.days[17].cash.value,-19,'cash dia 17');
     test.equal(value.days[17].salidas.value,-26.85,'vicio dia 17');
 
-    test.equal(value.weeks[1].bonus.value,-69.85,'Bonus Semana 1');
-    test.equal(value.weeks[1]['super'].value,-63.82,'Super Semana 1');
+    test.equal(value.weeks[1].bonus.value,-46.9,'Bonus Semana 1');
+    test.equal(value.weeks[1]['super'].value,-51.62,'Super Semana 1');
     test.equal(value.weeks[1].vicio.value,-18.25,'Vicio Semana 1');
-    test.equal(value.weeks[1].salidas.value,-46.19,'Salidas Semana 1');
+    test.equal(value.weeks[1].salidas.value,-1.46,'Salidas Semana 1');
 
 
     test.done();

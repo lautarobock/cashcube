@@ -25,6 +25,8 @@ module.exports.findCube = function(items,def) {
         total: 0
     };
 
+    var weekHelper = new util.WeekHelper(def.year,def.month,def.startDow);
+    
     for( var i in items) {
         var item = items[i];
         var day = item.date;
@@ -34,7 +36,7 @@ module.exports.findCube = function(items,def) {
          */
         day.setHours(day.getHours()+5);
         day = day.getDate();
-        var week = util.getWeek(day);
+        var week = weekHelper.getWeek(day);
 
         if ( !results.days[day] ) {
             results.days[day] = {};

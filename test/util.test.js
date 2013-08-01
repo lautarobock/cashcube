@@ -27,6 +27,55 @@ exports.testWeekHelper = function(test) {
     
     week = helper.getWeek(2);
     test.equal(week,2);
+
+    week = helper.getWeek(3);
+    test.equal(week,2);
+
+    week = helper.getWeek(7);
+    test.equal(week,2);
+
+    week = helper.getWeek(8);
+    test.equal(week,2);
+
+    week = helper.getWeek(9);
+    test.equal(week,3);
+
+    week = helper.getWeek(29);
+    test.equal(week,5);
+
+    week = helper.getWeek(30);
+    test.equal(week,6);
+
+    week = helper.getWeek(31);
+    test.equal(week,6);
+    
+    
+    //Helper for 2013 september and start on friday (#5)
+    var helper = new util.WeekHelper(2013,8,5);
+
+    var week = helper.getWeek(1);
+    test.equal(week,1);
+    
+    week = helper.getWeek(5);
+    test.equal(week,1);
+
+    week = helper.getWeek(6);
+    test.equal(week,2);
+
+    week = helper.getWeek(12);
+    test.equal(week,2);
+
+    week = helper.getWeek(13);
+    test.equal(week,3);
+
+    week = helper.getWeek(19);
+    test.equal(week,3);
+
+    week = helper.getWeek(27);
+    test.equal(week,5);
+
+    week = helper.getWeek(30);
+    test.equal(week,5);    
     
     test.done();
 };
