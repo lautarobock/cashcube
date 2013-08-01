@@ -18,18 +18,33 @@ exports.testCreateFirstDay = function(test) {
     test.done();
 };
 
-exports.testGetWeekFrom = function(test) {
-    //Starting from Friday (#5)
-    //Jueves 1 de agosto 2013
-    var date = Date.UTC(2013,07,01);
-    var week = util.getWeekFrom(date,5);
-    test.equal(week,1);
+exports.testWeekHelper = function(test) {
+    //Helper for 2013 august and start on friday (#5)
+    var helper = new util.WeekHelper(2013,7,5);
 
-    //Viernes 2 de agosto 2013
-    date = Date.UTC(2013,07,02);
-    week = util.getWeekFrom(date,5);
+    var week = helper.getWeek(1);
+    test.equal(week,1);
+    
+    week = helper.getWeek(2);
     test.equal(week,2);
+    
+    test.done();
 };
+
+//exports.testGetWeekFrom = function(test) {
+//    //Starting from Friday (#5)
+//    //Jueves 1 de agosto 2013
+//    var date = new Date(Date.UTC(2013,7,1));
+//    var week = util.getWeekFrom(date,5);
+//    test.equal(week,1);
+//
+//    //Viernes 2 de agosto 2013
+//    date = new Date(Date.UTC(2013,7,2));
+//    week = util.getWeekFrom(date,5);
+//    test.equal(week,2);
+//
+//    test.done();
+//};
 
 exports.testGetWeek = function(test) {
     var week = util.getWeek(1);
