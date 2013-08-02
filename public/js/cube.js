@@ -56,11 +56,12 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     var monthEnd = today.getMonth()+1;
 
     var r = [];
-    r.push({from:1,to:7});
-    r.push({from:8,to:14});
-    r.push({from:15,to:21});
-    r.push({from:22,to:28});
-    r.push({from:29,to:31});
+    //FIX August
+    r.push({from:1,to:7,week:1});
+    r.push({from:8,to:14,week:2});
+    r.push({from:15,to:21,week:3});
+    r.push({from:22,to:28,week:4});
+    r.push({from:29,to:31,week:5});
 
     var formatMonth= function(month) {
         if ( m<10 ) {
@@ -117,14 +118,24 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     $scope.toMonth = function(month) {
         $scope.selected = month;
 
+
         r = [];
-        r.push({from:1,to:7});
-        r.push({from:8,to:14});
-        r.push({from:15,to:21});
-        r.push({from:22,to:28});
-        if ( month.lastDay>28 ) {
-            r.push({from:29,to:month.lastDay});
+        if ( month.month == 7 ) {
+            r.push({from:1,to:3,week:1});
+            r.push({from:4,to:10,week:2});
+            r.push({from:11,to:17,week:3});
+            r.push({from:18,to:24,week:4});
+            r.push({from:25,to:month.lastDay,week:5});
+        } else {
+            r.push({from:1,to:7,week:1});
+            r.push({from:8,to:14,week:2});
+            r.push({from:15,to:21,week:3});
+            r.push({from:22,to:28,week:4});
+            if ( month.lastDay>28 ) {
+                r.push({from:29,to:month.lastDay,week:5});
+            }
         }
+
 
 		$scope.movements = Cube.query($scope.selected);
 		$scope.definition = CubeDefinition.get({id:$scope.selected.id});

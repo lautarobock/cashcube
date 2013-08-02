@@ -59,24 +59,24 @@
         <td>
             <strong>W: {{$index+1}}</strong>
         </td>
-        <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForWeek((w.from-1)/7+1,values)">
+        <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForWeek(w.week,values)">
             <strong>
-                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:((w.from-1)/7+1 == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
+                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
             </strong>
         </td>
         <td>
             <strong>--</strong>
         </td>
-        <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForWeek((w.from-1)/7+1,values)">
+        <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForWeek(wweek,values)">
             <strong>
-                {{movements.weeks[(w.from-1)/7+1][values.account].value.toFixed(2)|valueFilter:((w.from-1)/7+1 == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
+                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
             </strong>
         </td>
         <td>
             <strong>--</strong>
         </td>
         <td style="width:50px" class="alert alert-success">
-            <strong>{{movements.totalWeek[(w.from-1)/7+1].toFixed(2)|valueFilter}}</strong>
+            <strong>{{movements.totalWeek[w.week].toFixed(2)|valueFilter}}</strong>
         </td>
     </tr>
     </tbody>
