@@ -10,7 +10,7 @@ cashcube.filter("valueFilter",function() {
 
 cashcube.filter('sectionFilter',function() {
     return function(accounts,section,movements) {
-		if ( !accounts ) return;
+	if ( !accounts ) return accounts;
         var filtered = [];
         for ( var i=0; i<accounts.length; i++ ) {
             if ( accounts[i].section === section && movements.month[accounts[i].account] && movements.month[accounts[i].account].value) {
@@ -40,7 +40,7 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 			&& ($scope.selected.month-1) === $scope.today.getMonth() ) {
 			return 'warning';
 		} else {
-			'';
+			return '';
 		}
 	};
 
