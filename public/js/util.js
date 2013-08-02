@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-(function(exporte) {
+(function(exports) {
 
     exports.createFirstDay = function(year,month) {
         return new Date(year,month-1,1);
@@ -29,25 +29,40 @@
         var end = new Date(year,month+1,0);
         
         var actualWeek = 1;
-        var weeks = [0,actualWeek]; //first day is allways first week
+        var weeksByDay = [0,actualWeek]; //first day is allways first week
+        
+        var actualFrom = 1;
+        var weeks = [];
+        
         for ( var i=2; i<=end.getDate(); i++ ) {
             var actualDate = new Date(year,month,i);
             var dow = actualDate.getDay();
-            if (dow === startDow) actualWeek++;
-            weeks[i] = actualWeek;
+            if (dow === startDow) {
+                weeks.push({
+                    from: actualFrom,
+                    to: i-1,
+                    week: actualWeek
+                });
+                actualWeek++;
+                actualFrom = i;
+            }
+            weeksByDay[i] = actualWeek;
         }
+        weeks.push({
+            from: actualFrom,
+            to: end.getDate(),
+            week: actualWeek
+        });
+
+    
         this.getWeek = function(day) {
-            return weeks[day];
+            return weeksByDay[day];
+        };
+        
+        this.getAllWeeks = function() {
+            return weeks;
         };
     };
-    /**
-     * TODO
-     * Este hace el calculo directamente.
-     * Creo que teniendo el largo de la primera partial-week
-     * ya puedo hacer el calculo directamente.
-     */
-    exports.getWeekFrom = function(date,fromDOW) {
-        return exports.getWeek(date.getDate());
-    };
+    
 
 })(typeof exports === 'undefined'? this['util'] = {} : exports );

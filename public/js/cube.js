@@ -24,6 +24,7 @@ cashcube.filter('sectionFilter',function() {
 var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
 var DAYS = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
 
+
 cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,Account) {
 
     $scope.accounts = Account.query();
@@ -55,13 +56,14 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     var yearEnd = today.getYear()+1900;
     var monthEnd = today.getMonth()+1;
 
-    var r = [];
-    //FIX August
-    r.push({from:1,to:7,week:1});
-    r.push({from:8,to:14,week:2});
-    r.push({from:15,to:21,week:3});
-    r.push({from:22,to:28,week:4});
-    r.push({from:29,to:31,week:5});
+    //var r = [];
+    //r.push({from:1,to:7,week:1});
+    //r.push({from:8,to:14,week:2});
+    //r.push({from:15,to:21,week:3});
+    //r.push({from:22,to:28,week:4});
+    //r.push({from:29,to:31,week:5});
+
+    var r = new util.WeekHelper(yearEnd,monthEnd-1,4).getAllWeeks();
 
     var formatMonth= function(month) {
         if ( m<10 ) {
@@ -118,28 +120,26 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     $scope.toMonth = function(month) {
         $scope.selected = month;
 
+	r = r = new util.WeekHelper(month.year,month.month-1,4).getAllWeeks()
+        //r = [];
+        //if ( month.month == 7 ) {
+        //    r.push({from:1,to:3,week:1});
+        //    r.push({from:4,to:10,week:2});
+        //    r.push({from:11,to:17,week:3});
+        //    r.push({from:18,to:24,week:4});
+        //    r.push({from:25,to:month.lastDay,week:5});
+        //} else {
+        //    r.push({from:1,to:7,week:1});
+        //    r.push({from:8,to:14,week:2});
+        //    r.push({from:15,to:21,week:3});
+        //    r.push({from:22,to:28,week:4});
+        //    if ( month.lastDay>28 ) {
+        //        r.push({from:29,to:month.lastDay,week:5});
+        //    }
+        //}
 
-        r = [];
-        if ( month.month == 7 ) {
-            r.push({from:1,to:3,week:1});
-            r.push({from:4,to:10,week:2});
-            r.push({from:11,to:17,week:3});
-            r.push({from:18,to:24,week:4});
-            r.push({from:25,to:month.lastDay,week:5});
-        } else {
-            r.push({from:1,to:7,week:1});
-            r.push({from:8,to:14,week:2});
-            r.push({from:15,to:21,week:3});
-            r.push({from:22,to:28,week:4});
-            if ( month.lastDay>28 ) {
-                r.push({from:29,to:month.lastDay,week:5});
-            }
-        }
-
-
-		$scope.movements = Cube.query($scope.selected);
-		$scope.definition = CubeDefinition.get({id:$scope.selected.id});
-
+	$scope.movements = Cube.query($scope.selected);
+	$scope.definition = CubeDefinition.get({id:$scope.selected.id});
     };
 
     $scope.weeks = function() {
@@ -221,6 +221,26 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
         };
         $scope.definition.accounts.push(def);
     };
+    
+    $scope.definitionOptions = [{
+	    caption: 'Mx/dia',
+	    key: 'maxDay'
+	}, {
+	    caption: 'Mx/sem',
+	    key: 'maxWeek'
+	}, {
+	    caption: 'Mx/mes',
+	    key: 'maxMonth'
+	}, {
+	    caption: 'Arrastre',
+	    key: 'trail'
+	}, {
+	    caption: 'Sobrante',
+	    key: 'over'
+	}, {
+	    caption: 'Seccion',
+	    key: 'section'
+	}];
 
 });
 

@@ -8,58 +8,18 @@
             <th style="width:50px">
                 Opcion
             </th>
-            <th ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
+            <th ng-repeat="values in definition.accounts | orderBy:'section'" >
                 {{values.name}}
             </th>
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr ng-repeat="opt in definitionOptions" >
             <td>
-                Mx/dia
+                {{opt.caption}}
             </td>
-            <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
-                <input type="number" ng-model="values.maxDay" class="input-mini"/>
-            </td>
-        </tr>
-        <tr>
-            <td >
-                Mx/sem
-            </td>
-            <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
-                <input type="number" ng-model="values.maxWeek" class="input-mini"/>
-            </td>
-        </tr>
-        <tr>
-            <td >
-                Mx/mes
-            </td>
-            <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
-                <input type="number" ng-model="values.maxMonth" class="input-mini"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Arrastre
-            </td>
-            <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
-                <input type="number" ng-model="values.trail" class="input-mini"/>
-            </td>
-        </tr>
-		<tr>
-            <td>
-                Sobrante
-            </td>
-            <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
-                <input type="number" ng-model="values.over" class="input-mini"/>
-            </td>
-        </tr>
-        <tr>
-            <td >
-                Seccion
-            </td>
-            <td ng-repeat="values in definition.accounts | orderBy:'section'" style="width:{{values.width||100}}px">
-                <input type="number" ng-model="values.section" class="input-mini"/>
+            <td ng-repeat="values in definition.accounts | orderBy:'section'" >
+                <input type="number" ng-model="values[opt.key]" class="input-mini"/>
             </td>
         </tr>
         </tbody>

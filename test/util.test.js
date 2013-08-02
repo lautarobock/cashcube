@@ -18,6 +18,52 @@ exports.testCreateFirstDay = function(test) {
     test.done();
 };
 
+exports.testWeekHelperGetAllWeeks = function(test) {
+    //Helper for 2013 august and start on thursday (#4)
+    var helper = new util.WeekHelper(2013,7,4);
+    var all = helper.getAllWeeks();
+    
+    test.equal(all.length,5);
+    test.equal(all[0].from,1);
+    test.equal(all[0].to,7);
+    test.equal(all[0].week,1);
+    test.equal(all[1].from,8);
+    test.equal(all[1].to,14);
+    test.equal(all[1].week,2);
+    test.equal(all[3].from,22);
+    test.equal(all[3].to,28);
+    test.equal(all[3].week,4);
+    test.equal(all[4].from,29);
+    test.equal(all[4].to,31);
+    test.equal(all[4].week,5);
+    
+    //Helper for 2013 february and start on thursday (#4)
+    helper = new util.WeekHelper(2013,1,4);
+    all = helper.getAllWeeks();
+    
+    test.equal(all.length,5);
+    test.equal(all[0].from,1);
+    test.equal(all[0].to,6);
+    test.equal(all[0].week,1);
+    test.equal(all[4].from,28);
+    test.equal(all[4].to,28);
+    test.equal(all[4].week,5);
+    
+    //Helper for 2013 february and start on friday (#5)
+    helper = new util.WeekHelper(2013,1,5);
+    all = helper.getAllWeeks();
+    
+    test.equal(all.length,4);
+    test.equal(all[0].from,1);
+    test.equal(all[0].to,7);
+    test.equal(all[0].week,1);
+    test.equal(all[3].from,22);
+    test.equal(all[3].to,28);
+    test.equal(all[3].week,4);
+    
+    test.done();
+};
+
 exports.testWeekHelper = function(test) {
     //Helper for 2013 august and start on friday (#5)
     var helper = new util.WeekHelper(2013,7,5);
