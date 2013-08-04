@@ -1,6 +1,20 @@
 
 var cashcube = angular.module('cashcube',['ngResource','ui.bootstrap']);
 
+cashcube.config(function($httpProvider) {
+
+
+//    $httpProvider.responseInterceptors.push(function($rootScope) {
+//        $rootScope.loading = true;
+//        return function(promise) {
+//            return promise.then(function(response){
+//                $rootScope.loading = false;
+//                return response;
+//            });
+//        }
+//    });
+});
+
 cashcube.filter("valueFilter",function() {
     return function(value,max) {
         if ( !value ) return '';
@@ -10,7 +24,7 @@ cashcube.filter("valueFilter",function() {
 
 cashcube.filter('sectionFilter',function() {
     return function(accounts,section,movements) {
-	if ( !accounts ) return accounts;
+    if ( !accounts || !movements.month ) return accounts;
         var filtered = [];
         for ( var i=0; i<accounts.length; i++ ) {
             if ( accounts[i].section === section && movements.month[accounts[i].account] && movements.month[accounts[i].account].value) {
@@ -25,8 +39,9 @@ var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto
 var DAYS = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
 
 
-cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,Account) {
+cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,Account,$rootScope) {
 
+    $rootScope.loading = false;
     $scope.accounts = Account.query();
 
 	$scope.getDaw = function(day) {
@@ -56,13 +71,6 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     var yearEnd = today.getYear()+1900;
     var monthEnd = today.getMonth()+1;
 
-    //var r = [];
-    //r.push({from:1,to:7,week:1});
-    //r.push({from:8,to:14,week:2});
-    //r.push({from:15,to:21,week:3});
-    //r.push({from:22,to:28,week:4});
-    //r.push({from:29,to:31,week:5});
-
     var r = new util.WeekHelper(yearEnd,monthEnd-1,4).getAllWeeks();
 
     var formatMonth= function(month) {
@@ -91,15 +99,15 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     }
 
 	$scope.sections = [
-			{
-				name: 'Base',
-				count: 0
-			},
-			{
-				name: 'Extra',
-				count: 0
-			}
-		];
+        {
+            name: 'Base',
+            count: 0
+        },
+        {
+            name: 'Extra',
+            count: 0
+        }
+    ];
 
 	$scope.$watch("definition.accounts + movements.month",function(pre,post) {
 		if ( $scope.definition.accounts && $scope.movements.month ) {
@@ -120,26 +128,16 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     $scope.toMonth = function(month) {
         $scope.selected = month;
 
-	r = r = new util.WeekHelper(month.year,month.month-1,4).getAllWeeks()
-        //r = [];
-        //if ( month.month == 7 ) {
-        //    r.push({from:1,to:3,week:1});
-        //    r.push({from:4,to:10,week:2});
-        //    r.push({from:11,to:17,week:3});
-        //    r.push({from:18,to:24,week:4});
-        //    r.push({from:25,to:month.lastDay,week:5});
-        //} else {
-        //    r.push({from:1,to:7,week:1});
-        //    r.push({from:8,to:14,week:2});
-        //    r.push({from:15,to:21,week:3});
-        //    r.push({from:22,to:28,week:4});
-        //    if ( month.lastDay>28 ) {
-        //        r.push({from:29,to:month.lastDay,week:5});
-        //    }
-        //}
+        r = new util.WeekHelper(month.year,month.month-1,4).getAllWeeks();
 
-	$scope.movements = Cube.query($scope.selected);
-	$scope.definition = CubeDefinition.get({id:$scope.selected.id});
+        $rootScope.loading = 2;
+
+        $scope.definition = CubeDefinition.get({id:$scope.selected.id},function(){
+            $rootScope.loading--;
+        });
+        $scope.movements = Cube.query($scope.selected,function() {
+            $rootScope.loading--;
+        });
     };
 
     $scope.weeks = function() {
@@ -156,20 +154,20 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     };
 
     $scope.getClassForWeek = function(week,account) {
+        if ( !$scope.movements.weeks ) return '';
 		if ( !$scope.movements.weeks[week] ) return '';
 		if ( !$scope.movements.weeks[week][account.account] ) return '';
 		var value = $scope.movements.weeks[week][account.account].value;
         if ( !value  ) return '';
-		if ( account.maxWeek ) {
-			if ( week === 1 ) {
-				var max = account.maxWeek - (account.trail||0);
-			}
-			if ( -value > max ) {
-				return 'text-error';
-			}
-		}
-//        if ( account.maxWeek && -value > account.maxWeek ) return 'text-error';
-        return 'text-success';
+        if ( week === 1 && account.max1Week && -value > account.max1Week ) {
+            return 'text-error';
+        } else if ( week === 1 && account.maxWeek && -value > account.maxWeek ) {
+            return 'text-error';
+        } else if ( week !== 1 && account.maxWeek && -value > account.maxWeek ) {
+            return 'text-error';
+        } else {
+            return 'text-success';
+        }
     };
 
     $scope.getClassForTotal = function(value,account) {
@@ -208,8 +206,12 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
         window.location.href = href;
     };
 
+
     $scope.saveDefinition = function() {
-        $scope.definition.$save();
+        $rootScope.loading = 1;
+        $scope.definition.$save(function(){
+            $rootScope.loading--;
+        });
     };
 
     $scope.addNewAccount = function(addAccount,addAccountSection) {
@@ -225,18 +227,18 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     $scope.definitionOptions = [{
 	    caption: 'Mx/dia',
 	    key: 'maxDay'
-	}, {
+    }, {
+        caption: 'Semana 1',
+        key: 'max1Week'
+    }, {
+        caption: 'Ultima S.',
+        key: 'maxLWeek'
+    }, {
 	    caption: 'Mx/sem',
 	    key: 'maxWeek'
 	}, {
 	    caption: 'Mx/mes',
 	    key: 'maxMonth'
-	}, {
-	    caption: 'Arrastre',
-	    key: 'trail'
-	}, {
-	    caption: 'Sobrante',
-	    key: 'over'
 	}, {
 	    caption: 'Seccion',
 	    key: 'section'

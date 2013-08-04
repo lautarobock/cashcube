@@ -162,6 +162,9 @@ function innerFindCubeDefinition(id, cb) {
                     collection.find({}).sort({_id:0}).toArray(function (err, items) {
                         if (items.length > 0) {
                             items[0]._id = id;
+                            items[0].startDow = 4;
+                            items[0].year = parseInt(id.substr(0,4));
+                            items[0].month = parseInt(id.substr(4,2))-1;
                             cb(items[0]);
                         } else {
                             var def = {

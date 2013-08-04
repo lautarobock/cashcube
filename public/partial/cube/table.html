@@ -13,16 +13,16 @@
         <th style="width:50px">
             Dia
         </th>
-        <th ng-repeat="values in definition.accounts | sectionFilter:0:movements" style="width:{{values.width||100}}px">
+        <th ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-style="{width:values.width}">
             {{values.name}}
         </th>
         <th style="width:50px" class="alert alert-info">
             <strong>Total</strong>
         </th>
-        <th ng-repeat="values in definition.accounts | sectionFilter:1:movements" style="width:{{values.width||100}}px">
+        <th ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-style="{width:values.width}">
             {{values.name}}
         </th>
-        <th style="width:50px"  class="alert alert-info">
+        <th style="width:50px" class="alert alert-info">
             <strong>Total</strong>
         </th>
         <th style="width:50px">
@@ -36,17 +36,17 @@
             <strong>{{getDaw(day)}} {{day}}</strong>
         </td>
         <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClass(movements.days[day][values.account].value,values)" >
-                                <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
-                                    {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
-                                </span>
+            <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
+                {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
+            </span>
         </td>
         <td  class="alert alert-info">
             <strong>--</strong>
         </td>
         <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClass(movements.days[day][values.account].value,values)" >
-                                <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
-                                    {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
-                                </span>
+            <span popover-placement="top" Popover-animation="true" popover-title="{{values.account}} (Max: {{values.maxDay||'-'}})"  popover="{{getPopover(movements.days[day][values.account].items)}}">
+                {{movements.days[day][values.account].value.toFixed(2)|valueFilter}}
+            </span>
         </td>
         <td  class="alert alert-info">
             <strong>--</strong>
@@ -61,7 +61,7 @@
         </td>
         <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForWeek(w.week,values)">
             <strong>
-                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
+                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?values.max1Week||values.maxWeek:values.maxWeek)}}
             </strong>
         </td>
         <td>
@@ -69,7 +69,7 @@
         </td>
         <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForWeek(wweek,values)">
             <strong>
-                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?(values.maxWeek-(values.trail||0)):values.maxWeek)}}
+                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?values.max1Week||values.maxWeek:values.maxWeek)}}
             </strong>
         </td>
         <td>
