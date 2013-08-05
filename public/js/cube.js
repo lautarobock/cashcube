@@ -76,6 +76,12 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
             } else {
                 return values.max1Week;
             }
+        } else if ( week.week === $scope.lastWeek() ) {
+            if ( !angular.isDefined(values.maxLWeek) || values.maxLWeek === null) {
+                return values.maxWeek;
+            } else {
+                return values.maxLWeek;
+            }
         } else {
             return values.maxWeek;
         }
@@ -186,8 +192,7 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 			if ( -value > max ) {
 				return 'alert alert-error';
 			}
-		}		
-//        if ( account.maxMonth && -value > account.maxMonth ) return 'alert alert-error';
+		}
         return 'alert alert-success';
     };
 

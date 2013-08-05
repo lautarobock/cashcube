@@ -87,7 +87,7 @@
     </td>
     <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
         <strong>
-            {{movements.month[values.account].value.toFixed(2)|valueFilter:(values.maxMonth-(values.trail||0))}}
+            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
         </strong>
     </td>
     <td  class="alert alert-info">
@@ -95,7 +95,7 @@
     </td>
     <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
         <strong>
-            {{movements.month[values.account].value.toFixed(2)|valueFilter:(values.maxMonth-(values.trail||0))}}
+            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
         </strong>
     </td>
     <td  class="alert alert-info">
