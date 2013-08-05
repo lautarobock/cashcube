@@ -31,11 +31,15 @@
                     </div>
                 </div>
 
-
                 <div style="margin-top: 20px">
                     <h2>{{selected.value}}</h2>
                     <select ng-model="selected" ng-options="month.value for month in months" ng-change="toMonth(selected)"></select>
                 </div>
+
+				<label class="checkbox">
+					<input type="checkbox" ng-model="alldays" >Mostrar todos los dias</input>
+				</label>
+
 
                 <ng-include src="'partial/cube/table.html'"></ng-include>
 

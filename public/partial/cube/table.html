@@ -1,3 +1,4 @@
+
 <table class="table table-condensed table-bordered table-hover ">
     <thead>
     <tr>
@@ -81,29 +82,57 @@
     </tr>
     </tbody>
     <tfoot>
-    </th>
-    <td>
-        <strong>Total</strong>
-    </td>
-    <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
-        <strong>
-            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
-        </strong>
-    </td>
-    <td  class="alert alert-info">
-        <strong>{{movements.totalSection[0].toFixed(2)|valueFilter}}</strong>
-    </td>
-    <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
-        <strong>
-            {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
-        </strong>
-    </td>
-    <td  class="alert alert-info">
-        <strong>{{movements.totalSection[1].toFixed(2)|valueFilter}}</strong>
-    </td>
-    <td>
-        <strong>{{movements.total.toFixed(2)|valueFilter}}</strong>
-    </td>
-    </th>
+		<tr>
+			<th>
+				<strong>Total</strong>
+			</th>
+			<th ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
+				<strong>
+				    {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
+				</strong>
+			</th>
+			<th  class="alert alert-info">
+				<strong>{{movements.totalSection[0].toFixed(2)|valueFilter}}</strong>
+			</th>
+			<th ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForTotal(movements.month[values.account].value,values)">
+				<strong>
+				    {{movements.month[values.account].value.toFixed(2)|valueFilter:values.maxMonth}}
+				</strong>
+			</th>
+			<th  class="alert alert-info">
+				<strong>{{movements.totalSection[1].toFixed(2)|valueFilter}}</strong>
+			</th>
+			<th>
+				<strong>{{movements.total.toFixed(2)|valueFilter}}</strong>
+			</th>
+		</tr>
+		<tr>
+			<td colspan="9" style="background:black"></td>
+		</tr>
+		<tr>
+			<th>
+				<strong>Forecast</strong>
+			</th>
+			<th ng-repeat="values in definition.accounts | sectionFilter:0:movements" >
+				<strong>
+					{{forecast(values)}}
+				</strong>
+			</th>
+			<th  class="alert alert-info">
+				<strong>--</strong>
+			</th>
+			<th ng-repeat="values in definition.accounts | sectionFilter:1:movements" >
+				<strong>
+					{{forecast(values)}}
+				</strong>
+			</th>
+			<th  class="alert alert-info">
+				<strong>--</strong>
+			</th>
+			<th>
+				<strong>--</strong>
+			</th>
+		</tr>
     </tfoot>
 </table>
+

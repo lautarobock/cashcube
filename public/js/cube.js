@@ -13,6 +13,7 @@ cashcube.filter("valueFilter",function() {
     };
 });
 
+
 cashcube.filter('sectionFilter',function() {
     return function(accounts,section,movements) {
     if ( !accounts || !movements.month ) return accounts;
@@ -156,7 +157,14 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     };
 
     $scope.weeks = function() {
-        return r;
+		if ( $scope.selected.year !== yearEnd || $scope.selected.month !== monthEnd || $scope.alldays) return r;
+		var res = [];
+		var helper = new util.WeekHelper($scope.selected.year,$scope.selected.month-1,4);
+		var week = helper.getWeek(new Date().getDate());
+		for(var i=0;i<r.length; i++ ) {
+			if ( r[i].week <= week ) res.push(r[i]);
+		}
+        return res;
     };
 
     $scope.days = function (from,to) {
@@ -167,6 +175,42 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
         }
         return days;
     };
+
+	$scope.forecast = function(definition) {
+		if ( $scope.selected.year !== yearEnd || $scope.selected.month !== monthEnd ) return '--';
+		if ( !$scope.movements.month ) return '-';
+		if ( definition.projection === 'week' ) {
+			var value = 0;
+			// lo ya gastado
+			value -= $scope.movements.month[definition.account].value;
+			var helper = new util.WeekHelper($scope.selected.year,$scope.selected.month-1,definition.startDow);
+			var week = helper.getWeek(new Date().getDate());
+
+			//el resto de la semana
+			var max = $scope.maxValue(r[week-1],definition);
+			var resto = max + $scope.movements.weeks[week][definition.account].value;
+			if ( resto > 0 ) {
+				value += resto;
+			}
+			var last = $scope.lastWeek();
+			for ( var i=week+1; i<=last ; i++ ) {
+				if ( i === last ) {
+					value += $scope.maxValue(r[i-1],definition)
+				} else {
+					value += definition.maxWeek;
+				}
+			}
+			return value.toFixed(2);
+		} if ( definition.projection === 'month' ) {
+			var value = -$scope.movements.month[definition.account].value;
+			
+			var max = definition.maxMonth;
+
+			return Math.max(value,max).toFixed(2);
+		} else {
+			return '--';
+		}
+	};
 
     $scope.getClassForWeek = function(week,account) {
         if ( !$scope.movements.weeks ) return '';
