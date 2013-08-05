@@ -1,24 +1,15 @@
 
 var cashcube = angular.module('cashcube',['ngResource','ui.bootstrap']);
 
-cashcube.config(function($httpProvider) {
-
-
-//    $httpProvider.responseInterceptors.push(function($rootScope) {
-//        $rootScope.loading = true;
-//        return function(promise) {
-//            return promise.then(function(response){
-//                $rootScope.loading = false;
-//                return response;
-//            });
-//        }
-//    });
-});
 
 cashcube.filter("valueFilter",function() {
     return function(value,max) {
         if ( !value ) return '';
-        return -value + (max?' ('+max+')':'');
+        var result = (-value).toString();
+        if ( angular.isDefined(max) && max != null ) {
+            result += ' ('+max+')';
+        }
+        return result;
     };
 });
 
@@ -72,6 +63,24 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     var monthEnd = today.getMonth()+1;
 
     var r = new util.WeekHelper(yearEnd,monthEnd-1,4).getAllWeeks();
+
+    $scope.lastWeek = function() {
+        return r[r.length-1].week;
+    };
+
+    $scope.maxValue = function(week,values) {
+        if ( !week || !values) return null;
+        if ( week.week === 1 ) {
+            if ( !angular.isDefined(values.max1Week) || values.max1Week === null) {
+                return values.maxWeek;
+            } else {
+                return values.max1Week;
+            }
+        } else {
+            return values.maxWeek;
+        }
+    };
+
 
     var formatMonth= function(month) {
         if ( m<10 ) {
@@ -155,15 +164,15 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 
     $scope.getClassForWeek = function(week,account) {
         if ( !$scope.movements.weeks ) return '';
-		if ( !$scope.movements.weeks[week] ) return '';
-		if ( !$scope.movements.weeks[week][account.account] ) return '';
-		var value = $scope.movements.weeks[week][account.account].value;
+		if ( !$scope.movements.weeks[week.week] ) return '';
+		if ( !$scope.movements.weeks[week.week][account.account] ) return '';
+		var value = $scope.movements.weeks[week.week][account.account].value;
         if ( !value  ) return '';
-        if ( week === 1 && account.max1Week && -value > account.max1Week ) {
-            return 'text-error';
-        } else if ( week === 1 && account.maxWeek && -value > account.maxWeek ) {
-            return 'text-error';
-        } else if ( week !== 1 && account.maxWeek && -value > account.maxWeek ) {
+
+        var maxValue = $scope.maxValue(week,account);
+        if ( !angular.isDefined(maxValue) || maxValue === null ) {
+            return 'text-success';
+        } else if ( -value > maxValue) {
             return 'text-error';
         } else {
             return 'text-success';
@@ -185,7 +194,6 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     $scope.getClass = function(value,account) {
         if ( !value  ) return '';
 		if ( account.maxDay && -value > account.maxDay ) return 'text-error';
-        //if ( value < -10 ) return 'alert';
         return 'text-success';
     }
 

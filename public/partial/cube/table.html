@@ -59,17 +59,17 @@
         <td>
             <strong>W: {{$index+1}}</strong>
         </td>
-        <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForWeek(w.week,values)">
+        <td ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForWeek(w,values)">
             <strong>
-                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?values.max1Week||values.maxWeek:values.maxWeek)}}
+                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:maxValue(w,values)}}
             </strong>
         </td>
         <td>
             <strong>--</strong>
         </td>
-        <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForWeek(wweek,values)">
+        <td ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForWeek(w,values)">
             <strong>
-                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:(w.week == 1?values.max1Week||values.maxWeek:values.maxWeek)}}
+                {{movements.weeks[w.week][values.account].value.toFixed(2)|valueFilter:maxValue(w,values)}}
             </strong>
         </td>
         <td>
