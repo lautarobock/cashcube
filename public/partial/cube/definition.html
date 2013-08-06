@@ -22,6 +22,14 @@
                 <input type="number" ng-model="values[opt.key]" class="input-mini"/>
             </td>
         </tr>
+        <tr >
+            <td>
+                Proyeccion
+            </td>
+            <td ng-repeat="values in definition.accounts | orderBy:'section'" >
+                <input type="text" ng-model="values.projection" class="input-mini"/>
+            </td>
+        </tr>
         </tbody>
     </table>
     <textarea ng-model="definition.comments" rows="5" style="width:99%"></textarea>
