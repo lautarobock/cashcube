@@ -120,7 +120,7 @@
 				</strong>
 			</th>
 			<th  class="alert alert-info">
-				<strong>--</strong>
+				<strong>{{ forecastForSection(0,definition.accounts,movements) }}</strong>
 			</th>
 			<th ng-repeat="values in definition.accounts | sectionFilter:1:movements" >
 				<strong>
@@ -128,7 +128,7 @@
 				</strong>
 			</th>
 			<th  class="alert alert-info">
-				<strong>--</strong>
+                <strong>{{ forecastForSection(1,definition.accounts,movements) }}</strong>
 			</th>
 			<th>
 				<strong>--</strong>

@@ -14,17 +14,19 @@ cashcube.filter("valueFilter",function() {
 });
 
 
-cashcube.filter('sectionFilter',function() {
-    return function(accounts,section,movements) {
+function sectionFilter(accounts,section,movements) {
     if ( !accounts || !movements.month ) return accounts;
-        var filtered = [];
-        for ( var i=0; i<accounts.length; i++ ) {
-            if ( accounts[i].section === section && movements.month[accounts[i].account] && movements.month[accounts[i].account].value) {
-                filtered.push(accounts[i]);
-            }
+    var filtered = [];
+    for ( var i=0; i<accounts.length; i++ ) {
+        if ( accounts[i].section === section && movements.month[accounts[i].account] && movements.month[accounts[i].account].value) {
+            filtered.push(accounts[i]);
         }
-        return filtered;
-    };
+    }
+    return filtered;
+}
+
+cashcube.filter('sectionFilter',function() {
+    return sectionFilter;
 });
 
 var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
@@ -176,9 +178,26 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
         return days;
     };
 
-	$scope.forecast = function(definition) {
-		if ( $scope.selected.year !== yearEnd || $scope.selected.month !== monthEnd ) return '--';
-		if ( !$scope.movements.month ) return '-';
+    $scope.forecastForSection = function(section,accounts,movements) {
+        var value = 0;
+        angular.forEach(sectionFilter(accounts,section,movements),function(def) {
+            value += $scope.forecastVal(def)||0;
+        });
+        return value.toFixed(2);
+    };
+
+    $scope.forecast = function(definition) {
+        var value = $scope.forecastVal(definition);
+        if ( value ) {
+            return value.toFixed(2);
+        } else {
+            return '--';
+        }
+    }
+
+	$scope.forecastVal = function(definition) {
+		if ( $scope.selected.year !== yearEnd || $scope.selected.month !== monthEnd ) return null;
+		if ( !$scope.movements.month ) return null;
 		if ( definition.projection === 'week' ) {
 			var value = 0;
 			// lo ya gastado
@@ -200,15 +219,15 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 					value += definition.maxWeek;
 				}
 			}
-			return value.toFixed(2);
+			return value;
 		} if ( definition.projection === 'month' ) {
 			var value = -$scope.movements.month[definition.account].value;
 			
 			var max = definition.maxMonth;
 
-			return Math.max(value,max).toFixed(2);
+			return Math.max(value,max);
 		} else {
-			return '--';
+			return null;
 		}
 	};
 
