@@ -10,6 +10,42 @@
     <script src="./js/ui-bootstrap-tpls-0.4.0.min.js"></script>
 
     <script src="./js/addBonus.js"></script>
+    <script type="text/ng-template" id="form.html">
+        <form class="form-horizontal" ng-submit="save()">
+            <fieldset>
+                <legend>Add Bonus</legend>
+                <label>Origen</label>
+                <select ng-model="item.account" ng-options="account for account in ['cash','caixa','tarjeta']" ></select>
+                <label>Importe</label>
+                <input type="number" ng-model="item.amount" placeholder="Importe" required/>
+                <label>Descripcion</label>
+                <input type="text" ng-model="item.description" placeholder="Descripcion" required/>
+                <label>Fecha</label>
+                <input type="date" ng-model="item.date" />
+                <br/><br/>
+                <button type="submit" class="btn">Guardar</button>
+            </fieldset>
+        </form>
+    </script>
+    <script type="text/ng-template" id="success.html">
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>Bonus Addes successful!!</legend>
+                <strong>Origen: </strong>
+                <span ng-bind="item.account"></span>
+                <br/>
+                <strong>Importe: </strong>
+                <span ng-bind="item.amount"></span>
+                <br/>
+                <strong>Descripcion: </strong>
+                <span ng-bind="item.description"></span>
+                <br/>
+                <strong>Fecha: </strong>
+                <span>{{ item.date | date:'dd-MM-yyyy' }}</span>
+                <br/>
+            </fieldset>
+        </div>
+    </script>
 </head>
 <body ng-controller="AddBonusController">
 	<span class="text-center" ng-show="loading!=0" style="background-color: red; position:fixed; margin-left: auto;   margin-right: auto; top:0; width: 70px; height: 20px; z-index: 100; padding: 0 20px">Loading {{loading}}</span>
@@ -32,20 +68,10 @@
                     </div>
                 </div>
 
-                <form class="form-horizontal">
-				  <fieldset>
-					<legend>Add Bonus</legend>
-					<label>Importe</label>
-					<input type="number" ng-model="item.amount" placeholder="Importe"/>
-					<label>Descripcion</label>
-					<input type="text" ng-model="item.description" placeholder="Descripcion"/>
-					<label>Fecha</label>
-					<input type="text" ng-model="item.date" />
-					<br/><br/>
-					<button type="submit" ng-click="save()" class="btn">Guardar</button>
-				  </fieldset>
-				</form>
-
+                <ng-include src="template"></ng-include>
+                <div style="color: red">
+                    {{ error }}
+                </div>
 		    </div>
 		</div>
     </div>
