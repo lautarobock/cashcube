@@ -1,7 +1,12 @@
 <div style="margin-bottom:30px">
-    <div style="margin-top: 10px">
+    <div style="margin-top: 20px">
         <h4>Definiciones</h4>
     </div>
+	<form class="form-inline">
+		<label>
+		Ingreso: <input type="number" ng-model="definition.income" class="input-small"/>
+		</label>
+	</form>
     <table class="table table-condensed table-bordered ">
         <thead>
         <tr>
@@ -27,7 +32,8 @@
                 Proyeccion
             </td>
             <td ng-repeat="values in definition.accounts | orderBy:'section'" >
-                <input type="text" ng-model="values.projection" class="input-mini"/>
+                <!--<input type="text" ng-model="values.projection" class="input-mini"/>-->
+				<select class="input-small" ng-model="values.projection" ng-options="type for type in projectionTypes" ></select>
             </td>
         </tr>
         </tbody>

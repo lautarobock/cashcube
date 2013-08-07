@@ -271,7 +271,13 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
         if ( !value  ) return '';
 		if ( account.maxDay && -value > account.maxDay ) return 'text-error';
         return 'text-success';
-    }
+    };
+
+	$scope.getClassForSaving = function(value) {
+		if ( value < 0 ) return 'text-error';
+		if ( value > 0 ) return 'text-success';
+		return 'text-info';
+	};
 
     $scope.getPopover = function(items) {
         if ( !items ) return '';
@@ -327,6 +333,8 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 	    caption: 'Seccion',
 	    key: 'section'
 	}];
+
+	$scope.projectionTypes = ['week','month'];
 
 });
 

@@ -107,7 +107,6 @@
 			</th>
 		</tr>
 		<tr>
-            <!--FIXME colspan-->
 			<td colspan="{{sections[0].count+sections[1].count+2}}" style="background:#add8e6"></td>
 		</tr>
 		<tr>
@@ -138,24 +137,24 @@
             <th>
                 <strong>Ahorro</strong>
             </th>
-            <th ng-repeat="values in definition.accounts | sectionFilter:0:movements" >
-                <strong>
+            <th ng-repeat="values in definition.accounts | sectionFilter:0:movements" ng-class="getClassForSaving(values.maxMonth - forecast(values))">
+                <strong tooltip="Ahorro estimado para la cuenta">
                     {{values.maxMonth - forecast(values) | number:2}}
                 </strong>
             </th>
             <th  class="alert alert-info">
-                <strong>{{ 2014 - forecastForSection(0,definition.accounts,movements) | number:2 }}</strong>
+              	<strong tooltip="Ahorros estimados sin contar los gastos extras">{{ definition.income - forecastForSection(0,definition.accounts,movements) | number:2 }}</strong>
             </th>
-            <th ng-repeat="values in definition.accounts | sectionFilter:1:movements" >
-                <strong>
+            <th ng-repeat="values in definition.accounts | sectionFilter:1:movements" ng-class="getClassForSaving(values.maxMonth - forecast(values))">
+                <strong tooltip="Ahorro estimado para la cuenta">
                     {{values.maxMonth - forecast(values) | number:2}}
                 </strong>
             </th>
             <th  class="alert alert-info">
-                <strong>--</strong>
+                <strong tooltip="No aplica">--</strong>
             </th>
             <th  class="alert alert-warning">
-                <strong>{{ 2014 - forecastTotal(definition.accounts,movements) | number:2 }}</strong>
+                <strong tooltip-placement="left" tooltip="Ahorros estimados reales">{{ definition.income - forecastTotal(definition.accounts,movements) | number:2 }}</strong>
             </th>
         </tr>
     </tfoot>
