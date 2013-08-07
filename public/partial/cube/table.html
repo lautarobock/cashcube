@@ -120,7 +120,7 @@
 				</strong>
 			</th>
 			<th  class="alert alert-info">
-				<strong>{{ forecastForSection(0,definition.accounts,movements) }}</strong>
+				<strong>{{ forecastForSection(0,definition.accounts,movements) | number:2 }}</strong>
 			</th>
 			<th ng-repeat="values in definition.accounts | sectionFilter:1:movements" >
 				<strong>
@@ -128,12 +128,36 @@
 				</strong>
 			</th>
 			<th  class="alert alert-info">
-                <strong>{{ forecastForSection(1,definition.accounts,movements) }}</strong>
+                <strong>{{ forecastForSection(1,definition.accounts,movements) | number:2 }}</strong>
 			</th>
 			<th>
-				<strong>--</strong>
+				<strong>{{ forecastTotal(definition.accounts,movements) | number:2 }}</strong>
 			</th>
 		</tr>
+        <tr>
+            <th>
+                <strong>Ahorro</strong>
+            </th>
+            <th ng-repeat="values in definition.accounts | sectionFilter:0:movements" >
+                <strong>
+                    {{values.maxMonth - forecast(values) | number:2}}
+                </strong>
+            </th>
+            <th  class="alert alert-info">
+                <strong>{{ 2014 - forecastForSection(0,definition.accounts,movements) | number:2 }}</strong>
+            </th>
+            <th ng-repeat="values in definition.accounts | sectionFilter:1:movements" >
+                <strong>
+                    {{values.maxMonth - forecast(values) | number:2}}
+                </strong>
+            </th>
+            <th  class="alert alert-info">
+                <strong>--</strong>
+            </th>
+            <th  class="alert alert-warning">
+                <strong>{{ 2014 - forecastTotal(definition.accounts,movements) | number:2 }}</strong>
+            </th>
+        </tr>
     </tfoot>
 </table>
 

@@ -178,12 +178,20 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
         return days;
     };
 
+    $scope.forecastTotal = function(accounts,movements) {
+        var value = 0;
+        for ( var i=0; i<2; i++ ) {
+            value += $scope.forecastForSection(i,accounts,movements);
+        }
+        return value;
+    };
+
     $scope.forecastForSection = function(section,accounts,movements) {
         var value = 0;
         angular.forEach(sectionFilter(accounts,section,movements),function(def) {
             value += $scope.forecastVal(def)||0;
         });
-        return value.toFixed(2);
+        return value;
     };
 
     $scope.forecast = function(definition) {
@@ -227,7 +235,7 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 
 			return Math.max(value,max);
 		} else {
-			return null;
+			return -$scope.movements.month[definition.account].value;
 		}
 	};
 
