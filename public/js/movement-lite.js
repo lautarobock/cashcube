@@ -32,7 +32,7 @@ movement.controller("MovementLiteController", function($scope,Movement,Account) 
 	$scope.today.setMinutes(0);
 	$scope.today.setHours(0);
 	$scope.isToday = function(date) {
-		return $scope.today.getDate() == date.getDate();
+		return $scope.today.getDate() == date.getDate() && $scope.today.getMonth() == date.getMonth() && $scope.today.getYear() == date.getYear();
 	};
 	$scope.todayStyle = function(date) {
 		if ( $scope.isToday(new Date(date)) ) {

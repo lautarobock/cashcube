@@ -15,7 +15,9 @@
             <fieldset>
                 <legend>Add Bonus</legend>
                 <label>Origen</label>
-                <select ng-model="item.account" ng-options="account._id as account.name for account in accounts | selected" ></select>
+                <select ng-model="item.account" ng-options="account._id as account.name for account in accounts | selected:availableAccount" ></select>
+                <label>Destino</label>
+                <select ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts | selected:availableAccountTarget" ></select>
                 <label>Importe</label>
                 <input type="number" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
                 <label>Descripcion</label>
@@ -47,6 +49,8 @@
                 <br/>
                 <strong>Fecha: </strong>
                 <span>{{ item.date | date:'dd-MM-yyyy' }}</span>
+                <br/>
+                <a href="javascript:window.location.reload()">Agregar Otro</a>
                 <br/>
 				<a href="movement-lite.html">Goto movements</a>
             </fieldset>

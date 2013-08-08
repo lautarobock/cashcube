@@ -7,10 +7,10 @@ bonus.factory('Account',function($resource) {
     });
 });
 
-var availableAccount = ['cash','caixa','tarjeta'];
+
 
 bonus.filter("selected",function() {
-    return function(accounts) {
+    return function(accounts,availableAccount) {
         var result = [];
 		angular.forEach(accounts,function(account) {
 				if (availableAccount.indexOf(account._id) !== -1) {
@@ -24,7 +24,10 @@ bonus.filter("selected",function() {
 bonus.controller("AddBonusController", function($scope,Movement,$timeout,Account) {
 	$scope.loading = 0;
 
-	
+    $scope.availableAccount = ['cash','caixa','tarjeta'];
+
+    $scope.availableAccountTarget = ['vicio','bonus','super','salidas','viajes'];
+
 	$scope.accounts = Account.query();
 	
     $scope.template = 'form.html';
