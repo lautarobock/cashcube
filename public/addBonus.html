@@ -15,17 +15,19 @@
             <fieldset>
                 <legend>Add Bonus</legend>
                 <label>Origen</label>
-                <select ng-model="item.account" ng-options="account for account in ['cash','caixa','tarjeta']" ></select>
+                <select ng-model="item.account" ng-options="account for account in availableAccount" ></select>
                 <label>Importe</label>
-                <input type="number" ng-model="item.amount" placeholder="Importe" required/>
+                <input type="number" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
                 <label>Descripcion</label>
                 <input type="text" ng-model="item.description" placeholder="Descripcion" required/>
                 <label>Fecha</label>
-                <pre>Selected date is: <em>{{item.date | date:'fullDate' }}</em></pre>
-                <div class="well well-small pull-left" ng-model="item.date">
+				<input type="text" value="{{item.date | date:'fullDate' }}" readonly />
+				<a class="btn" ng-click="open()"><i class="icon-calendar"></i></a>
+				<br/>
+				<br/>
+                <div class="well well-small" ng-model="item.date" ng-show="showDatePicker">
                     <datepicker show-weeks="false"></datepicker>
                 </div>
-                <br/><br/>
                 <button type="submit" class="btn">Guardar</button>
             </fieldset>
         </form>
@@ -71,7 +73,7 @@
                     </div>
                 </div>
 
-                <ng-include src="template"></ng-include>
+                <ng-include ng-animate="{enter: 'fade', leave: 'fade'}" src="template"></ng-include>
                 <div style="color: red">
                     {{ error }}
                 </div>
