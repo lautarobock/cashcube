@@ -15,14 +15,14 @@
             <fieldset>
                 <legend>Add Bonus</legend>
                 <label>Origen</label>
-                <select ng-model="item.account" ng-options="account for account in availableAccount" ></select>
+                <select ng-model="item.account" ng-options="account._id as account.name for account in accounts | selected" ></select>
                 <label>Importe</label>
                 <input type="number" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
                 <label>Descripcion</label>
                 <input type="text" ng-model="item.description" placeholder="Descripcion" required/>
                 <label>Fecha</label>
 				<input type="text" value="{{item.date | date:'fullDate' }}" readonly />
-				<a class="btn" ng-click="open()"><i class="icon-calendar"></i></a>
+				<a class="btn" ng-model="showDatePicker" btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><i class="icon-calendar"></i></a>
 				<br/>
 				<br/>
                 <div class="well well-small" ng-model="item.date" ng-show="showDatePicker">

@@ -1,11 +1,31 @@
 
 var bonus = angular.module('cashcube.quick.bonus',['ngResource','ui.bootstrap']);
 
+bonus.factory('Account',function($resource) {
+    return $resource('account',{},{
+        query: { method: 'GET', params: {   },isArray:true  }
+    });
+});
 
-bonus.controller("AddBonusController", function($scope,Movement,$timeout) {
+var availableAccount = ['cash','caixa','tarjeta'];
+
+bonus.filter("selected",function() {
+    return function(accounts) {
+        var result = [];
+		angular.forEach(accounts,function(account) {
+				if (availableAccount.indexOf(account._id) !== -1) {
+					result.push(account);
+				}
+		});
+        return result;
+    };
+});
+
+bonus.controller("AddBonusController", function($scope,Movement,$timeout,Account) {
 	$scope.loading = 0;
 
-	$scope.availableAccount = ['cash','caixa','tarjeta'];
+	
+	$scope.accounts = Account.query();
 	
     $scope.template = 'form.html';
 
@@ -35,10 +55,7 @@ bonus.controller("AddBonusController", function($scope,Movement,$timeout) {
         });
 	};
 
-	$scope.showDatePicker = false;
-	$scope.open = function() {
-		$scope.showDatePicker = !$scope.showDatePicker;
-	};
+	$scope.showDatePicker = 0;
 });
 
 
