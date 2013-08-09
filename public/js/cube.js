@@ -126,7 +126,16 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
             count: 0
         }
     ];
-
+	
+	$scope.modified = {};
+	$scope.setModified = function(account,key) {
+		if (!$scope.modified[account]) {
+			$scope.modified[account] = {};
+		}
+		$scope.modified[account][key] = true;
+	};
+	
+	
 	$scope.$watch("definition.accounts + movements.month",function(pre,post) {
 		if ( $scope.definition.accounts && $scope.movements.month ) {
 			$scope.sections[0].count=1;
