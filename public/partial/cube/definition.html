@@ -24,7 +24,8 @@
                 {{opt.caption}}
             </td>
             <td ng-repeat="values in definition.accounts | orderBy:'section'" >
-                <input type="number" ng-model="values[opt.key]" class="input-mini"/>
+                <input type="number" ng-model="values[opt.key]" class="input-mini" ng-change="setModified(values.account,opt.key)"/>
+				<i class="icon-star" ng-show="modified[values.account][opt.key]"></i>
             </td>
         </tr>
         <tr >
@@ -33,7 +34,8 @@
             </td>
             <td ng-repeat="values in definition.accounts | orderBy:'section'" >
                 <!--<input type="text" ng-model="values.projection" class="input-mini"/>-->
-				<select class="input-small" ng-model="values.projection" ng-options="type for type in projectionTypes" ></select>
+				<select class="input-small" ng-model="values.projection" ng-options="type for type in projectionTypes" ng-change="setModified(values.account,'projection')"></select>
+				<i class="icon-star" ng-show="modified[values.account]['projection']"></i>
             </td>
         </tr>
         </tbody>

@@ -126,7 +126,16 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
             count: 0
         }
     ];
-
+	
+	$scope.modified = {};
+	$scope.setModified = function(account,key) {
+		if (!$scope.modified[account]) {
+			$scope.modified[account] = {};
+		}
+		$scope.modified[account][key] = true;
+	};
+	
+	
 	$scope.$watch("definition.accounts + movements.month",function(pre,post) {
 		if ( $scope.definition.accounts && $scope.movements.month ) {
 			$scope.sections[0].count=1;
@@ -210,12 +219,18 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
 			var value = 0;
 			// lo ya gastado
 			value -= $scope.movements.month[definition.account].value;
-			var helper = new util.WeekHelper($scope.selected.year,$scope.selected.month-1,definition.startDow);
+			var helper = new util.WeekHelper($scope.selected.year,$scope.selected.month-1,$scope.definition.startDow);
 			var week = helper.getWeek(new Date().getDate());
 
 			//el resto de la semana
 			var max = $scope.maxValue(r[week-1],definition);
-			var resto = max + $scope.movements.weeks[week][definition.account].value;
+			
+			var resto;
+			if ( $scope.movements.weeks[week] && $scope.movements.weeks[week][definition.account]) {
+				resto = max + $scope.movements.weeks[week][definition.account].value;	
+			} else {
+				resto = max;
+			}
 			if ( resto > 0 ) {
 				value += resto;
 			}

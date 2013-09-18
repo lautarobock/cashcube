@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app="cashcube.quick.bonus">
+<head>
+    <title>CubeCash - Add Bonus</title>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="./js/common.js"></script>
+    <script src="./js/util.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+    <script src="./js/angular-resource.js"></script>
+    <script src="./js/ui-bootstrap-tpls-0.5.0.min.js"></script>
+
+    <script src="./js/addBonus.js"></script>
+    <script type="text/ng-template" id="form.html">
+        <form class="form-horizontal" ng-submit="save()">
+            <fieldset>
+                <legend>Add Bonus</legend>
+                <label>Origen</label>
+                <select ng-model="item.account" ng-options="account._id as account.name for account in accounts | selected:availableAccount" ></select>
+                <label>Destino</label>
+                <select ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts | selected:availableAccountTarget" ></select>
+                <label>Importe</label>
+                <input type="number" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
+                <label>Descripcion</label>
+                <input type="text" ng-model="item.description" placeholder="Descripcion" required/>
+                <label>Fecha</label>
+				<input type="text" value="{{item.date | date:'fullDate' }}" readonly />
+				<a class="btn" ng-model="showDatePicker" btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0"><i class="icon-calendar"></i></a>
+				<br/>
+				<br/>
+                <div class="well well-small" ng-model="item.date" ng-show="showDatePicker">
+                    <datepicker show-weeks="false"></datepicker>
+                </div>
+                <button type="submit" class="btn">Guardar</button>
+            </fieldset>
+        </form>
+    </script>
+    <script type="text/ng-template" id="success.html">
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>Bonus Addes successful!!</legend>
+                <strong>Origen: </strong>
+                <span ng-bind="item.account"></span>
+                <br/>
+                <strong>Importe: </strong>
+                <span ng-bind="item.amount"></span>
+                <br/>
+                <strong>Descripcion: </strong>
+                <span ng-bind="item.description"></span>
+                <br/>
+                <strong>Fecha: </strong>
+                <span>{{ item.date | date:'dd-MM-yyyy' }}</span>
+                <br/>
+                <a href="javascript:window.location.reload()">Agregar Otro</a>
+                <br/>
+				<a href="movement-lite.html">Goto movements</a>
+            </fieldset>
+        </div>
+    </script>
+</head>
+<body ng-controller="AddBonusController">
+	<span class="text-center" ng-show="loading!=0" style="background-color: red; position:fixed; margin-left: auto;   margin-right: auto; top:0; width: 70px; height: 20px; z-index: 100; padding: 0 20px">Loading {{loading}}</span>
+    <div id="example" class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12" style="margin-top: 10px">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <a class="brand" href="#">CashCube</a>
+                        <ul class="nav">
+                            <li><a href="#" ng-click="navigateTo('movement.html')">Movimientos</a></li>
+                            <li><a href="#" ng-click="navigateTo('account.html')">Cuentas</a></li>
+                            <li><a href="#" ng-click="navigateTo('currency.html')">Moneda</a></li>
+                            <li><a href="#" ng-click="navigateTo('category.html')">Categorias</a></li>
+                            <li><a href="#" ng-click="navigateTo('resume.html')">Resume</a></li>
+                            <li><a href="#" ng-click="navigateTo('graph.html')">Graficos</a></li>
+							<li><a href="#" ng-click="navigateTo('cube.html')">Cubo</a></li>
+                            <li class="active"><a href="#" ng-click="navigateTo('addBonus.html')">Add Bonus</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <ng-include ng-animate="{enter: 'fade', leave: 'fade'}" src="template"></ng-include>
+                <div style="color: red">
+                    {{ error }}
+                </div>
+		    </div>
+		</div>
+    </div>
+
+</body>
+</html>
