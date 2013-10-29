@@ -29,7 +29,7 @@ cashcube.filter('sectionFilter',function() {
     return sectionFilter;
 });
 
-var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Noviembre','Diciembre'];
+var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 var DAYS = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
 
 
