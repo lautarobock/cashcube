@@ -100,7 +100,11 @@ cashcube.controller("ProjectionController", function($scope,Cube,CubeDefinition,
     };
 
     for ( var y=yearStart; y<=yearEnd; y++ ) {
-        for ( var m=monthStart; m<=monthEnd; m++ ) {
+        var mEnd = 12;
+        if ( y == yearEnd ) {
+            mEnd = monthEnd;
+        }
+        for ( var m=monthStart; m<=mEnd; m++ ) {
             //last day of month
             var dummy = new Date(y-1900,m,1);
             dummy.setDate(0);
