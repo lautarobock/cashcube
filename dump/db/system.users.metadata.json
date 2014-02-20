@@ -1,0 +1,1 @@
+{ "indexes" : [ { "name" : "_id_", "ns" : "db.system.users", "key" : { "_id" : 1 }, "v" : 0 }, { "name" : "user_1", "ns" : "db.system.users", "key" : { "user" : 1 }, "unique" : false, "v" : 0 } ] }
