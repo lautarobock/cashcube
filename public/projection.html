@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CubeCash - Proyeccion</title>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <script src="./js/util.js"></script>
+        <script src="lib/angular/angular.min.js"></script>
+        <script src="lib/angular-resource/angular-resource.min.js"></script>
+        <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+        <script data-main="js/projection" src="../lib/requirejs/require.js"></script>
+    </head>
+    <body>
+        <header class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <span class="navbar-brand">CubeCash Proyecciones</span>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="movement.html">Movimientos</a></li>
+                    <li><a href="resume.html">Resumen</a></li>
+                    <li><a href="cube.html">Cube</a></li>
+                    <li><a href="projection.html">Proyeccion</a></li>
+                </ul>
+            </div>
+        </header>
+        <div class="container" ng-controller="ProjectionController"> <!-- style="width:90%" -->
+            <div class="row">
+                <h3>Proyecciones</h3>
+                <hr/>
+                <!-- Que quiero ver? -->
+                <table class="table table-striped table-hover" >
+                    <thead>
+                        <tr>
+                            <th>Año</th>
+                            <th>Mes</th>
+                            <th ng-repeat="account in usedAccounts">
+                                {{accounts[account].name}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="total in totals | orderBy:['year','month']">
+                            <td>{{total.year+1900}}</td>
+                            <td>{{total.month+1}}</td>
+                            <th ng-repeat="account in usedAccounts">
+                                {{total.accounts[account].amount|number:2}}
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
