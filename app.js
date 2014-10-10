@@ -2,6 +2,7 @@
 /**
  * Module dependencies.
  */
+console.log("MONGO_URI",process.env.MONGO_URI);
 
 var express = require('express')
 //  , routes = require('./routes')
@@ -65,11 +66,16 @@ for ( var i in services) {
 
 //Resume Services
 var resume = require("./routes/resume.js");
+var overview = require("./routes/overview.js");
 app.get('/resume',resume.findAll);
 app.get('/group',resume.findGroup);
 app.get('/cube/:year/:month',resume.findCube);
+app.get('/overview/:year/:month',overview.find);
+app.get('/balance/:year/:month',overview.findBalance);
 app.get('/cubedefinition/:id',resume.findCubeDefinition);
 app.post('/cubedefinition',resume.saveCubeDefinition);
+
+
 
 //require("./util/rest.js").buildExpress(app,"tour");
 

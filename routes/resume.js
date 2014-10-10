@@ -9,6 +9,7 @@
 var mongo = require('mongodb');
 //var rest = require('../util/rest.js');
 var cube = require("../services/cube.js");
+var db = require("../util/db");
 
 var Server = mongo.Server,
     Db = mongo.Db,
@@ -16,14 +17,9 @@ var Server = mongo.Server,
 
 var db;
 
-var database= {
-    ip:'localhost',
-    port:27017,
-    name:'cashcube',
-    type:'mongodb'
-}
+var database= db.config;
 
-var url=require('util').format('mongodb://%s:%d/%s',database.ip,database.port,database.name);
+var url=require('util').format(database.url);
 //var url=require('util').format('mongodb://663a9748-776b-4d72-9b91-443da8eeb3c0:e36ef048-0346-460b-aa84-17f96c686ed1@localhost:10000/db');
 
 new Db.connect(url,function(err,nnd){
