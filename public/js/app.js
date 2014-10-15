@@ -18,30 +18,10 @@
 		      controller: "MovementController"
 		    })
 		    .state('new-item', {
-		      url: "/new-item",
+		      url: "/new-item/:id",
 		      templateUrl: "partial/overview/new-item.html",
 		      controller: "NewItemController"
-		    })
-		    ;
-		    // .state('state1.list', {
-		    //   url: "/list",
-		    //   templateUrl: "partials/state1.list.html",
-		    //   controller: function($scope) {
-		    //     $scope.items = ["A", "List", "Of", "Items"];
-		    //   }
-		    // })
-		    // .state('state2', {
-		    //   url: "/state2",
-		    //   templateUrl: "partials/state2.html"
-		    // })
-		    // .state('state2.list', {
-		    //   url: "/list",
-		    //   templateUrl: "partials/state2.list.html",
-		    //   controller: function($scope) {
-		    //     $scope.things = ["A", "Set", "Of", "Things"];
-		    //   }
-		    // });
-
+		    });
 	});
 
 	app.run(function($rootScope, $state, $http) {
@@ -71,8 +51,9 @@
 	});
 
 	app.factory('Movement',function($resource) {
-	    return $resource('movement',{},{
-	        query: { method: 'GET', params: {   },isArray:true  }
+	    return $resource('movement/:id',{id: '@_id'},{
+	        query: { method: 'GET', params: {   }, isArray:true  },
+	        save: { method: 'PUT', params: { }}
 	    });
 	});
 

@@ -5,7 +5,9 @@
         	<label>Descripcion</label>
             <input class="form-control" type="text" ng-model="item.description" placeholder="Descripcion" required/>
             <label>Importe</label>
-            <input class="form-control" type="text" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
+            <input class="form-control" type="text" ng-model="actualAmount" placeholder="Importe" step="0.01"  required/>
+            <label>Importe €</label>
+            <input class="form-control" type="text" ng-model="item.amount" placeholder="Importe €" step="0.01"  readonly/>
             <label>Etiquetas</label>
 			<input class="form-control" type="text" ng-model="item.tags" />
             <label>Origen</label>
