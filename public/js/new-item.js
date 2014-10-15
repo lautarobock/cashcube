@@ -1,5 +1,5 @@
 
-var bonus = angular.module('cashcube.quick.bonus',['ngResource','ui.bootstrap']);
+var bonus = angular.module('newItem',['ngResource', 'ui.bootstrap']);
 
 bonus.factory('Account',function($resource) {
     return $resource('account',{},{
@@ -21,30 +21,32 @@ bonus.filter("selected",function() {
     };
 });
 
-bonus.controller("AddBonusController", function($scope,Movement,$timeout,Account) {
+bonus.controller("NewItemController", function($scope,Movement,$timeout,Account, $state) {
 	$scope.loading = 0;
 
-    $scope.availableAccount = ['cash','caixa','tarjeta'];
+    $scope.availableAccount = ['cash_peso','credito_rio', 'cash'];
 
-    $scope.availableAccountTarget = ['vicio','bonus','super','salidas','viajes'];
+    $scope.availableAccountTarget = ['vicio','bonus','super','salidas','fijos'];
 
 	$scope.accounts = Account.query();
 	
-    $scope.template = 'form.html';
-
-	//Generalize, create a directive with menu
-    $scope.navigateTo = function(href) {
-        window.location.href = href;
-    };
-
-	$scope.item = {
+    $scope.item = {
         date: new Date(),
-        account:'cash',
+        account:'cash_peso',
         accountTarget: 'bonus',
         tags: '',
         accountCurrency:1,
         accountTargetCurrency:1
 	};
+
+    $scope.$watch("item.account", function(value) {
+        console.log("chamge", value, $scope.getCurrency(value));
+        $scope.item.accountCurrency = $scope.getCurrency(value).value;
+    });
+
+    $scope.changeAccount = function() {
+        
+    };
 
 	$scope.save = function() {
 		$scope.loading = 1;
@@ -52,9 +54,10 @@ bonus.controller("AddBonusController", function($scope,Movement,$timeout,Account
         $scope.item.date.setSeconds(0);
         $scope.item.date.setMinutes(0);
         $scope.item.date.setHours(0)
-        var result = Movement.save($scope.item, function() {
-            $scope.template = 'success.html';
+        $scope.item.amount = eval('(' + $scope.item.amount + ')') / $scope.item.accountCurrency;
+        var result = Movement.save($scope.item, function(newItem) {
 			$scope.loading = 0;
+            $state.go("movement");
         });
 	};
 

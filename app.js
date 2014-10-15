@@ -67,6 +67,7 @@ for ( var i in services) {
 //Resume Services
 var resume = require("./routes/resume.js");
 var overview = require("./routes/overview.js");
+app.get('/movement-count',require('./routes/movement').count);
 app.get('/resume',resume.findAll);
 app.get('/group',resume.findGroup);
 app.get('/cube/:year/:month',resume.findCube);

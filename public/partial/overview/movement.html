@@ -1,0 +1,35 @@
+<div class="" style="margin: 5em;">
+	<h3>Movimientos</h3>
+	<table class="table table-striped table-condensed table-hover">
+		
+		<thead>
+			<tr>
+				<th style="width: 100px">Fecha</th>
+				<th>Detalle</th>
+				<th style="width: 150px"><div class="text-right">Valor</div></th>
+				<th style="width: 150px"><div class="text-right">Valor €</div></th>
+				<th style="width: 150px">Origen</th>
+				<th style="width: 150px">Destino</th>
+				<th style="width: 300px">Tags</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="m in movements">
+				<td ng-style="todayStyle(m.date)">{{ m.date | date:'dd-MM-yyyy' }}</td>
+				<td>{{ m.description }}</td>
+				<td><div class="text-right"><strong>{{ m.amount * m.accountCurrency | number:2 }} {{getCurrency(m.account).sign}}</strong></div></td>
+				<td><div class="text-right"><strong>{{ m.amount | currency:'€ ' }}</strong></div></td>
+				<td ng-style="{color:color[m.account]}">{{ getAccount(m.account).name }}</td>
+				<td ng-style="{color:color[m.accountTarget]}">{{ getAccount(m.accountTarget).name }}</td>
+				<td>{{ m.tags }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="btn-group">
+        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="10">10</label>
+        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="20">20</label>
+        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="50">50</label>
+        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="100">100</label>
+    </div>
+	<pagination total-items="count" ng-model="currentPage" items-per-page="PAGE_SIZE" ng-change="changePage()" max-size="MAX_PAGES" boundary-links="true"></pagination>
+</div>

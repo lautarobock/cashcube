@@ -19,7 +19,7 @@
                 <label>Destino</label>
                 <select ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts | selected:availableAccountTarget" ></select>
                 <label>Importe</label>
-                <input type="number" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
+                <input type="text" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
                 <label>Descripcion</label>
                 <input type="text" ng-model="item.description" placeholder="Descripcion" required/>
                 <label>Fecha</label>
@@ -52,7 +52,7 @@
                 <br/>
                 <a href="javascript:window.location.reload()">Agregar Otro</a>
                 <br/>
-				<a href="movement-lite.html">Goto movements</a>
+				<a href="/#/movement">Goto movements</a>
             </fieldset>
         </div>
     </script>

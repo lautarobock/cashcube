@@ -68,7 +68,8 @@
                             description:{ editable:true, nullable:true },
                             currency: { field: "currency"},
                             category: { field: "category",type:"string" },
-                            active:{editable:true}
+                            active:{editable:true},
+                            archived:{editable:true}
                         }
                     }
                 }
@@ -91,6 +92,11 @@
                         field:"active",
                         title:"Es Activo",
                         template:'<input type="checkbox" #= active ? "checked=checked" : "" # disabled="disabled" ></input>'
+                    },
+                    {
+                        field:"archived",
+                        title:"Archivada",
+                        template:'<input type="checkbox" #= archived ? "checked=checked" : "" # disabled="disabled" ></input>'
                     },
                     { field: "category", title: "Categoria", editor: categoryDropDownEditor, template: "#= getCategoryName(category) #"},
                     { command:["edit", "destroy"], title:"&nbsp;", width:"210px" }

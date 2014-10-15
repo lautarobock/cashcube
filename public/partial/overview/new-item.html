@@ -1,0 +1,32 @@
+<div class="container" style="margin: 5em;">
+	<h3>Nuevo Item</h3>
+	<form class="form-horizontal" ng-submit="save()">
+        <fieldset>
+        	<label>Descripcion</label>
+            <input class="form-control" type="text" ng-model="item.description" placeholder="Descripcion" required/>
+            <label>Importe</label>
+            <input class="form-control" type="text" ng-model="item.amount" placeholder="Importe" step="0.01"  required/>
+            <label>Etiquetas</label>
+			<input class="form-control" type="text" ng-model="item.tags" />
+            <label>Origen</label>
+            <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accounts " ></select>
+            <label>Destino</label>
+            <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts" ></select>
+            <label>Cambio</label>
+            <input class="form-control" type="text" ng-model="item.accountCurrency" readonly/>
+            <label>Fecha</label>
+			<input class="form-control" type="text" value="{{item.date | date:'fullDate' }}" readonly />
+			
+			<br/>
+			<button type="button" class="btn btn-primary" ng-model="showDatePicker" btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
+				<span class="glyphicon glyphicon-calendar"></span>
+			</button>
+			<br/>
+			<br/>
+            <div class="well well-small" ng-model="item.date" ng-show="showDatePicker">
+                <datepicker show-weeks="false"></datepicker>
+            </div>
+            <button type="submit" class="btn">Guardar</button>
+        </fieldset>
+    </form>
+</div>

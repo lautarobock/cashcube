@@ -58,24 +58,6 @@
 	    });
 
 
-		$scope.accounts = {};
-		$scope.currencies = {};
-		$http.get("account").success(function(accounts) {	
-			for ( var k in accounts ) {
-				$scope.accounts[accounts[k]._id] = accounts[k];
-			}
-		});
-		$http.get("currency").success(function(currencies) {	
-			for ( var k in currencies ) {
-				$scope.currencies[currencies[k]._id] = currencies[k];
-			}
-		});
-		$scope.getAccount = function(name) {
-			return $scope.accounts[name];
-		}
-		$scope.getCurrency = function(name) {
-			return $scope.currencies[$scope.getAccount(name).currency];
-		}
 		$scope.normalize = function(label) {
 			if ( label === '_' ) return "N/L";
 			return label;

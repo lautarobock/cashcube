@@ -21,7 +21,7 @@
 <a class="offline-button" href="resume.html">Resume</a>
 <a class="offline-button" href="graph.html">Graficos</a>
 <a class="offline-button" href="cube.html">Cube</a>
-<a class="offline-button" href="overview.html">Overview</a>
+<a class="offline-button" href="/">Overview</a>
 
 <div id="example" class="k-content">
     <div id="grid"></div>
@@ -141,6 +141,12 @@
         $(document).ready(function() {
             loadDataSources(["account",{name:"accountTarget",url:"account"},"currency"],function(dataSources) {
                 ds = dataSources;
+                var raw = ds.account.data();
+                for( var i=0; i<raw.length; i++ ) {
+                    if ( raw[i].archived == true ) {
+                        ds.account.remove(raw[i]);
+                    }
+                }
                 createGrid();
             });
         });

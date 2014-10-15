@@ -1,133 +1,42 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>CubeCash</title>
-
-    <link href="./css/examples-offline.css" rel="stylesheet">
-    <link href="./css/kendo.common.min.css" rel="stylesheet">
-    <link href="./css/kendo.default.min.css" rel="stylesheet">
-    <link href="./css/kendo.dataviz.min.css" rel="stylesheet">
-
-    <script src="./js/jquery.min.js"></script>
-    <script src="./js/kendo.web.min.js"></script>
-    <script src="./js/kendo.dataviz.min.js"></script>
-    <script src="./js/common.js"></script>
-    <!--<script src="../../content/shared/js/console.js"></script>-->
-
-    <script>
-        var ds;
-        function createGraph() {
-            var data = [];
-            var cat = [];
-            for (var i in ds.resume.data()) {
-                var item = ds.resume.data()[i];
-                if (item.account && item.amount) {
-                    cat.push(item.account);
-                    data.push(item.amount);
-                }
-            }
-            $("#graph").kendoChart({
-                theme:"default",
-                title:{
-                    text:"Gastos por dia"
-                },
-                legend:{
-                    position:"bottom"
-                },
-                seriesDefaults:{
-                    type:"column"
-                },
-                series:[
-                    {
-                        name:"Supermercado",
-                        data:data
-//                }, {
-//                    name: "United States",
-//                    data: [67.96, 68.93, 75, 74, 78]
-                    }
-                ],
-                valueAxis:{
-                    labels:{
-                        format:"{0} €"
-                    }
-                },
-                categoryAxis:{
-                    categories:cat
-                },
-                tooltip:{
-                    visible:true,
-                    format:"{0} €"
-                }
-            });
-        }
-        function resumeService() {
-            return {
-                name:"resume",
-                url:function () {
-                    var query = "params=yes";
-                    if ($('#fromDate').val()) {
-                        query += '&fromDate=' + encodeURIComponent($('#fromDate').data("kendoDatePicker").value());
-                    }
-                    if ($('#toDate').val()) {
-                        query += '&toDate=' + encodeURIComponent($('#toDate').data("kendoDatePicker").value());
-                    }
-                    if ($('#category').val()) {
-                        query += '&category=' + encodeURIComponent($('#category').val());
-                    }
-                    return "resume?" + query;
-                }
-            };
-        }
-        function reloadGrid() {
-            loadDataSources([resumeService(), "category"], function (dataSources) {
-                ds = dataSources;
-                createGraph();
-            });
-        }
-        $(document).ready(function() {
-//            $("#fromDate").kendoDatePicker({
-//                format: "{0:dd/MM/yyyy}",
-//                value: getFirstDayMonth(),
-//                change: function() {
-//                    reloadGrid();
-//                }
-//            });
-//            $("#toDate").kendoDatePicker({
-//                format: "{0:dd/MM/yyyy}",
-//                value: new Date(),
-//                change: function() {
-//                    reloadGrid();
-//                }
-//            });
-//
-//            loadDataSources([resumeService(),"category"],function(dataSources) {
-//                ds = dataSources;
-//                $('#category').kendoDropDownList({
-//                    dataTextField: "name",
-//                    dataValueField: "_id",
-//                    dataSource: ds.category,
-//                    optionLabel: 'Seleccione una... ',
-//                    change: function() {
-//                        reloadGrid();
-//                    }
-//                });
-//                createGraph();
-//            });
-
-        });
-    </script>
+    <link href="bower_components/bootstrap-css-only/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/overview.js"></script>
+    <script src="js/movement.js"></script>
+    <script src="js/new-item.js"></script>
+    <script src="js/util.js"></script>
 </head>
-<body>
-<a class="offline-button" href="movement.html">Movimientos</a>
-<a class="offline-button" href="account.html">Cuentas</a>
-<a class="offline-button" href="currency.html">Moneda</a>
-<a class="offline-button" href="category.html">Categorias</a>
-<a class="offline-button" href="resume.html">Resume</a>
-<a class="offline-button-selected" href="graph.html">Graficos</a>
-<div id="example" class="k-content">
-    <h1>Error de session</h1>
-</div>
+<body ng-app="app">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="" style="margin-left: 5em">
+        <a class="navbar-brand" href="/movement.html">
+          CubeCash
+        </a>
+        <div class="collapse navbar-collapse navbar-ex1-collapse" >
+            <ul class="nav navbar-nav">
+                <li><a href="movement.html">Movimientos</a></li>
+                <li><a href="account.html">Cuentas</a></li>
+                <li><a href="currency.html">Moneda</a></li>
+                <li><a href="category.html">Categorias</a></li>
+                <li><a href="resume.html">Resume</a></li>
+                <li><a href="graph.html">Graficos</a></li>
+                <li><a href="cube.html">Cubo</a></li>
+                <li ng-class="{active:currentState()=='overview'}"><a ui-sref="overview">Overview</a></li>
+                <li ng-class="{active:currentState()=='movement'}"><a ui-sref="movement">Movimientos</a></li>
+                <li ng-class="{active:currentState()=='new-item'}"><a ui-sref="new-item">Nuevo</a></li>
+            </ul>           
+        </div>
+      </div>
+    </nav>
+    
+    <div ui-view></div>
 
 </body>
 </html>
