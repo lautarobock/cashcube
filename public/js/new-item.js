@@ -71,6 +71,12 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
         }
     });
 
+    $scope.$watch("item.accountTarget", function(value) {
+        if ( value ) {
+            $scope.item.accountTargetCurrency = $scope.getCurrency(value).value;
+        }
+    });
+
     $scope.changeAccount = function() {
         
     };
