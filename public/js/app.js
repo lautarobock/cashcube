@@ -79,12 +79,12 @@
 	          });
 	        }
 	      });
-	      // to address @blesh's comment, set attribute value to 'false'
-	      // on blur event:
-	      element.bind('blur', function() {
-	         console.log('blur');
-	         scope.$apply(model.assign(scope, false));
-	      });
+	      // // to address @blesh's comment, set attribute value to 'false'
+	      // // on blur event:
+	      // element.bind('blur', function() {
+	      //    console.log('blur');
+	      //    scope.$apply(model.assign(scope, false));
+	      // });
 	    }
 	  };
 	});

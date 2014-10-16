@@ -1,6 +1,23 @@
 <div class="" style="margin: 5em;">
 	<h3>Movimientos</h3>
-	<table class="table table-striped table-condensed table-hover">
+	<div class="input-group">
+		<input class="form-control" type="text" ng-model="searchText" ng-change="search()" placeholder="Busqueda por descripcion" focus-me="true"/>
+		<span class="input-group-btn">
+            <button ng-disabled="searchText==''"  ng-click="clearSearch()" class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </span>
+	</div>
+	<br/>
+	<div class="input-group">
+		<input class="form-control" type="text" ng-model="searchTags" ng-change="search()" placeholder="Busqueda por Tags" />
+		<span class="input-group-btn">
+            <button ng-disabled="searchTags==''"  ng-click="clearTags()" class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        </span>
+	</div>
+	<table class="table table-striped table-condensed table-hover" style="margin-top:1em">
 		
 		<thead>
 			<tr>

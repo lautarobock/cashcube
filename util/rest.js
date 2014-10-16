@@ -52,7 +52,11 @@ module.exports.build= function(name,notAuto,orderBy) {
         findAll:function(req,res,next) {
             require("../routes/"+name).pre(req,res,next,"findAll");
             db.collection(name, function(err, collection) {
-                var q = collection.find().sort(orderBy?orderBy:{_id:1});
+                var filter = {};
+                if ( req.query.filter ) {
+                    filter = eval('(' + req.query.filter + ')');
+                }
+                var q = collection.find(filter).sort(orderBy?orderBy:{_id:1});
                 if ( req.query.page ) {
                     var pageSize = parseInt(req.query.pageSize)
                     var page = parseInt(req.query.page);

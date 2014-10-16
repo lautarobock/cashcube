@@ -42,7 +42,11 @@ module.exports.pre = function(req,res,next,operation) {
 
 module.exports.count = function(req, res) {
     db.collection('movement', function(err, collection) {
-        collection.count(function(err, c) {
+        var filter = null;
+        if ( req.query.filter ) {
+            filter = eval('(' + req.query.filter + ')');
+        }
+        collection.count(filter, function(err, c) {
             res.send({
                 value: c
             });
