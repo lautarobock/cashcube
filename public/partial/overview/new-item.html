@@ -3,9 +3,9 @@
 	<form class="form-horizontal" ng-submit="save()">
         <fieldset>
         	<label>Descripcion</label>
-            <input class="form-control" type="text" ng-model="item.description" placeholder="Descripcion" required/>
+            <input class="form-control" type="text" ng-model="item.description" placeholder="Descripcion" required  focus-me="true"/>
             <label>Importe</label>
-            <input class="form-control" type="text" ng-model="actualAmount" placeholder="Importe" step="0.01"  required/>
+            <input class="form-control" type="text" ng-model="actualAmount" ng-blur="blurAmount()" placeholder="Importe" step="0.01"  required/>
             <label>Importe €</label>
             <input class="form-control" type="text" ng-model="item.amount" placeholder="Importe €" step="0.01"  readonly/>
             <label>Etiquetas</label>

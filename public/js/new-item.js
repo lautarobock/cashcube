@@ -58,8 +58,8 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
     // });
 	
     $scope.$watch("actualAmount", function(value) {
-        value = value || 0;
-        $scope.item.amount = Math.round(($scope.actualAmount / $scope.item.accountCurrency)*100)/100;
+        // value = value || 0;
+        if ( value ) $scope.item.amount = Math.round((value / $scope.item.accountCurrency)*100)/100;
     });
     
 
@@ -75,6 +75,10 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
         
     };
 
+    $scope.blurAmount = function() {
+        $scope.actualAmount = eval('(' + $scope.actualAmount + ')');
+    };
+
 	$scope.save = function() {
 		$scope.loading = 1;
         $scope.item.date = new Date($scope.item.date);
@@ -83,15 +87,19 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
         $scope.item.date.setMinutes(0);
         $scope.item.date.setHours(0)
         // $scope.item.amount = eval('(' + $scope.item.amount + ')') / $scope.item.accountCurrency;
-        var result = Movement.save($scope.item, function(newItem) {
-			$scope.loading = 0;
-            $state.go("movement");
-        });
+        if ( $scope.item._id ) {
+            var result = Movement.save($scope.item, function(newItem) {
+                $scope.loading = 0;
+                $state.go("movement");
+            });    
+        } else {
+            var result = Movement.add($scope.item, function(newItem) {
+                $scope.loading = 0;
+                $state.go("movement");
+            });
+        }
+        
 	};
 
 	$scope.showDatePicker = 0;
 });
-
-
-
-
