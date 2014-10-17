@@ -3,7 +3,7 @@
 	var movement = angular.module("movement", ['ui.bootstrap']);
 
 	movement.controller("MovementController", function($scope, Movement, MovementCount, $timeout) {
-		$scope.PAGE_SIZE = 20;
+		$scope.PAGE_SIZE = 10;
 		$scope.MAX_PAGES = 20;
 		$scope.currentPage = 1;
 
@@ -47,10 +47,14 @@
 				params.filter = params.filter || {};
 				params.filter.tags= $scope.searchTags;
 			}
+
 			$scope.movements = Movement.query(params);
 
-			MovementCount.query(params,function(count) {
+			MovementCount.count(params,function(count) {
 				$scope.count = count.value;
+			});
+			MovementCount.total(params,function(count) {
+				$scope.totalEuro = count.value;
 			});
 		}
 		
@@ -59,8 +63,9 @@
 	});
 
 	movement.factory('MovementCount',function($resource) {
-	    return $resource('movement-count',{},{
-	        query: { method: 'GET', params: {   }, isArray:false  },
+	    return $resource('movement-count/:mode',{},{
+	        count: { method: 'GET', params: { mode:'count'  }, isArray:false  },
+	        total: { method: 'GET', params: { mode:'total'  }, isArray:false  },
 	    });
 	});
 

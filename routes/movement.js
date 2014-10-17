@@ -40,6 +40,25 @@ module.exports.pre = function(req,res,next,operation) {
     }
 }
 
+module.exports.total = function(req, res) {
+    db.collection('movement', function(err, collection) {
+        var filter = null;
+        if ( req.query.filter ) {
+            filter = eval('(' + req.query.filter + ')');
+        }
+        collection.find(filter).toArray(function(err, items) {
+            var total = 0;
+            for ( var i=0; i<items.length; i++ ) {
+                total += items[i].amount;
+            }
+            res.send({
+                value: total
+            });
+        });
+    });
+};
+
+
 module.exports.count = function(req, res) {
     db.collection('movement', function(err, collection) {
         var filter = null;
