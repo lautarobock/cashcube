@@ -81,12 +81,17 @@
 		$scope.showLabels = {};
 		
 
-		$scope.totals = {
-			balance: 0,
-			prev: 0,
-			diff: 0
-		}
+		// $scope.totals = {
+		// 	balance: 0,
+		// 	prev: 0,
+		// 	diff: 0
+		// }
 		function reload() {
+			$scope.totals = {
+				balance: 0,
+				prev: 0,
+				diff: 0
+			}
 			$http.get("/overview/" + $scope.selected.year + "/" + $scope.selected.month).success(function(items) {
 				console.log("ITEMS", items);
 				$scope.items = items.expenses;

@@ -46,12 +46,19 @@ module.exports.findBalance = function(req, res) {
         //-2 is added to fix UTC change time. (ugly)
         filter.date['$lt'] = new Date(req.params.year,req.params.month-1,1);
         filter.date['$lt'].setHours(filter.date['$lt'].getHours()-2);
+
+        var filterAct = { date: {}};
+        //-2 is added to fix UTC change time. (ugly)
+        filterAct.date['$lt'] = new Date(req.params.year,req.params.month,1);
+        filterAct.date['$lt'].setHours(filterAct.date['$lt'].getHours()-2);
+
         
         console.log("FILTER", filter);
+        console.log("FILTER ACT", filterAct);
 
         // console.log("FILTER", filter);
-        var group = [{$group: {_id:"$account", total: {$sum: '$amount'}}}];
-        var groupTarget = [{$group: {_id:"$accountTarget", total: {$sum: '$amount'}}}];
+        var group = [{$match: filterAct},{$group: {_id:"$account", total: {$sum: '$amount'}}}];
+        var groupTarget = [{$match: filterAct},{$group: {_id:"$accountTarget", total: {$sum: '$amount'}}}];
         var prevGroup = [{$match: filter}, {$group: {_id:"$account", total: {$sum: '$amount'}}}];
         var prevGroupTarget = [{$match: filter}, {$group: {_id:"$accountTarget", total: {$sum: '$amount'}}}];
 
@@ -135,7 +142,7 @@ module.exports.find = function(req,res,next) {
         to.setHours(to.getHours()-2);
 
         filter.date['$lt'] = to;
-        // console.log("FILTER", filter);
+        console.log("FILTER OVERVIEW", filter);
         collection.find(filter).sort({date:1}).toArray(function (err, items) {
         	console.log("Items", err);
             var results = findOverview(items);
@@ -223,12 +230,12 @@ function findOverview(items) {
 					for ( var j=0; j<item.tags.length; j++ ) {
 						var tag = item.tags[j];
 						//REMOVE
-						if ( show ) console.log("TAG: ", tag, labels[tag], !labels[tag]?true:false);
+						// if ( show ) console.log("TAG: ", tag, labels[tag], !labels[tag]?true:false);
 						if ( !labels[tag] ) {
 							labels[tag] = {
 								total: 0
 							}
-							if ( show ) console.log("ACTUAL:", labels);
+							// if ( show ) console.log("ACTUAL:", labels);
 						}
 						labels[tag].total += item.amount *  item.accountTargetCurrency; //Valor en la moneda destino (la de la cuenta)
 
@@ -238,9 +245,9 @@ function findOverview(items) {
 
 								};	
 							}
-							if ( show ) console.log("PRE:", labels[tag]);
+							// if ( show ) console.log("PRE:", labels[tag]);
 							labels = labels[tag].labels;
-							if ( show ) console.log("POST:", labels);
+							// if ( show ) console.log("POST:", labels);
 						}
 						
 					}
