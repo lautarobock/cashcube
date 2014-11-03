@@ -89,7 +89,8 @@
 		function reload() {
 			$http.get("/overview/" + $scope.selected.year + "/" + $scope.selected.month).success(function(items) {
 				console.log("ITEMS", items);
-				$scope.items = items;
+				$scope.items = items.expenses;
+				$scope.overviewTotal = items.total;
 			});
 
 			$http.get("/balance/" + $scope.selected.year + "/" + $scope.selected.month).success(function(items) {

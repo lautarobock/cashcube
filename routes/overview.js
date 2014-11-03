@@ -196,13 +196,19 @@ function findOverview(items) {
 			labels: {
 				
 			}
+		},
+		total: {
+			sign: '€',
+			total: 0
 		}
 	};
+	var total = 0;
 // console.log("Items", items);
 	for( var i=0; i<items.length; i++ ) {
 		var item = items[i];
 		for( var k in expenses ) {
 			if ( item.accountTarget == k ) {
+				total += item.amount;
 				//Expense in account
 				var expense = expenses[k];
 				expense.total += item.amount *  item.accountTargetCurrency; //Valor en la moneda destino (la de la cuenta)
@@ -211,7 +217,7 @@ function findOverview(items) {
 					//Remove
 					var show =false;
 					if ( item.tags.indexOf("auto") != -1 ) {
-						console.log("AUTO TAG:", item.description, item.tags, labels);
+						//console.log("AUTO TAG:", item.description, item.tags, labels);
 						show=true;
 					}
 					for ( var j=0; j<item.tags.length; j++ ) {
@@ -252,5 +258,8 @@ function findOverview(items) {
 		}
 		
 	}
-	return expenses;
+	return {
+		expenses: expenses,
+		total: total
+	};
 }

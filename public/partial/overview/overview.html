@@ -48,6 +48,13 @@
             </table>
         </div>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Total</b>
+            <span class="pull-right" style="margin-left: 1em;"><b>({{overviewTotal|currency:'€ '}})</b></span>
+            <span class="pull-right"><b>{{overviewTotal * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
+        </div>
+    </div>
     <h2>Balance</h2>
     <table class="table">
         <thead>
