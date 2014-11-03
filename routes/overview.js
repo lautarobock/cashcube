@@ -204,9 +204,12 @@ function findOverview(items) {
 				
 			}
 		},
-		total: {
-			sign: '€',
-			total: 0
+		ajuste: {
+			sign: 'AR$',
+			total: 0,
+			labels: {
+				
+			}
 		}
 	};
 	var total = 0;
