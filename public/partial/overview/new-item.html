@@ -14,8 +14,10 @@
             <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accounts " ></select>
             <label>Destino</label>
             <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts" ></select>
-            <label>Cambio</label>
-            <input class="form-control" type="text" ng-model="item.accountCurrency" readonly/>
+            <label>Cambio Origen</label>
+            <input class="form-control" type="text" ng-model="item.accountCurrency" />
+            <label>Cambio Destino</label>
+            <input class="form-control" type="text" ng-model="item.accountTargetCurrency" />
             <label>Fecha</label>
 			<input class="form-control" type="text" value="{{item.date | date:'fullDate' }}" readonly />
 			

@@ -61,19 +61,32 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
         // value = value || 0;
         if ( value ) $scope.item.amount = Math.round((value / $scope.item.accountCurrency)*100)/100;
     });
-    
 
+    $scope.$watch("item.accountCurrency", function(value) {
+        // value = value || 0;
+        if ( value ) $scope.item.amount = Math.round(($scope.actualAmount / $scope.item.accountCurrency)*100)/100;
+    });
+
+    var first = true;
     $scope.$watch("item.account", function(value) {
         if ( value ) {
-            console.log("chamge", value, $scope.getCurrency(value));
-            $scope.item.accountCurrency = $scope.getCurrency(value).value;
-            $scope.item.amount = Math.round(($scope.actualAmount / $scope.item.accountCurrency)*100)/100;
+            console.log("change", value, $scope.getCurrency(value));
+            //cuando esta editando y es la primera vuelta le dejo el currency q traia
+            if ( !(first && $scope.item._id) ) {
+                $scope.item.accountCurrency = $scope.getCurrency(value).value;
+            }
+            first = false;
+            // $scope.item.amount = Math.round(($scope.actualAmount / $scope.item.accountCurrency)*100)/100;
         }
     });
 
+    var firstTarget = true;
     $scope.$watch("item.accountTarget", function(value) {
-        if ( value ) {
-            $scope.item.accountTargetCurrency = $scope.getCurrency(value).value;
+        if ( value  ) {
+            if ( !(firstTarget && $scope.item._id) ) {
+                $scope.item.accountTargetCurrency = $scope.getCurrency(value).value;    
+            }
+            firstTarget = false;
         }
     });
 
