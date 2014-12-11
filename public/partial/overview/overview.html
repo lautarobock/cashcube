@@ -55,6 +55,9 @@
             <span class="pull-right"><b>{{overviewTotal * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
         </div>
     </div>
+    <label class="checkbox">
+        <input type="checkbox" ng-model="includeAjuste" >Incluye ajustes</input>
+    </label>
     <h2>Balance</h2>
     <table class="table">
         <thead>

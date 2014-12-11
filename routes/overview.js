@@ -145,7 +145,7 @@ module.exports.find = function(req,res,next) {
         console.log("FILTER OVERVIEW", filter);
         collection.find(filter).sort({date:1}).toArray(function (err, items) {
         	console.log("Items", err);
-            var results = findOverview(items);
+            var results = findOverview(items, req.query.includeAjuste == 'true');
             res.send(results);
         });
 
@@ -153,7 +153,7 @@ module.exports.find = function(req,res,next) {
     });
 }
 
-function findOverview(items) {
+function findOverview(items, includeAjuste) {
 	var expenses = {
 		bonus: {
 			sign: 'AR$',
@@ -212,6 +212,11 @@ function findOverview(items) {
 			}
 		}
 	};
+	
+	if ( !includeAjuste ) {
+		delete expenses.ajuste;
+	}
+
 	var total = 0;
 // console.log("Items", items);
 	for( var i=0; i<items.length; i++ ) {

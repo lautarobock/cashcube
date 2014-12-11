@@ -10,6 +10,9 @@
 	var DAYS = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
 
 	overview.controller("OverviewController", function($scope, $http) {
+
+		$scope.includeAjuste = true;
+
 		//Month selection
 		$scope.selected = null;
 
@@ -57,6 +60,10 @@
 	    	}
 	    });
 
+	   	$scope.$watch("includeAjuste", function() {
+			reload();
+	    });
+
 
 		$scope.normalize = function(label) {
 			if ( label === '_' ) return "N/L";
@@ -92,7 +99,7 @@
 				prev: 0,
 				diff: 0
 			}
-			$http.get("/overview/" + $scope.selected.year + "/" + $scope.selected.month).success(function(items) {
+			$http.get("/overview/" + $scope.selected.year + "/" + $scope.selected.month + "?includeAjuste=" + $scope.includeAjuste).success(function(items) {
 				console.log("ITEMS", items);
 				$scope.items = items.expenses;
 				$scope.overviewTotal = items.total;
