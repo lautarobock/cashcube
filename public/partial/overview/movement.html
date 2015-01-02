@@ -56,7 +56,6 @@
 			
 			<thead>
 				<tr>
-					<th style="width: 50px"></th>
 					<th style="width: 100px">Fecha</th>
 					<th>Detalle</th>
 					<th style="width: 150px"><div class="text-right">Valor</div></th>
@@ -64,15 +63,12 @@
 					<th style="width: 150px">Origen</th>
 					<th style="width: 150px">Destino</th>
 					<th style="width: 300px">Tags</th>
+					<th style="width: 30px"></th>
+					<th style="width: 30px"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat="m in movements">
-					<td>
-						<a ng-href="#/new-item/{{m._id}}" class="btn btn-primary btn-xs">
-							<span class="glyphicon glyphicon-edit"></span>
-						</a>
-					</td>
 					<td ng-style="todayStyle(m.date)">{{ m.date | date:'dd-MM-yyyy' }}</td>
 					<td>{{ m.description }}</td>
 					<td><div class="text-right"><strong>{{ m.amount * m.accountTargetCurrency | number:2 }} {{getCurrency(m.accountTarget).sign}}</strong></div></td>
@@ -80,6 +76,16 @@
 					<td ng-style="{color:color[m.account]}">{{ getAccount(m.account).name }}</td>
 					<td ng-style="{color:color[m.accountTarget]}">{{ getAccount(m.accountTarget).name }}</td>
 					<td>{{ m.tags }}</td>
+					<td>
+						<a ng-href="#/new-item/{{m._id}}" class="btn btn-primary btn-xs">
+							<span class="glyphicon glyphicon-edit"></span>
+						</a>
+					</td>
+					<td>
+						<a href="" ng-click="remove(m)" class="btn btn-danger btn-xs">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</td>
 				</tr>
 			</tbody>
 			<tfoot>
@@ -100,4 +106,16 @@
 			<pagination total-items="count" ng-model="currentPage" items-per-page="PAGE_SIZE" ng-change="changePage()" max-size="MAX_PAGES" boundary-links="true"></pagination>
 		</div>
 	</div>
+    <script type="text/ng-template" id="remove.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Eliminar movimiento</h3>
+        </div>
+        <div class="modal-body">
+            Esta seguro?
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
 </div>

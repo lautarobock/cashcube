@@ -2,7 +2,7 @@
 
 	var movement = angular.module("movement", ['ui.bootstrap']);
 
-	movement.controller("MovementController", function($scope, Movement, MovementCount, $timeout) {
+	movement.controller("MovementController", function($scope, Movement, MovementCount, $timeout, $modal) {
 		$scope.PAGE_SIZE = 10;
 		$scope.MAX_PAGES = 20;
 		$scope.currentPage = 1;
@@ -57,6 +57,39 @@
 				$scope.totalEuro = count.value;
 			});
 		}
+
+		$scope.remove = function (movement) {
+
+		    var modalInstance = $modal.open({
+		      templateUrl: 'remove.html',
+		      controller: function($scope, $modalInstance, movement) {
+				$scope.ok = function () {
+					console.log("REMOVE", movement);
+					movement.$remove(function() {
+					 	$modalInstance.close('ok');	
+					 	loadPage();
+					});
+					
+				};
+
+				$scope.cancel = function () {
+				    $modalInstance.dismiss('cancel');
+				};
+		      },
+		      size: 'sm',
+		      resolve: {
+		        movement: function () {
+		          return movement;
+		        }
+		      }
+		    });
+
+		    modalInstance.result.then(function (result) {
+		      	console.log("RESULT", result)
+		    }, function () {
+		      	console.log('Modal dismissed at: ' + new Date());
+		    });
+		};
 		
 
 		

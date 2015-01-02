@@ -52,6 +52,7 @@
 	            $scope.months.push(month);
 	            $scope.selected = month;
 	        }
+	        monthStart = 1;
 	    }
 
 	    $scope.$watch("selected", function(month) {
