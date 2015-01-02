@@ -64,7 +64,6 @@
 		      templateUrl: 'remove.html',
 		      controller: function($scope, $modalInstance, movement) {
 				$scope.ok = function () {
-					console.log("REMOVE", movement);
 					movement.$remove(function() {
 					 	$modalInstance.close('ok');	
 					 	loadPage();
@@ -85,7 +84,6 @@
 		    });
 
 		    modalInstance.result.then(function (result) {
-		      	console.log("RESULT", result)
 		    }, function () {
 		      	console.log('Modal dismissed at: ' + new Date());
 		    });

@@ -61,7 +61,7 @@
 	    	}
 	    });
 
-	   	$scope.$watch("includeAjuste", function() {
+	   	$scope.$watch("includeAjuste", function(value, old) {
 			reload();
 	    });
 
@@ -95,11 +95,6 @@
 		// 	diff: 0
 		// }
 		function reload() {
-			$scope.totals = {
-				balance: 0,
-				prev: 0,
-				diff: 0
-			}
 			$http.get("/overview/" + $scope.selected.year + "/" + $scope.selected.month + "?includeAjuste=" + $scope.includeAjuste).success(function(items) {
 				console.log("ITEMS", items);
 				$scope.items = items.expenses;
@@ -107,14 +102,21 @@
 			});
 
 			$http.get("/balance/" + $scope.selected.year + "/" + $scope.selected.month).success(function(items) {
+				var totals = {
+					balance: 0,
+					prev: 0,
+					diff: 0
+				};
 				console.log("Balance", items);
 				$scope.balance = items;
 
 				for ( var i=0; i<items.length; i++ ) {
-					$scope.totals.balance += items[i].actual.credit - items[i].actual.debit;
-					$scope.totals.prev += items[i].prev.credit - items[i].prev.debit;
-					$scope.totals.diff += items[i].actual.credit - items[i].actual.debit - (items[i].prev.credit - items[i].prev.debit);
+					totals.balance += items[i].actual.credit - items[i].actual.debit;
+					totals.prev += items[i].prev.credit - items[i].prev.debit;
+					totals.diff += items[i].actual.credit - items[i].actual.debit - (items[i].prev.credit - items[i].prev.debit);
 				}
+
+				$scope.totals = totals;
 			});
 		}
 	
