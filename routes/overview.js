@@ -52,7 +52,7 @@ module.exports.findBalance = function(req, res) {
         filterAct.date['$lt'] = new Date(req.params.year,req.params.month,1);
         filterAct.date['$lt'].setHours(filterAct.date['$lt'].getHours()-2);
 
-        
+
         console.log("FILTER", filter);
         console.log("FILTER ACT", filterAct);
 
@@ -70,30 +70,30 @@ module.exports.findBalance = function(req, res) {
 			        	for( var i in items ) {
 			        		var item = items[i];
 			        		if ( balance[item._id] ) {
-				        		balance[item._id].debit = item.total;	
+				        		balance[item._id].debit = item.total;
 			        		}
-			        		
+
 			        	}
 
 			        	for( var i in prevItems ) {
 			        		var item = prevItems[i];
 			        		if ( balance[item._id] ) {
-				        		balance[item._id].prevDebit = item.total;	
+				        		balance[item._id].prevDebit = item.total;
 			        		}
-			        		
+
 			        	}
 
 			        	for( var i in itemsTarget ) {
 			        		var item = itemsTarget[i];
 			        		if ( balance[item._id] ) {
-				        		balance[item._id].credit = item.total;	
+				        		balance[item._id].credit = item.total;
 			        		}
 			        	}
 
 			        	for( var i in prevItemsTarget ) {
 			        		var item = prevItemsTarget[i];
 			        		if ( balance[item._id] ) {
-				        		balance[item._id].prevCredit = item.total;	
+				        		balance[item._id].prevCredit = item.total;
 			        		}
 			        	}
 
@@ -166,53 +166,60 @@ function findOverview(items, includeAjuste) {
 			sign: 'AR$',
 			total: 0,
 			labels: {
-				
+
 			}
 		},
 		fijos: {
 			sign: 'AR$',
 			total: 0,
 			labels: {
-				
+
 			}
 		},
 		salidas: {
 			sign: 'AR$',
 			total: 0,
 			labels: {
-				
+
 			}
 		},
 		super: {
 			sign: 'AR$',
 			total: 0,
 			labels: {
-				
+
 			}
 		},
 		viajes: {
 			sign: 'AR$',
 			total: 0,
 			labels: {
-				
+
 			}
 		},
 		vicio: {
 			sign: 'AR$',
 			total: 0,
 			labels: {
-				
+
 			}
 		},
 		ajuste: {
 			sign: 'AR$',
 			total: 0,
 			labels: {
-				
+
 			}
-		}
+		},
+        cuencos: {
+            sign: 'AR$',
+            total: 0,
+            labels: {
+
+            }
+        }
 	};
-	
+
 	if ( !includeAjuste ) {
 		delete expenses.ajuste;
 	}
@@ -251,13 +258,13 @@ function findOverview(items, includeAjuste) {
 							if ( !labels[tag].labels ) {
 								labels[tag].labels = {
 
-								};	
+								};
 							}
 							// if ( show ) console.log("PRE:", labels[tag]);
 							labels = labels[tag].labels;
 							// if ( show ) console.log("POST:", labels);
 						}
-						
+
 					}
 				} else {
 					var tag = "_";
@@ -268,10 +275,10 @@ function findOverview(items, includeAjuste) {
 					}
 					labels[tag].total += item.amount *  item.accountTargetCurrency; //Valor en la moneda destino (la de la cuenta)
 				}
-				
-			}	
+
+			}
 		}
-		
+
 	}
 	return {
 		expenses: expenses,
