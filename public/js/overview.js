@@ -20,7 +20,7 @@
 
 	    var yearStart = 2014;
 	    var monthStart = 10;
-	    
+
 	    var today = new Date();
 	    var yearEnd = today.getYear()+1900;
 	    var monthEnd = today.getMonth()+1;
@@ -87,7 +87,7 @@
 		};
 		$scope.showDetails = {};
 		$scope.showLabels = {};
-		
+
 
 		// $scope.totals = {
 		// 	balance: 0,
@@ -95,10 +95,12 @@
 		// 	diff: 0
 		// }
 		function reload() {
-			$http.get("/overview/" + $scope.selected.year + "/" + $scope.selected.month + "?includeAjuste=" + $scope.includeAjuste).success(function(items) {
-				console.log("ITEMS", items);
-				$scope.items = items.expenses;
-				$scope.overviewTotal = items.total;
+			$http.get("/overview/" + $scope.selected.year + "/" + $scope.selected.month + "?includeAjuste=" + $scope.includeAjuste).success(function(result) {
+				console.log("ITEMS", result);
+				$scope.items = result.expenses.items;
+				$scope.overviewTotal = result.expenses.total;
+				$scope.incomes = result.incomes.items;
+				$scope.incomesTotal = result.incomes.total;
 			});
 
 			$http.get("/balance/" + $scope.selected.year + "/" + $scope.selected.month).success(function(items) {
@@ -119,9 +121,9 @@
 				$scope.totals = totals;
 			});
 		}
-	
 
-		
+
+
 	});
 
 })();

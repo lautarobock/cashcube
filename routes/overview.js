@@ -145,80 +145,20 @@ module.exports.find = function(req,res,next) {
         console.log("FILTER OVERVIEW", filter);
         collection.find(filter).sort({date:1}).toArray(function (err, items) {
         	console.log("Items", err);
-            var results = findOverview(items, req.query.includeAjuste == 'true');
-            res.send(results);
+            var expenses = findOverview(items, newAccounts(EXPENSES_ACCOUNTS), req.query.includeAjuste == 'true');
+            var incomes = findOverviewIncomes(items, newAccounts(INCOMES_ACCOUNTS));
+            res.send({
+                expenses: expenses,
+                incomes: incomes
+            });
         });
 
 
     });
-}
+};
 
-function findOverview(items, includeAjuste) {
-	var expenses = {
-		bonus: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
 
-			}
-		},
-		extra: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
-
-			}
-		},
-		fijos: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
-
-			}
-		},
-		salidas: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
-
-			}
-		},
-		super: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
-
-			}
-		},
-		viajes: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
-
-			}
-		},
-		vicio: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
-
-			}
-		},
-		ajuste: {
-			sign: 'AR$',
-			total: 0,
-			labels: {
-
-			}
-		},
-        cuencos: {
-            sign: 'AR$',
-            total: 0,
-            labels: {
-
-            }
-        }
-	};
+function findOverview(items, expenses, includeAjuste) {
 
 	if ( !includeAjuste ) {
 		delete expenses.ajuste;
@@ -281,7 +221,130 @@ function findOverview(items, includeAjuste) {
 
 	}
 	return {
-		expenses: expenses,
+		items: expenses,
 		total: total
 	};
+}
+
+function findOverviewIncomes(items, expenses) {
+
+    var total = 0;
+    // console.log("Items", items);
+    for( var i=0; i<items.length; i++ ) {
+        var item = items[i];
+        for( var k in expenses ) {
+            if ( item.account == k ) {
+                total += item.amount;
+                //Expense in account
+                var expense = expenses[k];
+                expense.total += item.amount *  item.accountCurrency; //Valor en la moneda destino (la de la cuenta)
+                labels = expense.labels;
+                if ( item.tags && item.tags.length != 0 ) {
+                    //Remove
+                    var show =false;
+                    if ( item.tags.indexOf("auto") != -1 ) {
+                        //console.log("AUTO TAG:", item.description, item.tags, labels);
+                        show=true;
+                    }
+                    for ( var j=0; j<item.tags.length; j++ ) {
+                        var tag = item.tags[j];
+                        //REMOVE
+                        // if ( show ) console.log("TAG: ", tag, labels[tag], !labels[tag]?true:false);
+                        if ( !labels[tag] ) {
+                            labels[tag] = {
+                                total: 0
+                            }
+                            // if ( show ) console.log("ACTUAL:", labels);
+                        }
+                        labels[tag].total += item.amount *  item.accountCurrency; //Valor en la moneda destino (la de la cuenta)
+
+                        if ( j<item.tags.length-1 ) {
+                            if ( !labels[tag].labels ) {
+                                labels[tag].labels = {
+
+                                };
+                            }
+                            // if ( show ) console.log("PRE:", labels[tag]);
+                            labels = labels[tag].labels;
+                            // if ( show ) console.log("POST:", labels);
+                        }
+
+                    }
+                } else {
+                    var tag = "_";
+                    if ( !labels[tag] ) {
+                        labels[tag] = {
+                            total: 0
+                        }
+                    }
+                    labels[tag].total += item.amount *  item.accountCurrency; //Valor en la moneda destino (la de la cuenta)
+                }
+
+            }
+        }
+
+    }
+    return {
+        items: expenses,
+        total: total
+    };
+}
+
+var INCOMES_ACCOUNTS = [{
+    name: 'scytl',
+    sign: '€'
+},{
+    name: 'dmx',
+    sign: 'AR$'
+},{
+    name: 'ingreso_varios',
+    sign: 'AR$'
+},{
+    name: 'cuencos',
+    sign: 'AR$'
+}];
+
+var EXPENSES_ACCOUNTS = [{
+    name: 'bonus',
+    sign: 'AR$'
+},{
+    name: 'extra',
+    sign: 'AR$'
+},{
+    name: 'fijos',
+    sign: 'AR$'
+},{
+    name: 'salidas',
+    sign: 'AR$'
+},{
+    name: 'super',
+    sign: 'AR$'
+},{
+    name: 'viajes',
+    sign: 'AR$'
+},{
+    name: 'vicio',
+    sign: 'AR$'
+},{
+    name: 'ajuste',
+    sign: 'AR$'
+},{
+    name: 'cuencos',
+    sign: 'AR$'
+}];
+
+function newAccounts(model) {
+    var accounts = {};
+
+    for ( var i=0; i<model.length; i++ ) {
+        accounts[model[i].name] = {
+            sign: model[i].sign,
+            total: 0,
+            labels: {
+
+            }
+        };
+    }
+
+    return accounts;
 }
