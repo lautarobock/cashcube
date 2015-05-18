@@ -31,7 +31,8 @@ module.exports.findBalance = function(req, res) {
 		tarjeta_evo: {debit:0, credit:0},
 		tarjeta_mel: {debit:0, credit:0},
 		deudas_general: {debit:0, credit:0},
-		polo: {debit:0, credit:0}
+		polo: {debit:0, credit:0},
+        tarjeta_galicia: {debit:0, credit:0}
 	};
 
 	var m = req.params.month;
