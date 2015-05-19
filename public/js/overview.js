@@ -114,8 +114,8 @@
 
 				for ( var i=0; i<items.length; i++ ) {
 					totals.balance += items[i].actual.credit - items[i].actual.debit;
-					totals.prev += items[i].prev.credit - items[i].prev.debit;
-					totals.diff += items[i].actual.credit - items[i].actual.debit - (items[i].prev.credit - items[i].prev.debit);
+					totals.prev += (items[i].prev.credit||0) - (items[i].prev.debit||0);
+					totals.diff += items[i].actual.credit - items[i].actual.debit - ((items[i].prev.credit||0) - (items[i].prev.debit||0));
 				}
 
 				$scope.totals = totals;
