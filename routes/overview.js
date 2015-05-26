@@ -301,6 +301,9 @@ var INCOMES_ACCOUNTS = [{
     name: 'ingreso_varios',
     sign: 'AR$'
 },{
+    name: 'hacienda',
+    sign: '€'
+},{
     name: 'cuencos',
     sign: 'AR$'
 }];
