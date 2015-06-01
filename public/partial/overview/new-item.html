@@ -11,16 +11,16 @@
             <label>Etiquetas</label>
 			<input class="form-control" type="text" ng-model="item.tags" />
             <label>Origen</label>
-            <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accounts " ></select>
+            <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accounts | orderBy:'name' " ></select>
             <label>Destino</label>
-            <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts" ></select>
+            <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts | orderBy:'name'" ></select>
             <label>Cambio Origen</label>
             <input class="form-control" type="text" ng-model="item.accountCurrency" />
             <label>Cambio Destino</label>
             <input class="form-control" type="text" ng-model="item.accountTargetCurrency" />
             <label>Fecha</label>
 			<input class="form-control" type="text" value="{{item.date | date:'fullDate' }}" readonly />
-			
+
 			<br/>
 			<button type="button" class="btn btn-primary" ng-model="showDatePicker" btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
 				<span class="glyphicon glyphicon-calendar"></span>
