@@ -18,6 +18,9 @@ new Db.connect(url,function(err,nnd){
     db = nnd;
 });
 
+/**
+* Balance meensual por cada cuenta (y comparacion con el mes anterior)
+*/
 module.exports.findBalance = function(req, res) {
 	var balance = {
 		cash: {debit:0, credit:0},
@@ -33,7 +36,8 @@ module.exports.findBalance = function(req, res) {
 		deudas_general: {debit:0, credit:0},
 		polo: {debit:0, credit:0},
         tarjeta_galicia: {debit:0, credit:0},
-        galicia_debito: {debit:0, credit:0}
+        galicia_debito: {debit:0, credit:0},
+        payoneer: {debit:0, credit:0}
 	};
 
 	var m = req.params.month;
@@ -125,7 +129,9 @@ module.exports.findBalance = function(req, res) {
     });
 };
 
-
+/**
+* Cuadro superior con gastos mensuales por cada cuenta
+*/
 module.exports.find = function(req,res,next) {
 
     var m = req.params.month;
@@ -296,6 +302,9 @@ var INCOMES_ACCOUNTS = [{
     name: 'scytl',
     sign: '€'
 },{
+    name: 'palantir',
+    sign: 'U$S'
+},{
     name: 'dmx',
     sign: 'AR$'
 },{
@@ -332,6 +341,9 @@ var EXPENSES_ACCOUNTS = [{
     sign: 'AR$'
 },{
     name: 'vicio',
+    sign: 'AR$'
+},{
+    name: 'comisiones',
     sign: 'AR$'
 },{
     name: 'ajuste',
