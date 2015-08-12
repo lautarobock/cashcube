@@ -18,6 +18,12 @@
 				        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="100">100</label>
 	                </div>
 	            </div>
+	            <div class="col-md-4">
+	                <button type="button" class="pull-right btn btn-warning" ng-click="clearFilters()">
+						<span class="glyphicon glyphicon-remove-circle"></span>
+						Limpiar todo
+					</button>
+	            </div>
 	        </div>
 	    </div>
 	    <div  class="panel panel-default" style="margin: 0 1em 1em 1em">
@@ -44,16 +50,84 @@
 						</div>
 	                </div>
 	            </div>
-	            <div class="row">
-	            	<div class="col-sm-6" style="margin-bottom: 1em;">
-	            	</div>
-	            	<div class="col-sm-6" style="margin-bottom: 1em;">
-	            	</div>
+				<div class="row">
+	                <div class="col-sm-5" style="margin-bottom: 1em;">
+	                    <div class="input-group">
+							<select class="form-control" ng-model="searchAccount" ng-change="search()">
+								<option value="">Origen</option>
+								<option value="{{account._id}}" ng-repeat="account in accountsList">{{account.name}}</option>
+							</select>
+							<span class="input-group-btn">
+					            <button ng-disabled="searchAccount==''"  ng-click="clearAccount()" class="btn btn-default" type="button">
+					                <span class="glyphicon glyphicon-remove"></span>
+					            </button>
+					        </span>
+						</div>
+	                </div>
+	                <div class="col-sm-1" style="margin-bottom: 1em;">
+					    <label class="checkbox">
+					        <input type="checkbox" ng-model="searchInBoth" ng-disabled="!searchAccount">O destino</input>
+					    </label>
+					</div>
+	                <div class="col-sm-6" style="margin-bottom: 1em;">
+						<div class="input-group">
+							<select class="form-control" ng-model="searchAccountTarget" ng-change="search()" ng-disabled="searchInBoth">
+								<option value="">Destino</option>
+								<option value="{{account._id}}" ng-repeat="account in accountsList">{{account.name}}</option>
+							</select>
+							<span class="input-group-btn">
+					            <button ng-disabled="searchAccountTarget==''"  ng-click="clearAccountTarget()" class="btn btn-default" type="button">
+					                <span class="glyphicon glyphicon-remove"></span>
+					            </button>
+					        </span>
+						</div>
+	                </div>
+	            </div>
+				<div class="row">
+	                <div class="col-sm-5" style="margin-bottom: 1em;">
+	                    <div class="input-group">
+							<input type="text" class="form-control"
+								datepicker-popup="dd-MM-yyyy"
+								ng-model="searchFromDate"
+								is-open="searchDateOpened.from"
+								ng-change="search()"
+								placeholder="Desde"
+								close-text="Cerrar" />
+				            <span class="input-group-btn">
+				            	<button type="button" class="btn btn-default" ng-click="open('from')"><i class="glyphicon glyphicon-calendar"></i></button>
+					            <button ng-disabled="!searchFromDate"  ng-click="clearFromDate()" class="btn btn-default" type="button">
+					                <span class="glyphicon glyphicon-remove"></span>
+					            </button>
+					        </span>
+						</div>
+	                </div>
+	                <div class="col-sm-1" style="margin-bottom: 1em;">
+					    <label class="checkbox">
+					        <input type="checkbox" ng-model="searchDateExact" ng-disabled="!searchFromDate">Exacta</input>
+					    </label>
+					</div>
+	                <div class="col-sm-6" style="margin-bottom: 1em;">
+	                    <div class="input-group">
+							<input  ng-disabled="searchDateExact" type="text" class="form-control"
+								datepicker-popup="dd-MM-yyyy"
+								ng-model="searchToDate"
+								is-open="searchDateOpened.to"
+								ng-change="search()"
+								placeholder="Hasta"
+								close-text="Cerrar" />
+				            <span class="input-group-btn">
+				            	<button type="button" class="btn btn-default" ng-click="open('to')"><i class="glyphicon glyphicon-calendar"></i></button>
+					            <button ng-disabled="!searchToDate"  ng-click="clearToDate()" class="btn btn-default" type="button">
+					                <span class="glyphicon glyphicon-remove"></span>
+					            </button>
+					        </span>
+						</div>
+	                </div>
 	            </div>
 	        </div>
 	    </div>
 		<table class="table table-striped table-condensed table-hover" style="margin-top:1em">
-			
+
 			<thead>
 				<tr>
 					<th style="width: 100px">Fecha</th>

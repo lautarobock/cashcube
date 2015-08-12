@@ -32,10 +32,11 @@
 
 		$rootScope.accounts = {};
 		$rootScope.currencies = {};
-		$http.get("account").success(function(accounts) {	
+		$http.get("account").success(function(accounts) {
 			for ( var k in accounts ) {
 				$rootScope.accounts[accounts[k]._id] = accounts[k];
 			}
+			$rootScope.accountsList = accounts;
 		});
 		$http.get("currency").success(function(currencies) {
 			for ( var k in currencies ) {
@@ -73,9 +74,9 @@
 	      var model = $parse(attrs.focusMe);
 	      scope.$watch(model, function(value) {
 	        console.log('value=',value);
-	        if(value === true) { 
+	        if(value === true) {
 	          $timeout(function() {
-	            element[0].focus(); 
+	            element[0].focus();
 	          });
 	        }
 	      });

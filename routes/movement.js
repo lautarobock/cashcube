@@ -40,12 +40,29 @@ module.exports.pre = function(req,res,next,operation) {
     }
 }
 
+module.exports.findAll = function(req,res,next) {
+    module.exports.pre(req,res,next,"findAll");
+    db.collection("movement", function(err, collection) {
+        var filter = createFilter(req.query);
+        console.log("FILTER", JSON.stringify(filter,null,4));
+        var q = collection.find(filter).sort({date:-1});
+        if ( req.query.page ) {
+            var pageSize = parseInt(req.query.pageSize)
+            var page = parseInt(req.query.page);
+            var skip = (page -1) * pageSize;
+            console.log("skip", skip, "pageSize", pageSize);
+            q = q.skip(skip).limit(pageSize);
+        }
+        q.toArray(function(err, items) {
+            module.exports.post(req,res,next,items,"findAll");
+            res.send(items);
+        });
+    });
+};
+
 module.exports.total = function(req, res) {
     db.collection('movement', function(err, collection) {
-        var filter = null;
-        if ( req.query.filter ) {
-            filter = eval('(' + req.query.filter + ')');
-        }
+        var filter = createFilter(req.query);
         collection.find(filter).toArray(function(err, items) {
             var total = 0;
             for ( var i=0; i<items.length; i++ ) {
@@ -61,10 +78,7 @@ module.exports.total = function(req, res) {
 
 module.exports.count = function(req, res) {
     db.collection('movement', function(err, collection) {
-        var filter = null;
-        if ( req.query.filter ) {
-            filter = eval('(' + req.query.filter + ')');
-        }
+        var filter = createFilter(req.query);
         collection.count(filter, function(err, c) {
             res.send({
                 value: c
@@ -72,6 +86,35 @@ module.exports.count = function(req, res) {
         });
     });
 };
+
+function createFilter (query) {
+    var filter = {};
+    if ( query.filter ) {
+        filter = eval('(' + query.filter + ')');
+    }
+    if (filter.searchFromDate) {
+        filter.date = {'$gte': new Date(filter.searchFromDate)};
+        delete filter.searchFromDate;
+    }
+    if (filter.searchToDate) {
+        if ( filter.date ) {
+            filter.date['$lte'] = new Date(filter.searchToDate);    
+        } else {
+            filter.date = {'$lte': new Date(filter.searchToDate)};
+        }
+        delete filter.searchToDate;
+    }
+    if ( filter.searchInBoth ) {
+        filter['$or'] = [{
+            account: filter.account
+        }, {
+            accountTarget: filter.account
+        }];
+        delete filter.searchInBoth;
+        delete filter.account;
+    }
+    return filter;
+}
 
 module.exports.post = function(req,res,next,args,operation) {
     function joinTags(item) {

@@ -18,10 +18,67 @@
 		$scope.clearTags = function() {
 			$scope.searchTags = '';
 			loadPage();
-		}
+		};
+		$scope.searchAccount = '';
+		$scope.clearAccount = function() {
+			$scope.searchAccount = '';
+			$scope.searchInBoth = false;
+			loadPage();
+		};
+		$scope.searchAccountTarget = '';
+		$scope.clearAccountTarget = function() {
+			$scope.searchAccountTarget = '';
+			loadPage();
+		};
+		//Date
+		$scope.searchDateOpened = {
+			from: false,
+			to: false
+		};
+		$scope.searchFromDate = null;
+		$scope.searchToDate = null;
+		$scope.searchDateExact = false;
+		$scope.open = function(field) {
+			$scope.searchDateOpened[field] = true;
+		};
+		$scope.clearFromDate = function() {
+			$scope.searchFromDate = null;
+			loadPage();
+		};
+		$scope.clearToDate = function() {
+			$scope.searchToDate = null;
+			loadPage();
+		};
+		$scope.$watch('searchDateExact', function(value) {
+			if ( value ) {
+				$scope.searchToDate = null;
+			}
+			loadPage();
+		});
+
+		$scope.clearFilters = function() {
+			$scope.searchText = '';
+			$scope.searchTags = '';
+			$scope.searchAccount = '';
+			$scope.searchAccountTarget = '';
+			$scope.searchInBoth = false;
+			$scope.searchFromDate = null;
+			$scope.searchToDate = null;
+			$scope.searchToDate = null;
+			$scope.searchDateExact = false;
+			loadPage();
+		};
+
+		$scope.searchInBoth = false;
+		$scope.$watch('searchInBoth', function(value) {
+			if ( value ) {
+				$scope.searchAccountTarget = '';
+			}
+			loadPage();
+		});
 
 		var activeTimeout = null;
-                
+
         $scope.search = function() {
             if ( activeTimeout ) $timeout.cancel(activeTimeout);
             activeTimeout = $timeout(function() {
@@ -47,6 +104,32 @@
 				params.filter = params.filter || {};
 				params.filter.tags= $scope.searchTags;
 			}
+			if ( $scope.searchAccount ) {
+				params.filter = params.filter || {};
+				params.filter.account = $scope.searchAccount;
+			}
+			if ( $scope.searchAccountTarget ) {
+				params.filter = params.filter || {};
+				params.filter.accountTarget = $scope.searchAccountTarget;
+			}
+			if ( $scope.searchInBoth ) {
+				params.filter = params.filter || {};
+				params.filter.searchInBoth = $scope.searchInBoth;
+			}
+			if ( $scope.searchFromDate ) {
+				params.filter = params.filter || {};
+				params.filter.searchFromDate = $scope.searchFromDate;
+			}
+			if ( $scope.searchToDate ) {
+				params.filter = params.filter || {};
+				params.filter.searchToDate = $scope.searchToDate;
+			}
+			if ( $scope.searchDateExact ) {
+				params.filter = params.filter || {};
+				params.filter.searchFromDate = $scope.searchFromDate;
+				params.filter.searchToDate = $scope.searchFromDate;
+			}
+
 
 			$scope.movements = Movement.query(params);
 
@@ -65,10 +148,10 @@
 		      controller: function($scope, $modalInstance, movement) {
 				$scope.ok = function () {
 					movement.$remove(function() {
-					 	$modalInstance.close('ok');	
+					 	$modalInstance.close('ok');
 					 	loadPage();
 					});
-					
+
 				};
 
 				$scope.cancel = function () {
@@ -88,9 +171,9 @@
 		      	console.log('Modal dismissed at: ' + new Date());
 		    });
 		};
-		
 
-		
+
+
 	});
 
 	movement.factory('MovementCount',function($resource) {
