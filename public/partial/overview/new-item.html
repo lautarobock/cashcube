@@ -1,36 +1,67 @@
-<div class="container" style="margin: 5em;">
-	<h3>Nuevo Item</h3>
-	<form class="form-horizontal" ng-submit="save()">
-        <fieldset>
-        	<label>Descripcion</label>
-            <input class="form-control" type="text" ng-model="item.description" placeholder="Descripcion" required  focus-me="true"/>
-            <label>Importe</label>
-            <input class="form-control" type="text" ng-model="actualAmount" ng-blur="blurAmount()" placeholder="Importe" step="0.01"  required/>
-            <label>Importe €</label>
-            <input class="form-control" type="text" ng-model="item.amount" placeholder="Importe €" step="0.01"  readonly/>
-            <label>Etiquetas</label>
-			<input class="form-control" type="text" ng-model="item.tags" />
-            <label>Origen</label>
-            <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accounts | orderBy:'name' " ></select>
-            <label>Destino</label>
-            <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts | orderBy:'name'" ></select>
-            <label>Cambio Origen</label>
-            <input class="form-control" type="text" ng-model="item.accountCurrency" />
-            <label>Cambio Destino</label>
-            <input class="form-control" type="text" ng-model="item.accountTargetCurrency" />
-            <label>Fecha</label>
-			<input class="form-control" type="text" value="{{item.date | date:'fullDate' }}" readonly />
-
-			<br/>
-			<button type="button" class="btn btn-primary" ng-model="showDatePicker" btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">
-				<span class="glyphicon glyphicon-calendar"></span>
-			</button>
-			<br/>
-			<br/>
-            <div class="well well-small" ng-model="item.date" ng-show="showDatePicker">
-                <datepicker show-weeks="false"></datepicker>
-            </div>
-            <button type="submit" class="btn">Guardar</button>
-        </fieldset>
-    </form>
+<div style="margin:5em">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<span ng-if="!item._id">Nuevo Item</span>
+			<span ng-if="item._id">{{item.description}}</span>
+		</div>
+		<div class="panel-body" >
+			<form class="form-horizontal" ng-submit="save()">
+				<div class="row">
+	                <div class="col-lg-4 col-xs-12">
+						<label>Descripcion</label>
+			            <input class="form-control" type="text" ng-model="item.description" placeholder="Descripcion" required  focus-me="true"/>
+	                </div>
+					<div class="col-lg-4 col-xs-12">
+						<label>Importe</label>
+			            <input class="form-control" type="text" ng-model="actualAmount" ng-blur="blurAmount()" placeholder="Importe" step="0.01"  required/>
+	                </div>
+					<div class="col-lg-4 col-xs-12">
+						<label>Importe €</label>
+			            <input class="form-control" type="text" ng-model="item.amount" placeholder="Importe €" step="0.01"  readonly/>
+	                </div>
+	            </div>
+				<div class="row">
+	                <div class="col-lg-4 col-xs-12">
+						<label>Etiquetas</label>
+						<input class="form-control" type="text" ng-model="item.tags" />
+					</div>
+					<div class="col-lg-4 col-xs-12">
+			            <label>Origen</label>
+			            <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accounts | orderBy:'name' " ></select>
+					</div>
+					<div class="col-lg-4 col-xs-12">
+						<label>Destino</label>
+			            <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts | orderBy:'name'" ></select>
+	                </div>
+	            </div>
+				<div class="row">
+	                <div class="col-lg-4 col-xs-12">
+						<label>Fecha</label>
+						<div class="input-group">
+							<input type="text" class="form-control"
+								datepicker-popup="dd-MM-yyyy"
+								ng-model="item.date"
+								is-open="showDatePicker"
+								placeholder="Fecha"
+								close-text="Cerrar" />
+				            <span class="input-group-btn">
+				            	<button type="button" class="btn btn-default" ng-click="showDatePicker=true"><i class="glyphicon glyphicon-calendar"></i></button>
+					        </span>
+						</div>
+					</div>
+					<div class="col-lg-4 col-xs-12">
+						<label>Cambio Origen</label>
+			            <input class="form-control" type="text" ng-model="item.accountCurrency" />
+					</div>
+					<div class="col-lg-4 col-xs-12">
+						<label>Cambio Destino</label>
+			            <input class="form-control" type="text" ng-model="item.accountTargetCurrency" />
+	                </div>
+	            </div>
+				<div class="pull-right" style="margin-top:2em">
+					<button type="submit" class="btn btn-primary ">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>

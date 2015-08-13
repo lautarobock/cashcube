@@ -49,14 +49,14 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
             tags: '',
             accountCurrency:1,
             accountTargetCurrency:1
-        };    
+        };
     }
 
     // $scope.$watch("item.amount", function(value) {
     //     value = value || 0;
     //     $scope.actualAmount = Math.round(($scope.item.amount * $scope.item.accountCurrency)*100)/100;
     // });
-	
+
     $scope.$watch("actualAmount", function(value) {
         // value = value || 0;
         if ( value ) $scope.item.amount = Math.round((value / $scope.item.accountCurrency)*100)/100;
@@ -84,14 +84,14 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
     $scope.$watch("item.accountTarget", function(value) {
         if ( value  ) {
             if ( !(firstTarget && $scope.item._id) ) {
-                $scope.item.accountTargetCurrency = $scope.getCurrency(value).value;    
+                $scope.item.accountTargetCurrency = $scope.getCurrency(value).value;
             }
             firstTarget = false;
         }
     });
 
     $scope.changeAccount = function() {
-        
+
     };
 
     $scope.blurAmount = function() {
@@ -110,15 +110,15 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
             var result = Movement.save($scope.item, function(newItem) {
                 $scope.loading = 0;
                 $state.go("movement");
-            });    
+            });
         } else {
             var result = Movement.add($scope.item, function(newItem) {
                 $scope.loading = 0;
                 $state.go("movement");
             });
         }
-        
+
 	};
 
-	$scope.showDatePicker = 0;
+	$scope.showDatePicker = false;
 });

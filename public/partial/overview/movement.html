@@ -144,7 +144,11 @@
 			<tbody>
 				<tr ng-repeat="m in movements">
 					<td ng-style="todayStyle(m.date)">{{ m.date | date:'dd-MM-yyyy' }}</td>
-					<td>{{ m.description }}</td>
+					<td>
+						<a ng-href="#/new-item/{{m._id}}">
+							{{ m.description }}
+						</a>
+					</td>
 					<td><div class="text-right"><strong>{{ m.amount * m.accountTargetCurrency | number:2 }} {{getCurrency(m.accountTarget).sign}}</strong></div></td>
 					<td><div class="text-right"><strong>{{ m.amount | currency:'€ ' }}</strong></div></td>
 					<td ng-style="{color:color[m.account]}">{{ getAccount(m.account).name }}</td>
