@@ -101,6 +101,12 @@
 				$scope.overviewTotal = result.expenses.total;
 				$scope.incomes = result.incomes.items;
 				$scope.incomesTotal = result.incomes.total;
+				$scope.chartData = [];
+				$scope.chartLabels = [];
+				angular.forEach(result.expenses.items, function(v,k) {
+					$scope.chartData.push(Math.round(v.total));
+					$scope.chartLabels.push(k + '('+v.sign+')');
+				});
 			});
 
 			$http.get("/balance/" + $scope.selected.year + "/" + $scope.selected.month).success(function(items) {
@@ -122,6 +128,8 @@
 			});
 		}
 
+		$scope.chartData = [300, 500, 100];
+		$scope.chartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
 
 
 	});

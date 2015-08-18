@@ -1,6 +1,13 @@
 (function() {
 
-	var app = angular.module("app", ['ngResource', 'ui.bootstrap', 'ui.router', 'overview', 'movement', 'newItem']);
+	var app = angular.module("app", [
+		'ngResource',
+		'ui.bootstrap',
+		'ui.router',
+		'overview',
+		'movement',
+		'newItem',
+		'chart.js']);
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -21,6 +28,11 @@
 		      url: "/new-item/:id",
 		      templateUrl: "partial/overview/new-item.html",
 		      controller: "NewItemController"
+		    })
+		    .state('charts', {
+		      url: "/charts",
+		      templateUrl: "partial/overview/charts.html",
+		      controller: "ChartsController"
 		    });
 	});
 
@@ -88,6 +100,10 @@
 	      // });
 	    }
 	  };
+	});
+
+	app.controller('ChartsController', function() {
+
 	});
 
 })();

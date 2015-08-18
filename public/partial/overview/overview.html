@@ -1,178 +1,194 @@
-<div class="container" style="margin: 5em;">
+<div class="" style="margin: 5em;">
     <div>
         <select class="form-control" ng-model="selected" ng-options="month.value for month in months"></select>
     </div>
     <h2>Gastos del Mes</h2>
     <br/>
-    <div ng-if="value.total != 0" ng-repeat="(account, value) in items" class="panel panel-default">
-        <div class="panel-heading">
-            {{getAccount(account).name}}
-            <a href="" ng-show="hasAccountDetail(value)" ng-click="showLabels[account]=!showLabels[account]">
-                <span ng-if="!showLabels[account]"  class="glyphicon glyphicon-expand"></span>
-                <span ng-if="showLabels[account]"  class="glyphicon glyphicon-collapse-up"></span>
-            </a>
-            <span class="pull-right">{{value.sign}} {{value.total|number:2}}</span>
+    <div class="row">
+        <div class="col-lg-6">
+            <div ng-if="value.total != 0" ng-repeat="(account, value) in items" class="panel panel-default">
+                <div class="panel-heading">
+                    {{getAccount(account).name}}
+                    <a href="" ng-show="hasAccountDetail(value)" ng-click="showLabels[account]=!showLabels[account]">
+                        <span ng-if="!showLabels[account]"  class="glyphicon glyphicon-expand"></span>
+                        <span ng-if="showLabels[account]"  class="glyphicon glyphicon-collapse-up"></span>
+                    </a>
+                    <span class="pull-right">{{value.sign}} {{value.total|number:2}}</span>
+                </div>
+                <div class="panel-body" ng-show="showLabels[account]">
+                    <table class="table">
+                        <tbody>
+                            <tr ng-repeat="(label, labelValue) in value.labels" >
+                                <td>
+                                    <span>
+                                        {{normalize(label)}}
+                                        <a ng-if="labelValue.labels && !showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
+                                            <span class="glyphicon glyphicon-expand"></span>
+                                        </a>
+                                        <a ng-if="labelValue.labels && showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
+                                            <span class="glyphicon glyphicon-collapse-up"></span>
+                                        </a>
+                                    </span>
+                                    <div collapse="!showDetails[label]">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr ng-repeat="(subLabel, subLabelValue) in labelValue.labels" >
+                                                    <td>{{normalize(subLabel)}}</td>
+                                                    <td>
+                                                        <span class="pull-right">{{value.sign}} {{subLabelValue.total|number:2}}</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pull-right">{{value.sign}} {{labelValue.total|number:2}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Total</b>
+                    <span class="pull-right" style="margin-left: 1em;"><b>({{overviewTotal|currency:'€ '}})</b></span>
+                    <span class="pull-right"><b>{{overviewTotal * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
+                </div>
+            </div>
+            <label class="checkbox">
+                <input type="checkbox" ng-model="includeAjuste" >Incluye ajustes</input>
+            </label>
+
+            <h2>Ingresos del Mes</h2>
+            <br/>
+            <div ng-if="value.total != 0" ng-repeat="(account, value) in incomes" class="panel panel-default">
+                <div class="panel-heading">
+                    {{getAccount(account).name}}
+                    <a href="" ng-show="hasAccountDetail(value)" ng-click="showLabels[account]=!showLabels[account]">
+                        <span ng-if="!showLabels[account]"  class="glyphicon glyphicon-expand"></span>
+                        <span ng-if="showLabels[account]"  class="glyphicon glyphicon-collapse-up"></span>
+                    </a>
+                    <span class="pull-right">{{value.sign}} {{value.total|number:2}}</span>
+                </div>
+                <div class="panel-body" ng-show="showLabels[account]">
+                    <table class="table">
+                        <tbody>
+                            <tr ng-repeat="(label, labelValue) in value.labels" >
+                                <td>
+                                    <span>
+                                        {{normalize(label)}}
+                                        <a ng-if="labelValue.labels && !showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
+                                            <span class="glyphicon glyphicon-expand"></span>
+                                        </a>
+                                        <a ng-if="labelValue.labels && showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
+                                            <span class="glyphicon glyphicon-collapse-up"></span>
+                                        </a>
+                                    </span>
+                                    <div collapse="!showDetails[label]">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr ng-repeat="(subLabel, subLabelValue) in labelValue.labels" >
+                                                    <td>{{normalize(subLabel)}}</td>
+                                                    <td>
+                                                        <span class="pull-right">{{value.sign}} {{subLabelValue.total|number:2}}</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="pull-right">{{value.sign}} {{labelValue.total|number:2}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Total</b>
+                    <span class="pull-right" style="margin-left: 1em;"><b>({{incomesTotal|currency:'€ '}})</b></span>
+                    <span class="pull-right"><b>{{incomesTotal * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
+                </div>
+            </div>
+
+            <h2>Balance del Mes</h2>
+            <br/>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Total AR$</b>
+                    <span ng-style="styleCurrency(incomesTotal-overviewTotal)" class="pull-right"><b>{{(incomesTotal-overviewTotal) * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" >
+                    <b>Total €</b>
+                    <span ng-style="styleCurrency(incomesTotal-overviewTotal)" class="pull-right" style="margin-left: 1em;"><b>{{(incomesTotal-overviewTotal)|currency:'€ '}}</b></span>
+                </div>
+            </div>
         </div>
-        <div class="panel-body" ng-show="showLabels[account]">
+        <div class="col-lg-6">
+            <canvas id="pie"
+                class="chart chart-pie"
+                data="chartData"
+                labels="chartLabels"
+                legend="true"
+                options="{percentageInnerCutout:10}">
+            </canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8">
+            <h2>Balance</h2>
             <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cuenta</th>
+                        <th class="text-right">Cambio</th>
+                        <th class="text-right">Saldo</th>
+                        <th class="text-right">Inicio Mes</th>
+                        <th class="text-right">Diferencia</th>
+                        <th class="text-right">Saldo €</th>
+                        <th class="text-right">Inicio Mes €</th>
+                        <th class="text-right">Diferencia €</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <tr ng-repeat="(label, labelValue) in value.labels" >
-                        <td>
-                            <span>
-                                {{normalize(label)}}
-                                <a ng-if="labelValue.labels && !showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
-                                    <span class="glyphicon glyphicon-expand"></span>
-                                </a>
-                                <a ng-if="labelValue.labels && showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
-                                    <span class="glyphicon glyphicon-collapse-up"></span>
-                                </a>
-                            </span>
-                            <div collapse="!showDetails[label]">
-                                <table class="table">
-                                    <tbody>
-                                        <tr ng-repeat="(subLabel, subLabelValue) in labelValue.labels" >
-                                            <td>{{normalize(subLabel)}}</td>
-                                            <td>
-                                                <span class="pull-right">{{value.sign}} {{subLabelValue.total|number:2}}</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <tr ng-repeat="account in balance" >
+                        <td>{{getAccount(account.account_id).name}} ({{getCurrency(account.account_id).sign}})</td>
+                        <th class="text-right">{{getCurrency(account.account_id).value}}</td>
+                        <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit)">
+                            {{getCurrency(account.account_id).value*(account.actual.credit-account.actual.debit) | currency:getCurrency(account.account_id).sign+' '}}
                         </td>
-                        <td>
-                            <span class="pull-right">{{value.sign}} {{labelValue.total|number:2}}</span>
+                        <td class="text-right" ng-style="styleCurrency(account.prev.credit-account.prev.debit)">
+                            {{getCurrency(account.account_id).value*(account.prev.credit-account.prev.debit) | currency:getCurrency(account.account_id).sign+' '}}
+                        </td>
+                        <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit))">
+                            {{getCurrency(account.account_id).value*(account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit)) | currency:getCurrency(account.account_id).sign+' '}}
+                        </td>
+                        <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit)">
+                            {{account.actual.credit-account.actual.debit | currency: '€ '}}
+                        </td>
+                        <td class="text-right" ng-style="styleCurrency(account.prev.credit-account.prev.debit)">
+                            {{account.prev.credit-account.prev.debit | currency: '€ '}}
+                        </td>
+                        <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit))">
+                            {{account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit) | currency: '€ '}}
                         </td>
                     </tr>
                 </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b>Total</b>
-            <span class="pull-right" style="margin-left: 1em;"><b>({{overviewTotal|currency:'€ '}})</b></span>
-            <span class="pull-right"><b>{{overviewTotal * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
-        </div>
-    </div>
-    <label class="checkbox">
-        <input type="checkbox" ng-model="includeAjuste" >Incluye ajustes</input>
-    </label>
-
-    <h2>Ingresos del Mes</h2>
-    <br/>
-    <div ng-if="value.total != 0" ng-repeat="(account, value) in incomes" class="panel panel-default">
-        <div class="panel-heading">
-            {{getAccount(account).name}}
-            <a href="" ng-show="hasAccountDetail(value)" ng-click="showLabels[account]=!showLabels[account]">
-                <span ng-if="!showLabels[account]"  class="glyphicon glyphicon-expand"></span>
-                <span ng-if="showLabels[account]"  class="glyphicon glyphicon-collapse-up"></span>
-            </a>
-            <span class="pull-right">{{value.sign}} {{value.total|number:2}}</span>
-        </div>
-        <div class="panel-body" ng-show="showLabels[account]">
-            <table class="table">
-                <tbody>
-                    <tr ng-repeat="(label, labelValue) in value.labels" >
-                        <td>
-                            <span>
-                                {{normalize(label)}}
-                                <a ng-if="labelValue.labels && !showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
-                                    <span class="glyphicon glyphicon-expand"></span>
-                                </a>
-                                <a ng-if="labelValue.labels && showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
-                                    <span class="glyphicon glyphicon-collapse-up"></span>
-                                </a>
-                            </span>
-                            <div collapse="!showDetails[label]">
-                                <table class="table">
-                                    <tbody>
-                                        <tr ng-repeat="(subLabel, subLabelValue) in labelValue.labels" >
-                                            <td>{{normalize(subLabel)}}</td>
-                                            <td>
-                                                <span class="pull-right">{{value.sign}} {{subLabelValue.total|number:2}}</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="pull-right">{{value.sign}} {{labelValue.total|number:2}}</span>
-                        </td>
+                <tfoot>
+                    <tr>
+                        <th colspan="5">Total</th>
+                        <th class="text-right" ng-style="styleCurrency(totals.balance)">{{totals.balance | currency: '€ '}}</th>
+                        <th class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev | currency: '€ '}}</th>
+                        <th class="text-right" ng-style="styleCurrency(totals.diff)">{{totals.diff | currency: '€ '}}</th>
                     </tr>
-                </tbody>
+                </tfoot>
             </table>
         </div>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b>Total</b>
-            <span class="pull-right" style="margin-left: 1em;"><b>({{incomesTotal|currency:'€ '}})</b></span>
-            <span class="pull-right"><b>{{incomesTotal * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
-        </div>
-    </div>
-
-    <h2>Balance del Mes</h2>
-    <br/>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b>Total AR$</b>
-            <span ng-style="styleCurrency(incomesTotal-overviewTotal)" class="pull-right"><b>{{(incomesTotal-overviewTotal) * currencies['peso'].value|currency:currencies['peso'].sign+' '}}</b></span>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading" >
-            <b>Total €</b>
-            <span ng-style="styleCurrency(incomesTotal-overviewTotal)" class="pull-right" style="margin-left: 1em;"><b>{{(incomesTotal-overviewTotal)|currency:'€ '}}</b></span>
-        </div>
-    </div>
-
-    <h2>Balance</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Cuenta</th>
-                <th class="text-right">Cambio</th>
-                <th class="text-right">Saldo</th>
-                <th class="text-right">Inicio Mes</th>
-                <th class="text-right">Diferencia</th>
-                <th class="text-right">Saldo €</th>
-                <th class="text-right">Inicio Mes €</th>
-                <th class="text-right">Diferencia €</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="account in balance" >
-                <td>{{getAccount(account.account_id).name}} ({{getCurrency(account.account_id).sign}})</td>
-                <th class="text-right">{{getCurrency(account.account_id).value}}</td>
-                <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit)">
-                    {{getCurrency(account.account_id).value*(account.actual.credit-account.actual.debit) | currency:getCurrency(account.account_id).sign+' '}}
-                </td>
-                <td class="text-right" ng-style="styleCurrency(account.prev.credit-account.prev.debit)">
-                    {{getCurrency(account.account_id).value*(account.prev.credit-account.prev.debit) | currency:getCurrency(account.account_id).sign+' '}}
-                </td>
-                <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit))">
-                    {{getCurrency(account.account_id).value*(account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit)) | currency:getCurrency(account.account_id).sign+' '}}
-                </td>
-                <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit)">
-                    {{account.actual.credit-account.actual.debit | currency: '€ '}}
-                </td>
-                <td class="text-right" ng-style="styleCurrency(account.prev.credit-account.prev.debit)">
-                    {{account.prev.credit-account.prev.debit | currency: '€ '}}
-                </td>
-                <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit))">
-                    {{account.actual.credit-account.actual.debit-(account.prev.credit-account.prev.debit) | currency: '€ '}}
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="5">Total</th>
-                <th class="text-right" ng-style="styleCurrency(totals.balance)">{{totals.balance | currency: '€ '}}</th>
-                <th class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev | currency: '€ '}}</th>
-                <th class="text-right" ng-style="styleCurrency(totals.diff)">{{totals.diff | currency: '€ '}}</th>
-            </tr>
-        </tfoot>
-    </table>
 </div>
