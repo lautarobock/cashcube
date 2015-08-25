@@ -47,6 +47,7 @@ bonus.controller("NewItemController", function(
             $scope.actualAmount = Math.round(($scope.item.amount * $scope.item.accountCurrency)*100)/100;
             if ( mode === 'clone') {
                 delete $scope.item._id;
+                $scope.item.date = new Date();
             }
         });
     } else {
