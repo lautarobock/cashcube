@@ -27,7 +27,22 @@
 		    .state('new-item', {
 		      url: "/new-item/:id",
 		      templateUrl: "partial/overview/new-item.html",
-		      controller: "NewItemController"
+		      controller: "NewItemController",
+			  resolve: {
+				mode: function() {
+					return 'edit';
+				}
+			  }
+		    })
+		    .state('clone', {
+		      url: "/clone/:id",
+		      templateUrl: "partial/overview/new-item.html",
+		      controller: "NewItemController",
+			  resolve: {
+				mode: function() {
+					return 'clone';
+				}
+			  }
 		    })
 		    .state('charts', {
 		      url: "/charts",

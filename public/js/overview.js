@@ -62,7 +62,8 @@
 	    });
 
 	   	$scope.$watch("includeAjuste", function(value, old) {
-			reload();
+			//Skip reload at start
+			if (old !== value) reload();
 	    });
 
 

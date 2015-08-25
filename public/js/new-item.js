@@ -21,7 +21,15 @@ bonus.filter("selected",function() {
     };
 });
 
-bonus.controller("NewItemController", function($scope,Movement,$timeout,Account, $state, $stateParams) {
+bonus.controller("NewItemController", function(
+    $scope,
+    $timeout,
+    $state,
+    $stateParams,
+    Movement,
+    Account,
+    mode
+) {
 	$scope.loading = 0;
 
     $scope.availableAccount = ['cash_peso','credito_rio', 'cash'];
@@ -31,13 +39,15 @@ bonus.controller("NewItemController", function($scope,Movement,$timeout,Account,
 	$scope.accounts = Account.query();
 
     if ( $stateParams.id ) {
-
         Movement.get({
             id: $stateParams.id
         }, function(item) {
             $scope.item = item;
             $scope.item.tags = $scope.item.tags.join(",");
             $scope.actualAmount = Math.round(($scope.item.amount * $scope.item.accountCurrency)*100)/100;
+            if ( mode === 'clone') {
+                delete $scope.item._id;
+            }
         });
     } else {
         $scope.actualAmount = 0;

@@ -139,6 +139,7 @@
 					<th style="width: 300px">Tags</th>
 					<th style="width: 30px"></th>
 					<th style="width: 30px"></th>
+					<th style="width: 30px"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -154,6 +155,11 @@
 					<td ng-style="{color:color[m.account]}">{{ getAccount(m.account).name }}</td>
 					<td ng-style="{color:color[m.accountTarget]}">{{ getAccount(m.accountTarget).name }}</td>
 					<td>{{ m.tags }}</td>
+					<td>
+						<a ng-href="#/clone/{{m._id}}" class="btn btn-default btn-xs">
+							<span class="fa fa-clone"></span>
+						</a>
+					</td>
 					<td>
 						<a ng-href="#/new-item/{{m._id}}" class="btn btn-primary btn-xs">
 							<span class="glyphicon glyphicon-edit"></span>
