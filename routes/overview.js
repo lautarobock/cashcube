@@ -23,21 +23,22 @@ new Db.connect(url,function(err,nnd){
 */
 module.exports.findBalance = function(req, res) {
 	var balance = {
-		cash: {debit:0, credit:0},
-		cash_dolar: {debit:0, credit:0},
-		cash_peso: {debit:0, credit:0},
-		debito_rio: {debit:0, credit:0},
-		evo: {debit:0, credit:0},
-		paypal: {debit:0, credit:0},
-		credito_rio: {debit:0, credit:0},
-		tarjeta_cencosud: {debit:0, credit:0},
-		tarjeta_evo: {debit:0, credit:0},
-		tarjeta_mel: {debit:0, credit:0},
-		deudas_general: {debit:0, credit:0},
-		polo: {debit:0, credit:0},
-        tarjeta_galicia: {debit:0, credit:0},
-        galicia_debito: {debit:0, credit:0},
-        payoneer: {debit:0, credit:0}
+		cash: {debit:0, credit:0, category: 'Cash',style:'danger'},
+		cash_dolar: {debit:0, credit:0, category: 'Cash',style:'danger'},
+		cash_peso: {debit:0, credit:0, category: 'Cash',style:'info'},
+		debito_rio: {debit:0, credit:0, category: 'Cuentas',style:'info'},
+		evo: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
+		paypal: {debit:0, credit:0, category: 'Cuentas',style:'active'},
+		credito_rio: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
+		tarjeta_cencosud: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
+		tarjeta_evo: {debit:0, credit:0, category: 'Tarjeta',style:'danger'},
+		tarjeta_mel: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
+		deudas_general: {debit:0, credit:0, category: 'Otros',style:'active'},
+		polo: {debit:0, credit:0, category: 'Otros',style:'warning'},
+        tarjeta_galicia: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
+        galicia_debito: {debit:0, credit:0, category: 'Cuentas',style:'info'},
+        payoneer: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
+        amex: {debit:0, credit:0, category: 'Tarjeta',style:'info'}
 	};
 
 	var m = req.params.month;
@@ -107,6 +108,8 @@ module.exports.findBalance = function(req, res) {
 			        	for ( var k in balance ) {
 			        		result.push({
 			        			account_id: k,
+                                category: balance[k].category,
+                                style: balance[k].style,
 			        			actual: {
 			        				debit: balance[k].debit,
 			        				credit: balance[k].credit

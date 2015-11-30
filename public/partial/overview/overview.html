@@ -146,6 +146,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Categoria</th>
                         <th>Cuenta</th>
                         <th class="text-right">Cambio</th>
                         <th class="text-right">Saldo</th>
@@ -157,7 +158,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="account in balance" >
+                    <tr ng-repeat="account in balance" ng-class="account.style">
+                        <th>
+                            <span ng-hide="account.category==balance[$index-1].category">{{account.category}}</span>
+                        </th>
                         <td>{{getAccount(account.account_id).name}} ({{getCurrency(account.account_id).sign}})</td>
                         <th class="text-right">{{getCurrency(account.account_id).value}}</td>
                         <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit)">
@@ -181,8 +185,8 @@
                     </tr>
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <th colspan="5">Total</th>
+                    <tr class="success">
+                        <th colspan="6">Total</th>
                         <th class="text-right" ng-style="styleCurrency(totals.balance)">{{totals.balance | currency: '€ '}}</th>
                         <th class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev | currency: '€ '}}</th>
                         <th class="text-right" ng-style="styleCurrency(totals.diff)">{{totals.diff | currency: '€ '}}</th>

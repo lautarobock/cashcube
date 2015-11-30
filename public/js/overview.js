@@ -117,7 +117,19 @@
 					diff: 0
 				};
 				console.log("Balance", items);
-				$scope.balance = items;
+
+				$scope.balance = _.sortByOrder(
+					items,
+					[function(item) {
+						return item.category;
+					},
+					function(item) {
+						return $scope.getCurrency(item.account_id).sign;
+					},
+					function(item) {
+						return item.account_id;
+					}]
+				);
 
 				for ( var i=0; i<items.length; i++ ) {
 					totals.balance += items[i].actual.credit - items[i].actual.debit;
