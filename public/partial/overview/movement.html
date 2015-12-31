@@ -154,7 +154,16 @@
 					<td><div class="text-right"><strong>{{ m.amount | currency:'€ ' }}</strong></div></td>
 					<td ng-style="{color:color[m.account]}">{{ getAccount(m.account).name }}</td>
 					<td ng-style="{color:color[m.accountTarget]}">{{ getAccount(m.accountTarget).name }}</td>
-					<td>{{ m.tags }}</td>
+					<td>
+						<a ng-show="m.tags"
+							ng-repeat="tag in tagToList(m.tags)"
+							ng-class="getTagType(tag)"
+							class="label label-default"
+							ng-click="searchTag(tag)"
+							style="margin-right:5px">
+							{{tag}}
+						</a>
+					</td>
 					<td>
 						<a ng-href="#/clone/{{m._id}}" class="btn btn-default btn-xs">
 							<span class="fa fa-clone"></span>

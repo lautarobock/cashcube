@@ -19,6 +19,28 @@
 			$scope.searchTags = '';
 			loadPage();
 		};
+		var tags = {};
+		var types = ['label-default','label-primary','label-success','label-info','label-warning','label-danger'];
+		var next = 0;
+		$scope.getTagType = function(tag) {
+			if (tags[tag]) {
+				return tags[tag];
+			}
+			tags[tag] = types[next];
+			next++;
+			if ( next>types.length ) next = 0;
+		};
+		$scope.tagToList = function(tags) {
+			var tmp = tags.split(',');
+			for (var i=0;i<tmp.length; i++ ) {
+				tmp[i] = tmp[i].trim();
+			}
+			return tmp;
+		};
+		$scope.searchTag = function(tag) {
+			$scope.searchTags = tag;
+			loadPage();
+		};
 		$scope.searchAccount = '';
 		$scope.clearAccount = function() {
 			$scope.searchAccount = '';
