@@ -4,7 +4,7 @@
 	    <div class="panel-body" style="padding-bottom: 0;">
 	        <div class="row">
 	            <div class="col-md-6">
-	                <div class="well well-sm" style="padding: 7px;">
+	                <div class="well well-sm" style="padding: 4px 4px 5px 10px;">
 	                    <ng-pluralize count="count" when="{'0': 'Items.',
 														   'one': '1 item.',
 														   'other': '{} items.'}"></ng-pluralize>
@@ -12,14 +12,14 @@
 	            </div>
 	            <div class="col-md-2">
 	                <div class="btn-group">
-	                    <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="10">10</label>
-				        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="20">20</label>
-				        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="50">50</label>
-				        <label class="btn btn-primary" ng-model="PAGE_SIZE" btn-radio="100">100</label>
+	                    <label class="btn btn-primary btn-sm" ng-model="PAGE_SIZE" btn-radio="10">10</label>
+				        <label class="btn btn-primary btn-sm" ng-model="PAGE_SIZE" btn-radio="20">20</label>
+				        <label class="btn btn-primary btn-sm" ng-model="PAGE_SIZE" btn-radio="50">50</label>
+				        <label class="btn btn-primary btn-sm" ng-model="PAGE_SIZE" btn-radio="100">100</label>
 	                </div>
 	            </div>
 	            <div class="col-md-4">
-	                <button type="button" class="pull-right btn btn-warning" ng-click="clearFilters()">
+	                <button type="button" class="pull-right btn btn-sm btn-warning" ng-click="clearFilters()">
 						<span class="glyphicon glyphicon-remove-circle"></span>
 						Limpiar todo
 					</button>
@@ -30,7 +30,7 @@
 	        <div class="panel-body">
 	            <div class="row">
 	                <div class="col-sm-6" style="margin-bottom: 1em;">
-	                    <div class="input-group">
+	                    <div class="input-group input-group-sm">
 							<input class="form-control" type="text" ng-model="searchText" ng-change="search()" placeholder="Busqueda por descripcion" focus-me="true"/>
 							<span class="input-group-btn">
 					            <button ng-disabled="searchText==''"  ng-click="clearSearch()" class="btn btn-default" type="button">
@@ -40,7 +40,7 @@
 						</div>
 	                </div>
 	                <div class="col-sm-6" style="margin-bottom: 1em;">
-	                    <div class="input-group">
+	                    <div class="input-group input-group-sm">
 							<input class="form-control" type="text" ng-model="searchTags" ng-change="search()" placeholder="Busqueda por Tags" />
 							<span class="input-group-btn">
 					            <button ng-disabled="searchTags==''"  ng-click="clearTags()" class="btn btn-default" type="button">
@@ -52,7 +52,7 @@
 	            </div>
 				<div class="row">
 	                <div class="col-sm-5" style="margin-bottom: 1em;">
-	                    <div class="input-group">
+	                    <div class="input-group input-group-sm">
 							<select class="form-control" ng-model="searchAccount" ng-change="search()">
 								<option value="">Origen</option>
 								<option value="{{account._id}}" ng-repeat="account in accountsList">{{account.name}}</option>
@@ -70,7 +70,7 @@
 					    </label>
 					</div>
 	                <div class="col-sm-6" style="margin-bottom: 1em;">
-						<div class="input-group">
+						<div class="input-group input-group-sm">
 							<select class="form-control" ng-model="searchAccountTarget" ng-change="search()" ng-disabled="searchInBoth">
 								<option value="">Destino</option>
 								<option value="{{account._id}}" ng-repeat="account in accountsList">{{account.name}}</option>
@@ -85,7 +85,7 @@
 	            </div>
 				<div class="row">
 	                <div class="col-sm-5" style="margin-bottom: 1em;">
-	                    <div class="input-group">
+	                    <div class="input-group input-group-sm">
 							<input type="text" class="form-control"
 								datepicker-popup="dd-MM-yyyy"
 								ng-model="searchFromDate"
@@ -107,7 +107,7 @@
 					    </label>
 					</div>
 	                <div class="col-sm-6" style="margin-bottom: 1em;">
-	                    <div class="input-group">
+	                    <div class="input-group input-group-sm">
 							<input  ng-disabled="searchDateExact" type="text" class="form-control"
 								datepicker-popup="dd-MM-yyyy"
 								ng-model="searchToDate"
@@ -136,9 +136,9 @@
 					<th style="width: 150px"><div class="text-right">Valor €</div></th>
 					<th style="width: 150px">Origen</th>
 					<th style="width: 150px">Destino</th>
-					<th style="width: 300px">Tags</th>
+					<th>Tags</th>
 					<th style="width: 30px"></th>
-					<th style="width: 30px"></th>
+					<!-- <th style="width: 30px"></th> -->
 					<th style="width: 30px"></th>
 				</tr>
 			</thead>
@@ -160,11 +160,11 @@
 							<span class="fa fa-clone"></span>
 						</a>
 					</td>
-					<td>
+					<!-- <td>
 						<a ng-href="#/new-item/{{m._id}}" class="btn btn-primary btn-xs">
 							<span class="glyphicon glyphicon-edit"></span>
 						</a>
-					</td>
+					</td> -->
 					<td>
 						<a href="" ng-click="remove(m)" class="btn btn-danger btn-xs">
 							<span class="glyphicon glyphicon-remove"></span>
