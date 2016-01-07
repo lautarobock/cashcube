@@ -141,8 +141,8 @@
 			});
 		}
 
-		$scope.chartData = [300, 500, 100];
-		$scope.chartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+		// $scope.chartData = [300, 500, 100];
+		// $scope.chartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
 
 
 	});

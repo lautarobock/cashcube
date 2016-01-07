@@ -1,5 +1,9 @@
 <div class="" style="margin: 5em;">
 	<h3>Movimientos</h3>
+	<a ui-sref="new-item" class="pull-right btn btn-sm btn-success" style="margin-top: -40px;">
+		<span class="glyphicon glyphicon-plus"></span>
+		Nuevo
+	</a>
 	<div class="panel panel-default">
 	    <div class="panel-body" style="padding-bottom: 0;">
 	        <div class="row">
@@ -55,7 +59,10 @@
 	                    <div class="input-group input-group-sm">
 							<select class="form-control" ng-model="searchAccount" ng-change="search()">
 								<option value="">Origen</option>
-								<option value="{{account._id}}" ng-repeat="account in accountsList">{{account.name}}</option>
+								<option value="{{account._id}}"
+										ng-repeat="account in accountsList | filter:{archived:'!true'} | orderBy:'name'">
+									{{account.name}}
+								</option>
 							</select>
 							<span class="input-group-btn">
 					            <button ng-disabled="searchAccount==''"  ng-click="clearAccount()" class="btn btn-default" type="button">
@@ -73,7 +80,10 @@
 						<div class="input-group input-group-sm">
 							<select class="form-control" ng-model="searchAccountTarget" ng-change="search()" ng-disabled="searchInBoth">
 								<option value="">Destino</option>
-								<option value="{{account._id}}" ng-repeat="account in accountsList">{{account.name}}</option>
+								<option value="{{account._id}}"
+										ng-repeat="account in accountsList | filter:{archived:'!true'} | orderBy:'name'">
+									{{account.name}}
+								</option>
 							</select>
 							<span class="input-group-btn">
 					            <button ng-disabled="searchAccountTarget==''"  ng-click="clearAccountTarget()" class="btn btn-default" type="button">
@@ -126,6 +136,8 @@
 	            </div>
 	        </div>
 	    </div>
+
+
 		<table class="table table-striped table-condensed table-hover" style="margin-top:1em">
 
 			<thead>
