@@ -26,16 +26,22 @@
         </a>
         <div class="collapse navbar-collapse navbar-ex1-collapse" >
             <ul class="nav navbar-nav">
-                <li><a href="movement.html">Movimientos</a></li>
-                <li><a href="account.html">Cuentas</a></li>
-                <li><a href="currency.html">Moneda</a></li>
-                <li><a href="category.html">Categorias</a></li>
-                <li><a href="resume.html">Resume</a></li>
-                <li><a href="graph.html">Graficos</a></li>
-                <li><a href="cube.html">Cubo</a></li>
+                <li class="dropdown" ng-init="isCollapsed=true" ng-class="{open:!isCollapsed}">
+                    <a href="" class="dropdown-toggle" ng-click="isCollapsed = !isCollapsed">Old <span class="caret"></span></a>
+                    <ul class="dropdown-menu" >
+                        <li><a href="movement.html">Movimientos</a></li>
+                        <li><a href="account.html">Cuentas</a></li>
+                        <li><a href="currency.html">Moneda</a></li>
+                        <li><a href="category.html">Categorias</a></li>
+                        <li><a href="resume.html">Resume</a></li>
+                        <li><a href="graph.html">Graficos</a></li>
+                        <li><a href="cube.html">Cubo</a></li>
+                    </ul>
+                </li>
+
                 <li ng-class="{active:currentState()=='overview'}"><a ui-sref="overview">Overview</a></li>
                 <li ng-class="{active:currentState()=='movement'}"><a ui-sref="movement">Movimientos</a></li>
-                <li ng-class="{active:currentState()=='charts'}"><a ui-sref="charts">Graficos</a></li>
+                <!-- <li ng-class="{active:currentState()=='charts'}"><a ui-sref="charts">Graficos</a></li> -->
                 <li ng-class="{active:currentState()=='new-item'}"><a ui-sref="new-item">Nuevo</a></li>
             </ul>
         </div>
