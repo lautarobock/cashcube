@@ -185,6 +185,10 @@ function findOverview(items, expenses, includeAjuste) {
 				//Expense in account
 				var expense = expenses[k];
 				expense.total += item.amount *  item.accountTargetCurrency; //Valor en la moneda destino (la de la cuenta)
+                expense.totalEuros += item.amount;
+                if ( expense.currencies.indexOf(item.accountTargetCurrency) === -1 ) {
+                    expense.currencies.push(item.accountTargetCurrency);
+                }
 				labels = expense.labels;
 				if ( item.tags && item.tags.length != 0 ) {
 					//Remove
@@ -199,11 +203,13 @@ function findOverview(items, expenses, includeAjuste) {
 						// if ( show ) console.log("TAG: ", tag, labels[tag], !labels[tag]?true:false);
 						if ( !labels[tag] ) {
 							labels[tag] = {
-								total: 0
+								total: 0,
+                                totalEuros: 0
 							}
 							// if ( show ) console.log("ACTUAL:", labels);
 						}
 						labels[tag].total += item.amount *  item.accountTargetCurrency; //Valor en la moneda destino (la de la cuenta)
+                        labels[tag].totalEuros += item.amount;
 
 						if ( j<item.tags.length-1 ) {
 							if ( !labels[tag].labels ) {
@@ -221,10 +227,12 @@ function findOverview(items, expenses, includeAjuste) {
 					var tag = "_";
 					if ( !labels[tag] ) {
 						labels[tag] = {
-							total: 0
+							total: 0,
+                            totalEuros: 0
 						}
 					}
 					labels[tag].total += item.amount *  item.accountTargetCurrency; //Valor en la moneda destino (la de la cuenta)
+                    labels[tag].totalEuros += item.amount;
 				}
 
 			}
@@ -249,6 +257,10 @@ function findOverviewIncomes(items, expenses) {
                 //Expense in account
                 var expense = expenses[k];
                 expense.total += item.amount *  item.accountCurrency; //Valor en la moneda destino (la de la cuenta)
+                expense.totalEuros += item.amount;
+                if ( expense.currencies.indexOf(item.accountCurrency) === -1 ) {
+                    expense.currencies.push(item.accountCurrency);
+                }
                 labels = expense.labels;
                 if ( item.tags && item.tags.length != 0 ) {
                     //Remove
@@ -263,11 +275,13 @@ function findOverviewIncomes(items, expenses) {
                         // if ( show ) console.log("TAG: ", tag, labels[tag], !labels[tag]?true:false);
                         if ( !labels[tag] ) {
                             labels[tag] = {
-                                total: 0
+                                total: 0,
+                                totalEuros: 0
                             }
                             // if ( show ) console.log("ACTUAL:", labels);
                         }
                         labels[tag].total += item.amount *  item.accountCurrency; //Valor en la moneda destino (la de la cuenta)
+                        labels[tag].totalEuros += item.amount;
 
                         if ( j<item.tags.length-1 ) {
                             if ( !labels[tag].labels ) {
@@ -285,10 +299,12 @@ function findOverviewIncomes(items, expenses) {
                     var tag = "_";
                     if ( !labels[tag] ) {
                         labels[tag] = {
-                            total: 0
+                            total: 0,
+                            totalEuros: 0
                         }
                     }
                     labels[tag].total += item.amount *  item.accountCurrency; //Valor en la moneda destino (la de la cuenta)
+                    labels[tag].totalEuros += item.amount;
                 }
 
             }
@@ -362,7 +378,9 @@ function newAccounts(model) {
     for ( var i=0; i<model.length; i++ ) {
         accounts[model[i].name] = {
             sign: model[i].sign,
+            currencies: [],
             total: 0,
+            totalEuros: 0,
             labels: {
 
             }

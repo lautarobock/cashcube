@@ -144,8 +144,11 @@
 				<tr>
 					<th style="width: 100px">Fecha</th>
 					<th>Detalle</th>
-					<th style="width: 150px"><div class="text-right">Valor</div></th>
-					<th style="width: 150px"><div class="text-right">Valor €</div></th>
+					<th><div class="text-right">V. Origen</div></th>
+					<th style="width: 4em;"></th>
+					<th><div class="text-right">V. Destino</div></th>
+					<th style="width: 4em;"></th>
+					<th><div class="text-right">Valor €</div></th>
 					<th style="width: 150px">Origen</th>
 					<th style="width: 150px">Destino</th>
 					<th>Tags</th>
@@ -162,10 +165,25 @@
 							{{ m.description }}
 						</a>
 					</td>
-					<td><div class="text-right"><strong>{{ m.amount * m.accountTargetCurrency | number:2 }} {{getCurrency(m.accountTarget).sign}}</strong></div></td>
+					<td title="Cambio {{m.accountCurrency}}">
+						<div class="text-right">
+							<strong>
+								{{ m.amount * m.accountCurrency | number:2 }} {{getCurrency(m.account).sign}}
+							</strong>
+						</div>
+					</td>
+					<td>({{m.accountTargetCurrency/m.accountCurrency|number:2}})</td>
+					<td title="Cambio {{m.accountTargetCurrency}}">
+						<div class="text-right">
+							<strong>
+								{{ m.amount * m.accountTargetCurrency | number:2 }} {{getCurrency(m.accountTarget).sign}}
+							</strong>
+						</div>
+					</td>
+					<td>({{m.accountTargetCurrency}})</td>
 					<td><div class="text-right"><strong>{{ m.amount | currency:'€ ' }}</strong></div></td>
-					<td ng-style="{color:color[m.account]}">{{ getAccount(m.account).name }}</td>
-					<td ng-style="{color:color[m.accountTarget]}">{{ getAccount(m.accountTarget).name }}</td>
+					<td title="Cambio {{m.accountCurrency}}">{{ getAccount(m.account).name }}</td>
+					<td title="Cambio {{m.accountTargetCurrency}}">{{ getAccount(m.accountTarget).name }}</td>
 					<td>
 						<a ng-show="m.tags"
 							ng-repeat="tag in tagToList(m.tags)"
@@ -195,14 +213,12 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<th colspan="3"></th>
-					<th class="text-right">Total €</th>
-					<th class="text-right">{{totalEuro | currency:'€ '}}</th>
+					<th colspan="5" class="text-right">Total €</th>
+					<th colspan="2" class="text-right">{{totalEuro | currency:'€ '}}</th>
 				</tr>
 				<tr>
-					<th colspan="3"></th>
-					<th class="text-right">Total AR$</th>
-					<th class="text-right">{{totalEuro * currencies['peso'].value | currency:currencies['peso'].sign+' '}}</th>
+					<th colspan="5" class="text-right">Total AR$</th>
+					<th colspan="2" class="text-right">{{totalEuro * currencies['peso'].value | currency:currencies['peso'].sign+' '}}</th>
 				</tr>
 			</tfoot>
 		</table>
