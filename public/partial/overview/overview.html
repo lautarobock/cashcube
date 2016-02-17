@@ -134,6 +134,14 @@
                 </div>
             </div>
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Total US$</b>
+                    <span ng-style="styleCurrency(incomesTotal-overviewTotal)" class="pull-right">
+                        <b>{{(incomesTotal-overviewTotal) * currencies['dollar'].value|currency:currencies['dollar'].sign+' '}}</b>
+                    </span>
+                </div>
+            </div>
+            <div class="panel panel-default">
                 <div class="panel-heading" >
                     <b>Total €</b>
                     <span ng-style="styleCurrency(incomesTotal-overviewTotal)" class="pull-right" style="margin-left: 1em;">
