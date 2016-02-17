@@ -76,6 +76,18 @@
 		$rootScope.getCurrency = function(name) {
 			return $rootScope.currencies[$rootScope.getAccount(name).currency];
 		};
+
+		//Global filters
+		$rootScope.filters = {};
+		$rootScope.filters.searchText = '';
+		$rootScope.filters.searchTags = '';
+		$rootScope.filters.searchAccount = '';
+		$rootScope.filters.searchAccountTarget = '';
+		$rootScope.filters.searchInBoth = false;
+		$rootScope.filters.searchFromDate = null;
+		$rootScope.filters.searchToDate = null;
+		$rootScope.filters.searchDateExact = false;
+		$rootScope.filters.PAGE_SIZE = 10;
 	});
 
 	app.factory('Movement',function($resource) {

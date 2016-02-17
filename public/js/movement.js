@@ -2,8 +2,14 @@
 
 	var movement = angular.module("movement", ['ui.bootstrap']);
 
-	movement.controller("MovementController", function($scope, Movement, MovementCount, $timeout, $modal) {
-		$scope.PAGE_SIZE = 10;
+	movement.controller("MovementController", function(
+		$scope,
+		Movement,
+		MovementCount,
+		$timeout,
+		$modal,
+		$rootScope
+	) {
 		$scope.MAX_PAGES = 20;
 		$scope.currentPage = 1;
 
@@ -12,11 +18,11 @@
 		};
 
 		$scope.clearSearch = function() {
-			$scope.searchText = '';
+			$rootScope.filters.searchText = '';
 			loadPage();
 		};
 		$scope.clearTags = function() {
-			$scope.searchTags = '';
+			$rootScope.filters.searchTags = '';
 			loadPage();
 		};
 		var tags = {};
@@ -38,18 +44,18 @@
 			return tmp;
 		};
 		$scope.searchTag = function(tag) {
-			$scope.searchTags = tag;
+			$rootScope.filters.searchTags = tag;
 			loadPage();
 		};
-		$scope.searchAccount = '';
+		// $rootScope.filters.searchAccount = '';
 		$scope.clearAccount = function() {
-			$scope.searchAccount = '';
-			$scope.searchInBoth = false;
+			$rootScope.filters.searchAccount = '';
+			$rootScope.filters.searchInBoth = false;
 			loadPage();
 		};
-		$scope.searchAccountTarget = '';
+		// $rootScope.filters.searchAccountTarget = '';
 		$scope.clearAccountTarget = function() {
-			$scope.searchAccountTarget = '';
+			$rootScope.filters.searchAccountTarget = '';
 			loadPage();
 		};
 		//Date
@@ -57,44 +63,43 @@
 			from: false,
 			to: false
 		};
-		$scope.searchFromDate = null;
-		$scope.searchToDate = null;
-		$scope.searchDateExact = false;
+		// $rootScope.filters.searchFromDate = null;
+		// $rootScope.filters.searchToDate = null;
+		// $rootScope.filters.searchDateExact = false;
 		$scope.open = function(field) {
 			$scope.searchDateOpened[field] = true;
 		};
 		$scope.clearFromDate = function() {
-			$scope.searchFromDate = null;
+			$rootScope.filters.searchFromDate = null;
 			loadPage();
 		};
 		$scope.clearToDate = function() {
-			$scope.searchToDate = null;
+			$rootScope.filters.searchToDate = null;
 			loadPage();
 		};
-		$scope.$watch('searchDateExact', function(value) {
+		$scope.$watch('filters.searchDateExact', function(value) {
 			if ( value ) {
-				$scope.searchToDate = null;
+				$rootScope.filters.searchToDate = null;
 			}
 			loadPage();
 		});
 
 		$scope.clearFilters = function() {
-			$scope.searchText = '';
-			$scope.searchTags = '';
-			$scope.searchAccount = '';
-			$scope.searchAccountTarget = '';
-			$scope.searchInBoth = false;
-			$scope.searchFromDate = null;
-			$scope.searchToDate = null;
-			$scope.searchToDate = null;
-			$scope.searchDateExact = false;
+			$rootScope.filters.searchText = '';
+			$rootScope.filters.searchTags = '';
+			$rootScope.filters.searchAccount = '';
+			$rootScope.filters.searchAccountTarget = '';
+			$rootScope.filters.searchInBoth = false;
+			$rootScope.filters.searchFromDate = null;
+			$rootScope.filters.searchToDate = null;
+			$rootScope.filters.searchDateExact = false;
 			loadPage();
 		};
 
-		$scope.searchInBoth = false;
-		$scope.$watch('searchInBoth', function(value) {
+		// $rootScope.filters.searchInBoth = false;
+		$scope.$watch('filters.searchInBoth', function(value) {
 			if ( value ) {
-				$scope.searchAccountTarget = '';
+				$rootScope.filters.searchAccountTarget = '';
 			}
 			loadPage();
 		});
@@ -108,48 +113,48 @@
             },500);
         };
 
-        $scope.$watch("PAGE_SIZE", function() {
+        $scope.$watch("filters.PAGE_SIZE", function() {
         	loadPage();
         });
 
 		function loadPage() {
 			var params = {
 				page: $scope.currentPage,
-				pageSize: $scope.PAGE_SIZE
+				pageSize: $rootScope.filters.PAGE_SIZE
 			};
-			if ( $scope.searchText ) {
+			if ( $rootScope.filters.searchText ) {
 				params.filter = {
-					description: {"$regex": $scope.searchText,"$options": 'i'}
+					description: {"$regex": $rootScope.filters.searchText,"$options": 'i'}
 				}
 			}
-			if ( $scope.searchTags ) {
+			if ( $rootScope.filters.searchTags ) {
 				params.filter = params.filter || {};
-				params.filter.tags= $scope.searchTags;
+				params.filter.tags= $rootScope.filters.searchTags;
 			}
-			if ( $scope.searchAccount ) {
+			if ( $rootScope.filters.searchAccount ) {
 				params.filter = params.filter || {};
-				params.filter.account = $scope.searchAccount;
+				params.filter.account = $rootScope.filters.searchAccount;
 			}
-			if ( $scope.searchAccountTarget ) {
+			if ( $rootScope.filters.searchAccountTarget ) {
 				params.filter = params.filter || {};
-				params.filter.accountTarget = $scope.searchAccountTarget;
+				params.filter.accountTarget = $rootScope.filters.searchAccountTarget;
 			}
-			if ( $scope.searchInBoth ) {
+			if ( $rootScope.filters.searchInBoth ) {
 				params.filter = params.filter || {};
-				params.filter.searchInBoth = $scope.searchInBoth;
+				params.filter.searchInBoth = $rootScope.filters.searchInBoth;
 			}
-			if ( $scope.searchFromDate ) {
+			if ( $rootScope.filters.searchFromDate ) {
 				params.filter = params.filter || {};
-				params.filter.searchFromDate = $scope.searchFromDate;
+				params.filter.searchFromDate = $rootScope.filters.searchFromDate;
 			}
-			if ( $scope.searchToDate ) {
+			if ( $rootScope.filters.searchToDate ) {
 				params.filter = params.filter || {};
-				params.filter.searchToDate = $scope.searchToDate;
+				params.filter.searchToDate = $rootScope.filters.searchToDate;
 			}
-			if ( $scope.searchDateExact ) {
+			if ( $rootScope.filters.searchDateExact ) {
 				params.filter = params.filter || {};
-				params.filter.searchFromDate = $scope.searchFromDate;
-				params.filter.searchToDate = $scope.searchFromDate;
+				params.filter.searchFromDate = $rootScope.filters.searchFromDate;
+				params.filter.searchToDate = $rootScope.filters.searchFromDate;
 			}
 
 
