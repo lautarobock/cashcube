@@ -28,15 +28,15 @@ module.exports.findBalance = function(req, res) {
 		cash_peso: {debit:0, credit:0, category: 'Cash',style:'info'},
 		debito_rio: {debit:0, credit:0, category: 'Cuentas',style:'info'},
 		evo: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
-		paypal: {debit:0, credit:0, category: 'Cuentas',style:'active'},
+		// paypal: {debit:0, credit:0, category: 'Cuentas',style:'active'},
 		credito_rio: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		tarjeta_cencosud: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		tarjeta_evo: {debit:0, credit:0, category: 'Tarjeta',style:'danger'},
 		tarjeta_mel: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		deudas_general: {debit:0, credit:0, category: 'Otros',style:'active'},
-		polo: {debit:0, credit:0, category: 'Otros',style:'warning'},
+		// polo: {debit:0, credit:0, category: 'Otros',style:'warning'},
         tarjeta_galicia: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
-        galicia_debito: {debit:0, credit:0, category: 'Cuentas',style:'info'},
+        // galicia_debito: {debit:0, credit:0, category: 'Cuentas',style:'info'},
         payoneer: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
         amex: {debit:0, credit:0, category: 'Tarjeta',style:'info'}
 	};

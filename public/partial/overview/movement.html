@@ -185,8 +185,16 @@
 					</td>
 					<td>({{m.accountTargetCurrency}})</td>
 					<td><div class="text-right"><strong>{{ m.amount | currency:'€ ' }}</strong></div></td>
-					<td title="Cambio {{m.accountCurrency}}">{{ getAccount(m.account).name }}</td>
-					<td title="Cambio {{m.accountTargetCurrency}}">{{ getAccount(m.accountTarget).name }}</td>
+					<td title="Cambio {{m.accountCurrency}}">
+						<a href="" ng-click="searchOrigin(m.account)">
+							{{ getAccount(m.account).name }}
+						</a>
+					</td>
+					<td title="Cambio {{m.accountTargetCurrency}}">
+						<a href="" ng-click="searchTarget(m.accountTarget)">
+							{{ getAccount(m.accountTarget).name }}
+						</a>
+					</td>
 					<td>
 						<a ng-show="m.tags"
 							ng-repeat="tag in tagToList(m.tags)"

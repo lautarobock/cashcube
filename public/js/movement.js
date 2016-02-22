@@ -43,6 +43,14 @@
 			}
 			return tmp;
 		};
+		$scope.searchOrigin = function(account) {
+			$rootScope.filters.searchAccount = account;
+			loadPage();
+		};
+		$scope.searchTarget = function(account) {
+			$rootScope.filters.searchAccountTarget = account;
+			loadPage();
+		};
 		$scope.searchTag = function(tag) {
 			$rootScope.filters.searchTags = tag;
 			loadPage();
@@ -106,11 +114,16 @@
 
 		var activeTimeout = null;
 
-        $scope.search = function() {
+        $scope.search = function(noWait) {
             if ( activeTimeout ) $timeout.cancel(activeTimeout);
-            activeTimeout = $timeout(function() {
-                loadPage();
-            },500);
+			if ( noWait) {
+				loadPage();
+			} else {
+				activeTimeout = $timeout(function() {
+	                loadPage();
+	            },500);
+			}
+
         };
 
         $scope.$watch("filters.PAGE_SIZE", function() {

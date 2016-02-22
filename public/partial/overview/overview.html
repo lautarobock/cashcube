@@ -209,20 +209,20 @@
                 <tfoot>
                     <tr class="success">
                         <th colspan="6">Total</th>
-                        <th class="text-right" ng-style="styleCurrency(totals.balance)">{{totals.balance | currency: '€ '}}</th>
-                        <th class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev | currency: '€ '}}</th>
-                        <th class="text-right" ng-style="styleCurrency(totals.diff)">{{totals.diff | currency: '€ '}}</th>
+                        <th style="background: yellow;" class="text-right" ng-style="styleCurrency(totals.balance)">{{totals.balance | currency: '€ '}}</th>
+                        <th style="font-weight: normal;" class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev | currency: '€ '}}</th>
+                        <th style="background: yellow;" class="text-right" ng-style="styleCurrency(totals.diff)">{{totals.diff | currency: '€ '}}</th>
                     </tr>
                     <tr class="success">
                         <th colspan="6">Total US$</th>
                         <th class="text-right" ng-style="styleCurrency(totals.balance)">{{totals.balance*currencies.dollar.value | currency: 'US$ '}}</th>
-                        <th class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev*currencies.dollar.value | currency: 'US$ '}}</th>
+                        <th style="font-weight: normal;" class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev*currencies.dollar.value | currency: 'US$ '}}</th>
                         <th class="text-right" ng-style="styleCurrency(totals.diff)">{{totals.diff*currencies.dollar.value | currency: 'US$ '}}</th>
                     </tr>
                     <tr class="success">
                         <th colspan="6">Total AR$</th>
                         <th class="text-right" ng-style="styleCurrency(totals.balance)">{{totals.balance*currencies.peso.value | currency: 'AR$ '}}</th>
-                        <th class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev*currencies.peso.value | currency: 'AR$ '}}</th>
+                        <th style="font-weight: normal;" class="text-right" ng-style="styleCurrency(totals.prev)">{{totals.prev*currencies.peso.value | currency: 'AR$ '}}</th>
                         <th class="text-right" ng-style="styleCurrency(totals.diff)">{{totals.diff*currencies.peso.value | currency: 'AR$ '}}</th>
                     </tr>
                 </tfoot>
