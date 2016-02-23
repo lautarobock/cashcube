@@ -34,9 +34,9 @@ module.exports.findBalance = function(req, res) {
 		tarjeta_evo: {debit:0, credit:0, category: 'Tarjeta',style:'danger'},
 		tarjeta_mel: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		deudas_general: {debit:0, credit:0, category: 'Otros',style:'active'},
-		// polo: {debit:0, credit:0, category: 'Otros',style:'warning'},
+		polo: {debit:0, credit:0, category: 'Otros',style:'warning'},
         tarjeta_galicia: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
-        // galicia_debito: {debit:0, credit:0, category: 'Cuentas',style:'info'},
+        galicia_debito: {debit:0, credit:0, category: 'Cuentas',style:'info'},
         payoneer: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
         amex: {debit:0, credit:0, category: 'Tarjeta',style:'info'}
 	};
