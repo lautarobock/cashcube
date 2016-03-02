@@ -11,7 +11,7 @@
 
 	app.config(function($stateProvider, $urlRouterProvider) {
 
-		$urlRouterProvider.otherwise("/overview");
+		$urlRouterProvider.otherwise("/movement");
 
 		$stateProvider
 		    .state('overview', {
