@@ -27,11 +27,11 @@
 					</div>
 					<div class="col-lg-4 col-xs-12">
 			            <label>Origen</label>
-			            <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accounts | orderBy:'name' " ></select>
+			            <select class="form-control" ng-model="item.account" ng-options="account._id as account.name for account in accountsList | filter:buildFilter() | orderBy:'name' " ></select>
 					</div>
 					<div class="col-lg-4 col-xs-12">
 						<label>Destino</label>
-			            <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accounts | orderBy:'name'" ></select>
+			            <select class="form-control" ng-model="item.accountTarget" ng-options="account._id as account.name for account in accountsList | filter:buildFilter() | orderBy:'name'" ></select>
 	                </div>
 	            </div>
 				<div class="row">

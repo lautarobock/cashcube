@@ -74,7 +74,9 @@
 			return $rootScope.accounts[name];
 		};
 		$rootScope.getCurrency = function(name) {
-			return $rootScope.currencies[$rootScope.getAccount(name).currency];
+			if ($rootScope.getAccount(name)) {
+				return $rootScope.currencies[$rootScope.getAccount(name).currency];
+			}
 		};
 
 		//Global filters

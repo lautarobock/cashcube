@@ -1,14 +1,6 @@
 
 var bonus = angular.module('newItem',['ngResource', 'ui.bootstrap']);
 
-bonus.factory('Account',function($resource) {
-    return $resource('account',{},{
-        query: { method: 'GET', params: {   },isArray:true  }
-    });
-});
-
-
-
 bonus.filter("selected",function() {
     return function(accounts,availableAccount) {
         var result = [];
@@ -27,16 +19,17 @@ bonus.controller("NewItemController", function(
     $state,
     $stateParams,
     Movement,
-    Account,
     mode
 ) {
 	$scope.loading = 0;
 
-    $scope.availableAccount = ['cash_peso','credito_rio', 'cash'];
-
-    $scope.availableAccountTarget = ['vicio','bonus','super','salidas','fijos'];
-
-	$scope.accounts = Account.query();
+    $scope.buildFilter = function() {
+        if ( $stateParams.id ) {
+            return {};
+        } else {
+            return {'archived':'!true'};
+        }
+    };
 
     if ( $stateParams.id ) {
         Movement.get({
@@ -83,7 +76,7 @@ bonus.controller("NewItemController", function(
         if ( value ) {
             console.log("change", value, $scope.getCurrency(value));
             //cuando esta editando y es la primera vuelta le dejo el currency q traia
-            if ( !(first && $scope.item._id) ) {
+            if ( !(first && $scope.item._id) && $scope.getCurrency(value)) {
                 $scope.item.accountCurrency = $scope.getCurrency(value).value;
             }
             first = false;
@@ -94,7 +87,7 @@ bonus.controller("NewItemController", function(
     var firstTarget = true;
     $scope.$watch("item.accountTarget", function(value) {
         if ( value  ) {
-            if ( !(firstTarget && $scope.item._id) ) {
+            if ( !(firstTarget && $scope.item._id) && $scope.getCurrency(value)) {
                 $scope.item.accountTargetCurrency = $scope.getCurrency(value).value;
             }
             firstTarget = false;
