@@ -67,12 +67,14 @@ for ( var i in services) {
 //Resume Services
 var resume = require("./routes/resume.js");
 var overview = require("./routes/overview.js");
+var chart = require("./routes/chart.js");
 app.get('/movement-count/count',require('./routes/movement').count);
 app.get('/movement-count/total',require('./routes/movement').total);
 app.get('/resume',resume.findAll);
 app.get('/group',resume.findGroup);
 app.get('/cube/:year/:month',resume.findCube);
 app.get('/overview/:year/:month',overview.find);
+app.get('/chart/:account', chart.byMonth);
 app.get('/balance/:year/:month',overview.findBalance);
 app.get('/cubedefinition/:id',resume.findCubeDefinition);
 app.post('/cubedefinition',resume.saveCubeDefinition);

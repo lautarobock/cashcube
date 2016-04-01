@@ -121,18 +121,23 @@
 	          });
 	        }
 	      });
-	      // // to address @blesh's comment, set attribute value to 'false'
-	      // // on blur event:
-	      // element.bind('blur', function() {
-	      //    console.log('blur');
-	      //    scope.$apply(model.assign(scope, false));
-	      // });
 	    }
 	  };
 	});
 
-	app.controller('ChartsController', function() {
-
+	app.controller('ChartsController', function($scope, $http) {
+		$http.get('/chart/super').then(function(result) {
+			$scope.labels = [];
+    		$scope.series = ['€','AR$'];
+    		$scope.data = [
+      			[],[]
+    		];
+			angular.forEach(result.data,function(item) {
+				$scope.data[0].push(item.total);
+				$scope.data[1].push(item.totalCurrency);
+				$scope.labels.push(item.year+'/'+item.month);
+			});
+		});
 	});
 
 })();
