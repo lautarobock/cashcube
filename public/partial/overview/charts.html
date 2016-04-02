@@ -1,14 +1,42 @@
 <div class="container" style="margin: 5em;">
-
+    <div>
+        <select class="form-control"
+            ng-model="selected"
+            ng-change="changeAccount()">
+            <option ng-repeat="expense in expenses">{{expense.name}}</option>
+        </select>
+    </div>
     <h2>Gastos del Mes</h2>
     <div class="row">
-        <div class="col-lg-12" style="height:300px">
+        <div class="col-lg-8" >
             <canvas id="bar"
                 class="chart chart-bar"
                 data="data"
                 labels="labels"
                 legend="true"
                 series="series"></canvas>
+        </div>
+        <div class="col-lg-4" >
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th style="text-align: right;">Mes</th>
+                        <th style="text-align: right;">€</th>
+                        <th style="text-align: right;">Curr</th>
+                        <th style="text-align: right;">diff €</th>
+                        <th style="text-align: right;">diff Curr</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in all">
+                        <td style="text-align: right;">{{item.year}}/{{item.month}}</td>
+                        <td style="text-align: right;">{{item.total|number:2}}</td>
+                        <td style="text-align: right;">{{item.totalCurrency|number:2}}</td>
+                        <td style="text-align: right;">{{-((all[$index-1].total-item.total)/all[$index-1].total)*100|number:0}}%</td>
+                        <td style="text-align: right;">{{-((all[$index-1].totalCurrency-item.totalCurrency)/all[$index-1].totalCurrency)*100|number:0}}%</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

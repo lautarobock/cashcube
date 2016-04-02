@@ -125,19 +125,42 @@
 	  };
 	});
 
-	app.controller('ChartsController', function($scope, $http) {
-		$http.get('/chart/super').then(function(result) {
-			$scope.labels = [];
-    		$scope.series = ['€','AR$'];
-    		$scope.data = [
-      			[],[]
-    		];
-			angular.forEach(result.data,function(item) {
-				$scope.data[0].push(item.total);
-				$scope.data[1].push(item.totalCurrency);
-				$scope.labels.push(item.year+'/'+item.month);
+	app.controller('ChartsController', function($scope, $http, $filter, $q) {
+		var format = $filter('date');
+		var now = new Date().getTime();
+		var from = format(new Date(now-1000*60*60*24*365),'yyyyMM');
+		$scope.selected = 'super';
+
+		function load() {
+			$http.get('/chart/'+$scope.selected+'?from='+from).then(function(result) {
+				$scope.all = result.data;
+				$scope.labels = [];
+	    		$scope.series = ['€','AR$'];
+	    		$scope.data = [
+	      			[],[]
+	    		];
+				angular.forEach(result.data,function(item) {
+					$scope.data[0].push(item.total);
+					$scope.data[1].push(item.totalCurrency);
+					$scope.labels.push(item.year+'/'+item.month);
+				});
 			});
+		}
+		load();
+
+		// $q.all([$http.get('/overview/incomes'),$http.get('/overview/expenses')]).then(function(responses) {
+		// 	$scope.allCombo = responses[0].data.concat(responses[1].data);
+		// });
+		$http.get('/overview/incomes').then(function(result) {
+			$scope.incomes = result.data;
 		});
+		$http.get('/overview/expenses').then(function(result) {
+			$scope.expenses = result.data;
+		});
+
+		$scope.changeAccount = function(selected) {
+			load();
+		};
 	});
 
 })();

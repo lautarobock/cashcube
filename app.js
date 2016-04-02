@@ -73,6 +73,8 @@ app.get('/movement-count/total',require('./routes/movement').total);
 app.get('/resume',resume.findAll);
 app.get('/group',resume.findGroup);
 app.get('/cube/:year/:month',resume.findCube);
+app.get('/overview/incomes',overview.incomes);
+app.get('/overview/expenses',overview.expenses);
 app.get('/overview/:year/:month',overview.find);
 app.get('/chart/:account', chart.byMonth);
 app.get('/balance/:year/:month',overview.findBalance);

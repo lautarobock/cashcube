@@ -372,6 +372,14 @@ var EXPENSES_ACCOUNTS = [{
     sign: 'AR$'
 }];
 
+exports.incomes = function(res,res) {
+    res.send(INCOMES_ACCOUNTS);
+};
+
+exports.expenses = function(res,res) {
+    res.send(EXPENSES_ACCOUNTS);
+};
+
 function newAccounts(model) {
     var accounts = {};
 
