@@ -98,7 +98,7 @@ function createFilter (query) {
     }
     if (filter.searchToDate) {
         if ( filter.date ) {
-            filter.date['$lte'] = new Date(filter.searchToDate);    
+            filter.date['$lte'] = new Date(filter.searchToDate);
         } else {
             filter.date = {'$lte': new Date(filter.searchToDate)};
         }
@@ -128,4 +128,50 @@ module.exports.post = function(req,res,next,args,operation) {
     } else if ( operation == "update" || operation == "add" ) {
         joinTags(args);
     }
-}
+};
+
+module.exports.allTags = function(req, res) {
+    db.collection('movement', function(err, collection) {
+        console.log(err);
+        collection.find(
+            {$where: 'this.tags.length>0'},
+            {tags:1, account:1, accountTarget:1}
+        ).toArray(function(err, c) {
+            if ( !err ) {
+                var tags = {
+                    account: {},
+                    accountTarget: {}
+                };
+                for ( var i=0; i<c.length; i++ ) {
+                    for ( var j=0; j<c[i].tags.length; j++ ) {
+                        tags.account[c[i].account] = tags.account[c[i].account] || {};
+                        tags.accountTarget[c[i].accountTarget] = tags.accountTarget[c[i].accountTarget] || {};
+                        tags.account[c[i].account][c[i].tags[j]]=1;
+                        tags.accountTarget[c[i].accountTarget][c[i].tags[j]]=1;
+                    }
+                }
+                var tagsLists = {
+                    account: {},
+                    accountTarget: {}
+                };
+                for ( var k in tags.account ) {
+                    tagsLists.account[k] = [];
+                    for ( var l in tags.account[k] ) {
+                        tagsLists.account[k].push(l);
+                    }
+                }
+                for ( var k in tags.accountTarget ) {
+                    tagsLists.accountTarget[k] = [];
+                    for ( var l in tags.accountTarget[k] ) {
+                        tagsLists.accountTarget[k].push(l);
+                    }
+                }
+                res.send(tagsLists);
+            } else {
+                res.send(err);
+                console.log(err);
+            }
+
+        });
+    });
+};

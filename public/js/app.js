@@ -132,7 +132,9 @@
 		$scope.selected = 'super';
 
 		function load() {
-			$http.get('/chart/'+$scope.selected+'?from='+from).then(function(result) {
+			var query = '/chart/'+$scope.selected+'?from='+from;
+			if ( $scope.tags ) query += '&tags=' + $scope.tags;
+			$http.get(query).then(function(result) {
 				$scope.all = result.data;
 				$scope.labels = [];
 	    		$scope.series = ['€','AR$'];

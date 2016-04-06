@@ -31,6 +31,7 @@ module.exports.byMonth = function(req, res) {
     ];
     if ( req.query.from ) QUERY.push({$match: {_id: {$gte:req.query.from} } });
     if ( req.query.to ) QUERY.push({$match: {_id: {$lte:req.query.to} } });
+    if ( req.query.tags ) QUERY[0].$match.tags = req.query.tags;
 
     db.collection("movement", function(err, collection) {
         collection.aggregate(QUERY, function (err1, items) {

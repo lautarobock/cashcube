@@ -22,4 +22,4 @@ module.exports.pre = function(req,res,next,operation) {
     if ( operation == 'add' || operation == 'update' ) {
         req.body.active = (req.body.active == 'true');
     }
-}
+};
