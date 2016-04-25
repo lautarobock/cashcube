@@ -176,7 +176,6 @@ function findOverview(items, expenses, includeAjuste) {
 	}
 
 	var total = 0;
-// console.log("Items", items);
 	for( var i=0; i<items.length; i++ ) {
 		var item = items[i];
 		for( var k in expenses ) {
@@ -248,7 +247,6 @@ function findOverview(items, expenses, includeAjuste) {
 function findOverviewIncomes(items, expenses) {
 
     var total = 0;
-    // console.log("Items", items);
     for( var i=0; i<items.length; i++ ) {
         var item = items[i];
         for( var k in expenses ) {
@@ -342,41 +340,51 @@ var INCOMES_ACCOUNTS = [{
 
 var EXPENSES_ACCOUNTS = [{
     name: 'bonus',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 300
 },{
     name: 'extra',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 0
 },{
     name: 'fijos',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 1500
 },{
     name: 'salidas',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 150
 },{
     name: 'super',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 280
 },{
     name: 'viajes',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 0
 },{
     name: 'vicio',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 80
 },{
     name: 'comisiones',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 60
 },{
     name: 'ajuste',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 0
 },{
     name: 'cuencos',
-    sign: 'AR$'
+    sign: 'AR$',
+    max: 0
 }];
 
-exports.incomes = function(res,res) {
+exports.incomes = function(req,res) {
     res.send(INCOMES_ACCOUNTS);
 };
 
-exports.expenses = function(res,res) {
+exports.expenses = function(req,res) {
     res.send(EXPENSES_ACCOUNTS);
 };
 
@@ -386,6 +394,7 @@ function newAccounts(model) {
     for ( var i=0; i<model.length; i++ ) {
         accounts[model[i].name] = {
             sign: model[i].sign,
+            max: model[i].max||0,
             currencies: [],
             total: 0,
             totalEuros: 0,

@@ -89,6 +89,15 @@
 		$scope.showDetails = {};
 		$scope.showLabels = {};
 
+		$scope.barType = function(value, max) {
+			if ( value>max) {
+				return 'danger';
+			} else if ( value > (max*0.8) ) {
+				return 'warning';
+			} else {
+				return 'success';
+			}
+		};
 
 		// $scope.totals = {
 		// 	balance: 0,

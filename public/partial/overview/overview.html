@@ -9,9 +9,10 @@
              <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th style="width:50%">Cuenta</th>
-                        <th style="width:25%;text-align: right;"></th>
-                        <th style="width:25%;text-align: right;"></th>
+                        <th style="width:30%">Cuenta</th>
+                        <th style="width:20%;text-align: right;"></th>
+                        <th style="width:20%;text-align: right;"></th>
+                        <th style="width:30%;text-align: right;">Max</th>
                     </tr>
                 </thead>
                 <tbody  ng-if="value.total != 0" ng-repeat="(account, value) in items">
@@ -25,6 +26,15 @@
                         </td>
                         <td style="text-align: right;">{{value.sign}} {{value.total|number:2}}</td>
                         <td style="text-align: right;">€ {{value.totalEuros|number:2}}</td>
+                        <td style="text-align: right;">
+                            <progressbar style="margin-bottom: 0px" ng-show="value.max" max="value.max"
+                                value="value.totalEuros" type="{{barType(value.totalEuros, value.max)}}">
+                                <span style="color:white; white-space:nowrap;">
+                                    {{value.totalEuros*100/value.max|number:0}}% (€ {{value.max}})
+                                </span>
+                            </progressbar>
+                            <!-- <span ng-show="value.max">{{value.totalEuros*100/value.max|number:0}}% (€ {{value.max}})</span> -->
+                        </td>
                     </tr>
                     <tr ng-show="showLabels[account]">
                         <td colspan="3" style="padding-left: 1em;">
@@ -79,6 +89,14 @@
                         </th>
                         <th style="text-align: right;">
                             {{overviewTotal|currency:'€ '}}
+                        </th>
+                        <th style="text-align: right;">
+                            <progressbar style="margin-bottom: 0px" max="2500"
+                                value="overviewTotal" type="{{barType(overviewTotal, 2500)}}">
+                                <span style="color:white; white-space:nowrap;">
+                                    {{overviewTotal*100/2500|number:0}}% (€ 2500)
+                                </span>
+                            </progressbar>
                         </th>
                     </tr>
                 </tfoot>
