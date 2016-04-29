@@ -9,6 +9,8 @@
 		'newItem',
 		'chart.js']);
 
+	var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
 	app.config(function($stateProvider, $urlRouterProvider) {
 
 		$urlRouterProvider.otherwise("/movement");
@@ -59,6 +61,7 @@
 
 		$rootScope.accounts = {};
 		$rootScope.currencies = {};
+		$rootScope.allTags = {};
 		$http.get("account").success(function(accounts) {
 			for ( var k in accounts ) {
 				$rootScope.accounts[accounts[k]._id] = accounts[k];
@@ -78,6 +81,9 @@
 				return $rootScope.currencies[$rootScope.getAccount(name).currency];
 			}
 		};
+		$http.get('movement-tags').success(function(tags) {
+			$rootScope.allTags = tags;
+		});
 
 		//Global filters
 		$rootScope.filters = {};
@@ -90,6 +96,45 @@
 		$rootScope.filters.searchToDate = null;
 		$rootScope.filters.searchDateExact = false;
 		$rootScope.filters.PAGE_SIZE = 10;
+
+		//months
+		$rootScope.months = [];
+
+	    var yearStart = 2014;
+	    var monthStart = 10;
+
+	    var today = new Date();
+	    var yearEnd = today.getYear()+1900;
+	    var monthEnd = today.getMonth()+1;
+
+	    var formatMonth= function(month) {
+	        if ( m<10 ) {
+	            return '0'+m;
+	        } else {
+	            return m;
+	        }
+	    };
+
+	    for ( var y=yearStart; y<=yearEnd; y++ ) {
+	        var mEnd = 12;
+	        if ( y == yearEnd ) {
+	            mEnd = monthEnd;
+	        }
+	        for ( var m=monthStart; m<=mEnd; m++ ) {
+	            //last day of month
+	            var dummy = new Date(y-1900,m,1);
+	            dummy.setDate(0);
+	            var month = {
+	                year: y,
+	                month: m,
+					id: ''+y+formatMonth(m),
+	                value: MONTHS[m-1] + ' de ' + y,
+	                lastDay: dummy.getDate()
+	            };
+	            $rootScope.months.push(month);
+	        }
+	        monthStart = 1;
+	    }
 	});
 
 	app.factory('Movement',function($resource) {
@@ -130,9 +175,21 @@
 		var now = new Date().getTime();
 		var from = format(new Date(now-1000*60*60*24*365),'yyyyMM');
 		$scope.selected = 'super';
+		$scope.from = $scope.months[$scope.months.length-13];
+		$scope.to = $scope.months[$scope.months.length-2];
 
 		function load() {
-			var query = '/chart/'+$scope.selected+'?from='+from;
+			$scope.sum = 0;
+			$scope.sumCurrency = 0;
+			$scope.avg = 0;
+			$scope.avgCurrency = 0;
+			$scope.desv = 0;
+			$scope.desvCurrency = 0;
+			$scope.max = 0;
+			$scope.maxCurrency = 0;
+			$scope.min = Math.pow(2,1024);
+			$scope.minCurrency = Math.pow(2,1024);
+			var query = '/chart/'+$scope.selected+'?from='+$scope.from.id+'&to='+$scope.to.id;
 			if ( $scope.tags ) query += '&tags=' + $scope.tags;
 			$http.get(query).then(function(result) {
 				$scope.all = result.data;
@@ -145,7 +202,24 @@
 					$scope.data[0].push(item.total);
 					$scope.data[1].push(item.totalCurrency);
 					$scope.labels.push(item.year+'/'+item.month);
+					$scope.sum += item.total;
+					$scope.sumCurrency += item.totalCurrency;
+					$scope.max = Math.max($scope.max,item.total);
+					$scope.maxCurrency = Math.max($scope.maxCurrency,item.totalCurrency);
+					$scope.min = Math.min($scope.min,item.total);
+					$scope.minCurrency = Math.min($scope.minCurrency,item.totalCurrency);
 				});
+				$scope.avg = $scope.sum/result.data.length;
+				$scope.avgCurrency = $scope.sumCurrency/result.data.length;
+				//calculo desvio estandar
+				angular.forEach(result.data,function(item) {
+					$scope.desv += (item.total-$scope.avg)*(item.total-$scope.avg);
+					$scope.desvCurrency += (item.totalCurrency-$scope.avgCurrency)*(item.totalCurrency-$scope.avgCurrency);
+				});
+				$scope.desv = $scope.desv / result.data.length-1;
+				$scope.desv = Math.sqrt($scope.desv);
+				$scope.desvCurrency = $scope.desvCurrency / result.data.length-1;
+				$scope.desvCurrency = Math.sqrt($scope.desvCurrency);
 			});
 		}
 		load();

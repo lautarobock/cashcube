@@ -6,7 +6,6 @@
 
 	});
 
-	var MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio', 'Julio', 'Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 	var DAYS = ['Dom','Lun','Mar','Mie','Jue','Vie','Sab'];
 
 	overview.controller("OverviewController", function($scope, $http) {
@@ -14,46 +13,7 @@
 		$scope.includeAjuste = true;
 
 		//Month selection
-		$scope.selected = null;
-
-    	$scope.months = [];
-
-	    var yearStart = 2014;
-	    var monthStart = 10;
-
-	    var today = new Date();
-	    var yearEnd = today.getYear()+1900;
-	    var monthEnd = today.getMonth()+1;
-
-	    var formatMonth= function(month) {
-	        if ( m<10 ) {
-	            return '0'+m;
-	        } else {
-	            return m;
-	        }
-	    };
-
-	    for ( var y=yearStart; y<=yearEnd; y++ ) {
-	        var mEnd = 12;
-	        if ( y == yearEnd ) {
-	            mEnd = monthEnd;
-	        }
-	        for ( var m=monthStart; m<=mEnd; m++ ) {
-	            //last day of month
-	            var dummy = new Date(y-1900,m,1);
-	            dummy.setDate(0);
-	            var month = {
-	                year: y,
-	                month: m,
-					id: ''+y+formatMonth(m),
-	                value: MONTHS[m-1] + ' de ' + y,
-	                lastDay: dummy.getDate()
-	            };
-	            $scope.months.push(month);
-	            $scope.selected = month;
-	        }
-	        monthStart = 1;
-	    }
+		$scope.selected = $scope.months[$scope.months.length-1];
 
 	    $scope.$watch("selected", function(month) {
 	    	if ( month ) {

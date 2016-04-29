@@ -146,8 +146,12 @@ module.exports.allTags = function(req, res) {
                     for ( var j=0; j<c[i].tags.length; j++ ) {
                         tags.account[c[i].account] = tags.account[c[i].account] || {};
                         tags.accountTarget[c[i].accountTarget] = tags.accountTarget[c[i].accountTarget] || {};
-                        tags.account[c[i].account][c[i].tags[j]]=1;
-                        tags.accountTarget[c[i].accountTarget][c[i].tags[j]]=1;
+                        tags.account[c[i].account][c[i].tags[j]] = tags.account[c[i].account][c[i].tags[j]] || 0;
+                        tags.accountTarget[c[i].accountTarget][c[i].tags[j]]=tags.accountTarget[c[i].accountTarget][c[i].tags[j]]||0;
+                        tags.account[c[i].account][c[i].tags[j]]++;
+                        tags.accountTarget[c[i].accountTarget][c[i].tags[j]]++;
+                        // tags.account[c[i].account][c[i].tags[j]]=1;
+                        // tags.accountTarget[c[i].accountTarget][c[i].tags[j]]=1;
                     }
                 }
                 var tagsLists = {
@@ -157,13 +161,19 @@ module.exports.allTags = function(req, res) {
                 for ( var k in tags.account ) {
                     tagsLists.account[k] = [];
                     for ( var l in tags.account[k] ) {
-                        tagsLists.account[k].push(l);
+                        tagsLists.account[k].push({
+                            name: l,
+                            count: tags.account[k][l]
+                        });
                     }
                 }
                 for ( var k in tags.accountTarget ) {
                     tagsLists.accountTarget[k] = [];
                     for ( var l in tags.accountTarget[k] ) {
-                        tagsLists.accountTarget[k].push(l);
+                        tagsLists.accountTarget[k].push({
+                            name: l,
+                            count: tags.accountTarget[k][l]
+                        });
                     }
                 }
                 res.send(tagsLists);

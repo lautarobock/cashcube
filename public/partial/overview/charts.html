@@ -1,25 +1,61 @@
 <div class="container" style="margin: 5em;">
-    <div>
-        <select class="form-control"
-            ng-model="selected"
-            ng-change="changeAccount()">
-            <option ng-repeat="expense in expenses">{{expense.name}}</option>
-        </select>
+    <div class="row">
+        <div class="col-lg-12" >
+            <label>Cuenta</label>
+            <select class="form-control"
+                ng-model="selected"
+                ng-change="tags=undefined;changeAccount()">
+                <option ng-repeat="expense in expenses" ng-selected="selected==expense.name" value="{{expense.name}}">
+                    {{getAccount(expense.name).name}}
+                </option>
+            </select>
+        </div>
     </div>
-    <div>
-        <input class="form-control"
-            ng-model="tags"
-            ng-change="changeAccount()"/>
+    <div class="row">
+        <div class="col-lg-12" >
+            <label>Tag</label>
+            <!-- <input class="form-control"
+                ng-model="tags"
+                ng-change="changeAccount()"/> -->
+            <div class="input-group">
+                <select class="form-control" ng-model="tags" ng-change="changeAccount()">
+                    <option value="">(Todos)</option>
+                    <option ng-repeat="tag in allTags.accountTarget[selected]|orderBy:'-count'" value="{{tag.name}}">
+                        {{tag.name}} ({{tag.count}})
+                    </option>
+                </select>
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="tags=undefined;changeAccount()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6" >
+            <label>Desde</label>
+            <select class="form-control" ng-change="changeAccount()" ng-model="from" ng-options="month.value for month in months"></select>
+        </div>
+        <div class="col-lg-6" >
+            <label>Hasta</label>
+            <select class="form-control" ng-change="changeAccount()" ng-model="to" ng-options="month.value for month in months"></select>
+        </div>
     </div>
     <h2>Gastos del Mes</h2>
-    <div class="row">
+    <div class="row" ng-init="type='Line'">
         <div class="col-lg-8" >
-            <canvas id="bar"
-                class="chart chart-bar"
+            <canvas id="base"
+                class="chart-base"
+                chart-type="type"
                 data="data"
                 labels="labels"
                 legend="true"
                 series="series"></canvas>
+            <div class="btn-group">
+                <label class="btn btn-primary" ng-model="type" btn-radio="'Line'">Lineas</label>
+                <label class="btn btn-primary" ng-model="type" btn-radio="'Bar'">Barras</label>
+            </div>
         </div>
         <div class="col-lg-4" >
             <table class="table table-condensed">
@@ -33,7 +69,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in all">
+                    <tr ng-repeat="item in all" ng-class="{success:item.total==min, danger:item.total==max}">
                         <td style="text-align: right;">{{item.year}}/{{item.month}}</td>
                         <td style="text-align: right;">{{item.total|number:2}}</td>
                         <td style="text-align: right;">{{item.totalCurrency|number:2}}</td>
@@ -41,6 +77,43 @@
                         <td style="text-align: right;">{{-((all[$index-1].totalCurrency-item.totalCurrency)/all[$index-1].totalCurrency)*100|number:0}}%</td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th style="text-align: right;">Total</th>
+                        <th style="text-align: right;">{{sum|number:2}}</th>
+                        <th style="text-align: right;">{{sumCurrency|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right;">Avg</th>
+                        <th style="text-align: right;">{{avg|number:2}}</th>
+                        <th style="text-align: right;">{{avgCurrency|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right;">Desvio</th>
+                        <th style="text-align: right;">{{desv|number:2}}</th>
+                        <th style="text-align: right;">{{desvCurrency|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr class="danger">
+                        <th style="text-align: right;">Max</th>
+                        <th style="text-align: right;">{{max|number:2}}</th>
+                        <th style="text-align: right;">{{maxCurrency|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr class="success">
+                        <th style="text-align: right;">Min</th>
+                        <th style="text-align: right;">{{min|number:2}}</th>
+                        <th style="text-align: right;">{{minCurrency|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
