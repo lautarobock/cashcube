@@ -78,14 +78,14 @@
                     </tr>
                 </tbody>
                 <tfoot>
-                    <tr>
+                    <tr ng-class="{success:top<(accountTop*all.length), danger:top>(accountTop*all.length)}">
                         <th style="text-align: right;">Total</th>
                         <th style="text-align: right;">{{sum|number:2}}</th>
                         <th style="text-align: right;">{{sumCurrency|number:2}}</th>
-                        <th style="text-align: right;"></th>
-                        <th style="text-align: right;"></th>
+                        <th style="text-align: right;">Limite:</th>
+                        <th style="text-align: right;">€ {{accountTop*all.length}}</th>
                     </tr>
-                    <tr>
+                    <tr ng-class="{success:avg<accountTop, danger:avg>accountTop}">
                         <th style="text-align: right;">Avg</th>
                         <th style="text-align: right;">{{avg|number:2}}</th>
                         <th style="text-align: right;">{{avgCurrency|number:2}}</th>
