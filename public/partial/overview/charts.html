@@ -117,5 +117,65 @@
             </table>
         </div>
     </div>
+    <div class="row" ng-init="typeExpenses='Line'">
+        <div class="col-lg-8" >
+            <canvas id="base"
+                class="chart-base"
+                chart-type="typeExpenses"
+                data="dataExpenses"
+                labels="labelsExpenses"
+                legend="true"
+                series="seriesExpenses"></canvas>
+            <div class="btn-group">
+                <label class="btn btn-primary" ng-model="typeExpenses" btn-radio="'Line'">Lineas</label>
+                <label class="btn btn-primary" ng-model="typeExpenses" btn-radio="'Bar'">Barras</label>
+            </div>
+        </div>
+        <div class="col-lg-4" >
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th style="text-align: right;">Mes</th>
+                        <th style="text-align: right;">€</th>
+                        <th style="text-align: right;">diff €</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in allExpenses" ng-class="{success:item.total==min, danger:item.total==max}">
+                        <td style="text-align: right;">{{item.year}}/{{item.month}}</td>
+                        <td style="text-align: right;">{{item.total|number:2}}</td>
+                        <td style="text-align: right;">{{-((allExpenses[$index-1].total-item.total)/allExpenses[$index-1].total)*100|number:0}}%</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th style="text-align: right;">Total</th>
+                        <th style="text-align: right;">{{sumExpenses|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right;">Avg</th>
+                        <th style="text-align: right;">{{avgExpenses|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: right;">Desvio</th>
+                        <th style="text-align: right;">{{desvExpenses|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr class="danger">
+                        <th style="text-align: right;">Max</th>
+                        <th style="text-align: right;">{{maxExpenses|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                    <tr class="success">
+                        <th style="text-align: right;">Min</th>
+                        <th style="text-align: right;">{{minExpenses|number:2}}</th>
+                        <th style="text-align: right;"></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 
 </div>

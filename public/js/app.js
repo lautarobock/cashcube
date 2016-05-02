@@ -190,6 +190,7 @@
 			$scope.min = Math.pow(2,1024);
 			$scope.minCurrency = Math.pow(2,1024);
 			var query = '/chart/'+$scope.selected+'?from='+$scope.from.id+'&to='+$scope.to.id;
+			var queryExpenses = '/chart/expenses?from='+$scope.from.id+'&to='+$scope.to.id;
 			if ( $scope.tags ) query += '&tags=' + $scope.tags;
 			$http.get(query).then(function(result) {
 				$scope.all = result.data;
@@ -221,6 +222,33 @@
 				$scope.desv = Math.sqrt($scope.desv);
 				$scope.desvCurrency = $scope.desvCurrency / result.data.length-1;
 				$scope.desvCurrency = Math.sqrt($scope.desvCurrency);
+			});
+
+			$scope.sumExpenses = 0;
+			$scope.maxExpenses = 0;
+			$scope.minExpenses = Math.pow(2,1024);
+			$scope.desvExpenses = 0;
+			$http.get(queryExpenses).then(function(result) {
+				$scope.allExpenses = result.data;
+				$scope.labelsExpenses = [];
+				$scope.seriesExpenses = ['Express'];
+				$scope.dataExpenses = [
+					[]
+				];
+				angular.forEach(result.data,function(item) {
+					$scope.dataExpenses[0].push(item.total);
+					$scope.labelsExpenses.push(item.year+'/'+item.month);
+					$scope.sumExpenses += item.total;
+					$scope.maxExpenses = Math.max($scope.maxExpenses,item.total);
+					$scope.minExpenses = Math.min($scope.minExpenses,item.total);
+				});
+				$scope.avgExpenses = $scope.sumExpenses/result.data.length;
+				//calculo desvio estandar
+				angular.forEach(result.data,function(item) {
+					$scope.desvExpenses += (item.total-$scope.avgExpenses)*(item.total-$scope.avgExpenses);
+				});
+				$scope.desvExpenses = $scope.desvExpenses / result.data.length-1;
+				$scope.desvExpenses = Math.sqrt($scope.desvExpenses);
 			});
 		}
 		load();

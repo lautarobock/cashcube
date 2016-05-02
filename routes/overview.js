@@ -388,6 +388,8 @@ exports.expenses = function(req,res) {
     res.send(EXPENSES_ACCOUNTS);
 };
 
+exports.EXPENSES_ACCOUNTS = EXPENSES_ACCOUNTS;
+
 function newAccounts(model) {
     var accounts = {};
 

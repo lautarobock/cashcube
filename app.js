@@ -77,6 +77,7 @@ app.get('/cube/:year/:month',resume.findCube);
 app.get('/overview/incomes',overview.incomes);
 app.get('/overview/expenses',overview.expenses);
 app.get('/overview/:year/:month',overview.find);
+app.get('/chart/expenses', chart.expenses);
 app.get('/chart/:account', chart.byMonth);
 app.get('/balance/:year/:month',overview.findBalance);
 app.get('/cubedefinition/:id',resume.findCubeDefinition);
