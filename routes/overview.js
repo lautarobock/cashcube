@@ -357,7 +357,7 @@ var EXPENSES_ACCOUNTS = [{
 },{
     name: 'super',
     sign: 'AR$',
-    max: 280
+    max: 300
 },{
     name: 'viajes',
     sign: 'AR$',
