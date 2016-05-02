@@ -198,6 +198,7 @@
 	    		$scope.data = [
 	      			[],[]
 	    		];
+				$scope.accountTop = _.find($scope.expenses, {name:$scope.selected}).max;
 				angular.forEach(result.data,function(item) {
 					$scope.data[0].push(item.total);
 					$scope.data[1].push(item.totalCurrency);
