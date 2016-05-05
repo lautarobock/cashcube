@@ -365,7 +365,7 @@ var EXPENSES_ACCOUNTS = [{
 },{
     name: 'vicio',
     sign: 'AR$',
-    max: 80
+    max: 120
 },{
     name: 'comisiones',
     sign: 'AR$',
