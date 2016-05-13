@@ -32,7 +32,7 @@ module.exports.findBalance = function(req, res) {
 		credito_rio: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		tarjeta_cencosud: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		tarjeta_evo: {debit:0, credit:0, category: 'Tarjeta',style:'danger'},
-		tarjeta_mel: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
+		//tarjeta_mel: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		deudas_general: {debit:0, credit:0, category: 'Otros',style:'active'},
 		// polo: {debit:0, credit:0, category: 'Otros',style:'warning'},
         // tarjeta_galicia: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
