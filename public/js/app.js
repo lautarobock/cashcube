@@ -97,6 +97,17 @@
 		$rootScope.filters.searchDateExact = false;
 		$rootScope.filters.PAGE_SIZE = 10;
 
+		$rootScope.clearAllFilters = function() {
+			$rootScope.filters.searchText = '';
+			$rootScope.filters.searchTags = '';
+			$rootScope.filters.searchAccount = '';
+			$rootScope.filters.searchAccountTarget = '';
+			$rootScope.filters.searchInBoth = false;
+			$rootScope.filters.searchFromDate = null;
+			$rootScope.filters.searchToDate = null;
+			$rootScope.filters.searchDateExact = false;
+		};
+
 		//months
 		$rootScope.months = [];
 

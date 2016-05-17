@@ -79,6 +79,7 @@
 		};
 		$scope.clearFromDate = function() {
 			$rootScope.filters.searchFromDate = null;
+			$rootScope.filters.searchDateExact = false;
 			loadPage();
 		};
 		$scope.clearToDate = function() {
@@ -93,14 +94,7 @@
 		});
 
 		$scope.clearFilters = function() {
-			$rootScope.filters.searchText = '';
-			$rootScope.filters.searchTags = '';
-			$rootScope.filters.searchAccount = '';
-			$rootScope.filters.searchAccountTarget = '';
-			$rootScope.filters.searchInBoth = false;
-			$rootScope.filters.searchFromDate = null;
-			$rootScope.filters.searchToDate = null;
-			$rootScope.filters.searchDateExact = false;
+			$rootScope.clearAllFilters();
 			loadPage();
 		};
 

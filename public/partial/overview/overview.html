@@ -18,11 +18,12 @@
                 <tbody  ng-if="value.total != 0" ng-repeat="(account, value) in items">
                     <tr style="background: #f5f5f5">
                         <td>
-                            {{getAccount(account).name}}
+                            <a href="" ng-click="gotoAccount(account)">{{getAccount(account).name}}</a>
                             <a href="" ng-show="hasAccountDetail(value)" ng-click="showLabels[account]=!showLabels[account]">
                                 <span ng-if="!showLabels[account]"  class="glyphicon glyphicon-expand"></span>
                                 <span ng-if="showLabels[account]"  class="glyphicon glyphicon-collapse-up"></span>
                             </a>
+
                         </td>
                         <td style="text-align: right;">{{value.sign}} {{value.total|number:2}}</td>
                         <td style="text-align: right;">€ {{value.totalEuros|number:2}}</td>
@@ -42,7 +43,7 @@
                                 <tbody ng-repeat="(label, labelValue) in value.labels">
                                     <tr style="background: lightgoldenrodyellow">
                                         <td style="width:50%;">
-                                            {{normalize(label)}}
+                                            <a href="" ng-click="gotoAccount(account, label)">{{normalize(label)}}</a>
                                             <a ng-if="labelValue.labels && !showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
                                                 <span class="glyphicon glyphicon-expand"></span>
                                             </a>
@@ -62,7 +63,9 @@
                                             <table class="table table-condensed">
                                                 <tbody ng-repeat="(subLabel, subLabelValue) in labelValue.labels">
                                                     <tr>
-                                                        <td style="width:50%;">{{normalize(subLabel)}}</td>
+                                                        <td style="width:50%;">
+                                                            <a href="" ng-click="gotoAccount(account, subLabel)">{{normalize(subLabel)}}</a>
+                                                        </td>
                                                         <td style="width:25%;text-align: right;">
                                                             {{value.sign}} {{subLabelValue.total|number:2}}
                                                         </td>
