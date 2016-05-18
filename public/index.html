@@ -40,10 +40,26 @@
                     </ul>
                 </li>
 
-                <li ng-class="{active:currentState()=='overview'}"><a ui-sref="overview">Overview</a></li>
-                <li ng-class="{active:currentState()=='movement'}"><a ui-sref="movement">Movimientos</a></li>
-                <li ng-class="{active:currentState()=='charts'}"><a ui-sref="charts">Graficos</a></li>
-                <li ng-class="{active:currentState()=='new-item'}"><a ui-sref="new-item">Nuevo</a></li>
+                <li ng-class="{active:currentState()=='overview'}">
+                    <a ui-sref="overview">
+                        <span class="glyphicon glyphicon-tasks">Overview</span>
+                    </a>
+                </li>
+                <li ng-class="{active:currentState()=='movement'}">
+                    <a ui-sref="movement">
+                        <span class="glyphicon glyphicon-sort">Movimientos</span>
+                    </a>
+                </li>
+                <li ng-class="{active:currentState()=='charts'}">
+                    <a ui-sref="charts">
+                        <span class="glyphicon glyphicon-stats">Graficos</span>
+                    </a>
+                </li>
+                <li ng-class="{active:currentState()=='new-item'}">
+                    <a ui-sref="new-item">
+                        <span class="glyphicon glyphicon-plus-sign">Nuevo</span>
+                    </a>
+                </li>
             </ul>
         </div>
       </div>
