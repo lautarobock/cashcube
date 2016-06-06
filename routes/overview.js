@@ -369,7 +369,7 @@ var EXPENSES_ACCOUNTS = [{
 },{
     name: 'comisiones',
     sign: 'AR$',
-    max: 60
+    max: 100
 },{
     name: 'ajuste',
     sign: 'AR$',
