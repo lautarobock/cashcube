@@ -113,9 +113,10 @@
             <table class="table table-condensed">
                 <thead>
                    <tr>
-                       <th style="width:50%">Cuenta</th>
-                       <th style="width:25%;text-align: right;"></th>
-                       <th style="width:25%;text-align: right;"></th>
+                       <th style="width:40%">Cuenta</th>
+                       <th style="width:20%;text-align: right;"></th>
+                       <th style="width:20%;text-align: right;"></th>
+                       <th style="width:20%;text-align: right;"></th>
                    </tr>
                 </thead>
                 <tbody  ng-if="value.total != 0" ng-repeat="(account, value) in incomes">
@@ -129,13 +130,16 @@
                        </td>
                        <td style="text-align: right;">{{value.sign}} {{value.total|number:2}}</td>
                        <td style="text-align: right;">€ {{value.totalEuros|number:2}}</td>
+                       <td style="text-align: right;">
+                           {{value.totalEuros*currencies['dollar'].value|currency:currencies['dollar'].sign+' '}}
+                       </td>
                    </tr>
                    <tr ng-show="showLabels[account]">
-                       <td colspan="3" style="padding-left: 1em;">
+                       <td colspan="4" style="padding-left: 1em;">
                            <table class="table table-condensed">
                                <tbody ng-repeat="(label, labelValue) in value.labels">
                                    <tr style="background: lightgoldenrodyellow">
-                                       <td style="width:50%;">
+                                       <td style="width:40%;">
                                            {{normalize(label)}}
                                            <a ng-if="labelValue.labels && !showDetails[label]" href="" ng-click="showDetails[label]=!showDetails[label]">
                                                <span class="glyphicon glyphicon-expand"></span>
@@ -144,24 +148,30 @@
                                                <span class="glyphicon glyphicon-collapse-up"></span>
                                            </a>
                                        </td>
-                                       <td style="width:25%;text-align: right;">
+                                       <td style="width:20%;text-align: right;">
                                            {{value.sign}} {{labelValue.total|number:2}}
                                        </td>
-                                       <td style="width:25%;text-align: right;">
+                                       <td style="width:20%;text-align: right;">
                                            € {{labelValue.totalEuros|number:2}}
+                                       </td>
+                                       <td style="width:20%;text-align: right;">
+                                           {{labelValue.totalEuros*currencies['dollar'].value|currency:currencies['dollar'].sign+' '}}
                                        </td>
                                    </tr>
                                    <tr collapse="!showDetails[label]">
-                                       <td colspan="3" style="padding-left: 1em;">
+                                       <td colspan="4" style="padding-left: 1em;">
                                            <table class="table table-condensed">
                                                <tbody ng-repeat="(subLabel, subLabelValue) in labelValue.labels">
                                                    <tr>
-                                                       <td style="width:50%;">{{normalize(subLabel)}}</td>
-                                                       <td style="width:25%;text-align: right;">
+                                                       <td style="width:40%;">{{normalize(subLabel)}}</td>
+                                                       <td style="width:20%;text-align: right;">
                                                            {{value.sign}} {{subLabelValue.total|number:2}}
                                                        </td>
-                                                       <td style="width:25%;text-align: right;">
+                                                       <td style="width:20%;text-align: right;">
                                                            € {{subLabelValue.totalEuros|number:2}}
+                                                       </td>
+                                                       <td style="width:20%;text-align: right;">
+                                                           {{subLabelValue.totalEuros*currencies['dollar'].value|currency:currencies['dollar'].sign+' '}}
                                                        </td>
                                                    </tr>
                                                </tbody>
@@ -181,6 +191,9 @@
                        </th>
                        <th style="text-align: right;">
                            {{incomesTotal|currency:'€ '}}
+                       </th>
+                       <th style="text-align: right;">
+                           {{incomesTotal*currencies['dollar'].value|currency:currencies['dollar'].sign+' '}}
                        </th>
                    </tr>
                 </tfoot>
