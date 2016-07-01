@@ -115,9 +115,9 @@
 
 		$scope.gotoAccount = function(account, label) {
 			$rootScope.clearAllFilters();
-			var from = new Date();
+			var from = new Date($scope.selected.year + "/" + $scope.selected.month );
 			from.setDate(1);
-			var to = new Date();
+			var to = new Date($scope.selected.year + "/" + $scope.selected.month );
 			to.setMonth(to.getMonth()+1);
 			to.setDate(0);
 			$rootScope.filters.searchFromDate = from;
