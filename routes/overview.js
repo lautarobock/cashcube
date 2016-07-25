@@ -375,8 +375,12 @@ var EXPENSES_ACCOUNTS = [{
     sign: 'AR$',
     max: 0
 },{
-    name: 'cuencos',
+    name: 'bonus',
     sign: 'AR$',
+    max: 300
+},{
+    name: 'casa',
+    sign: 'US$',
     max: 0
 }];
 
