@@ -113,7 +113,7 @@
 		// $scope.chartData = [300, 500, 100];
 		// $scope.chartLabels = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
 
-		$scope.gotoAccount = function(account, label) {
+		$scope.gotoAccountTarget = function(account, label) {
 			$rootScope.clearAllFilters();
 			var from = new Date($scope.selected.year + "/" + $scope.selected.month );
 			from.setDate(1);
@@ -123,6 +123,23 @@
 			$rootScope.filters.searchFromDate = from;
 			$rootScope.filters.searchToDate = to;
 			$rootScope.filters.searchAccountTarget = account;
+			if ( label ) {
+				if ( label === '_' ) label = '';
+				$rootScope.filters.searchTags = label;
+			}
+			$state.go('movement');
+		};
+		
+		$scope.gotoAccount = function(account, label) {
+			$rootScope.clearAllFilters();
+			var from = new Date($scope.selected.year + "/" + $scope.selected.month );
+			from.setDate(1);
+			var to = new Date($scope.selected.year + "/" + $scope.selected.month );
+			to.setMonth(to.getMonth()+1);
+			to.setDate(0);
+			$rootScope.filters.searchFromDate = from;
+			$rootScope.filters.searchToDate = to;
+			$rootScope.filters.searchAccount = account;
 			if ( label ) {
 				if ( label === '_' ) label = '';
 				$rootScope.filters.searchTags = label;

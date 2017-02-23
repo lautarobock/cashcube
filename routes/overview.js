@@ -174,6 +174,7 @@ function findOverview(items, expenses, includeAjuste) {
 
 	if ( !includeAjuste ) {
 		delete expenses.ajuste;
+        delete expenses.comisiones;
 	}
 
 	var total = 0;
