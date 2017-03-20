@@ -212,8 +212,8 @@
                     <tr>
                         <th style="text-align: right;"></th>
                         <th style="text-align: right;">Total AR$</th>
-                        <th style="text-align: right;">Total US$</th>
                         <th style="text-align: right;">Total €</th>
+                        <th style="text-align: right;">Total US$</th>
                     </tr>
                 </thead>
                 <tr class="bg-info">
@@ -247,11 +247,11 @@
                     <th style="text-align: right;" ng-style="styleCurrency(incomesTotal-overviewTotal)">
                         {{(incomesTotal-overviewTotal) * currencies['peso'].value|currency:currencies['peso'].sign+' '}}
                     </th>
-                    <th style="background: yellow;text-align: right;" ng-style="styleCurrency(incomesTotal-overviewTotal)">
-                        {{(incomesTotal-overviewTotal) * currencies['dollar'].value|currency:currencies['dollar'].sign+' '}}
-                    </th>
                     <th style="text-align: right;" ng-style="styleCurrency(incomesTotal-overviewTotal)">
                         {{(incomesTotal-overviewTotal)|currency:'€ '}}
+                    </th>
+                    <th style="background: yellow;text-align: right;" ng-style="styleCurrency(incomesTotal-overviewTotal)">
+                        {{(incomesTotal-overviewTotal) * currencies['dollar'].value|currency:currencies['dollar'].sign+' '}}
                     </th>
                 </tr>
             </table>
