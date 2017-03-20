@@ -384,6 +384,10 @@ var EXPENSES_ACCOUNTS = [{
     name: 'casa',
     sign: 'US$',
     max: 0
+},{
+    name: 'cuencos',
+    sign: 'AR$',
+    max: 0
 }];
 
 exports.incomes = function(req,res) {
