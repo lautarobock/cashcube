@@ -26,8 +26,9 @@ module.exports.findBalance = function(req, res) {
 		cash: {debit:0, credit:0, category: 'Cash',style:'danger'},
 		cash_dolar: {debit:0, credit:0, category: 'Cash',style:'danger'},
 		cash_peso: {debit:0, credit:0, category: 'Cash',style:'info'},
-		debito_rio: {debit:0, credit:0, category: 'Cuentas',style:'info'},
+		debito_rio: {debit:0, credit:0, category: 'Cuentas',style:'active'},
 		evo: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
+        uy: {debit:0, credit:0, category: 'Cuentas',style:'info'},
 		// paypal: {debit:0, credit:0, category: 'Cuentas',style:'active'},
 		credito_rio: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		tarjeta_cencosud: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
@@ -37,9 +38,9 @@ module.exports.findBalance = function(req, res) {
 		// polo: {debit:0, credit:0, category: 'Otros',style:'warning'},
         // tarjeta_galicia: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
         // galicia_debito: {debit:0, credit:0, category: 'Cuentas',style:'info'},
-        payoneer: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
-        payoneer_mel: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
-        amex: {debit:0, credit:0, category: 'Tarjeta',style:'info'}
+        payoneer: {debit:0, credit:0, category: 'Cuentas',style:'info'},
+        payoneer_mel: {debit:0, credit:0, category: 'Cuentas',style:'active'},
+        amex: {debit:0, credit:0, category: 'Tarjeta',style:'danger'}
 	};
 
 	var m = req.params.month;
