@@ -70,8 +70,7 @@ var overview = require("./routes/overview.js");
 var chart = require("./routes/chart.js");
 //cors enable
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   next();
 });
 app.get('/movement-count/count',require('./routes/movement').count);
