@@ -14,6 +14,12 @@ var express = require('express')
 var app = express();
 
 app.configure(function(){
+  app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    next();
+  });
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -29,7 +35,7 @@ app.configure(function(){
 
 });
 
-app.configure('development', function(){
+app.configure('development', function() {
   app.use(express.errorHandler());
   app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
   app.use(express.bodyParser());
@@ -48,7 +54,6 @@ app.configure('development', function(){
 //        res.redirect("/index.html");
 //    }
 //});
-
 
 //REST servces configuration
 //var rest = require("./util/rest.js");
@@ -69,10 +74,7 @@ var resume = require("./routes/resume.js");
 var overview = require("./routes/overview.js");
 var chart = require("./routes/chart.js");
 //cors enable
-app.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  next();
-});
+
 app.get('/movement-count/count',require('./routes/movement').count);
 app.get('/movement-count/total',require('./routes/movement').total);
 app.get('/movement-tags', require('./routes/movement').allTags);
