@@ -68,6 +68,12 @@ for ( var i in services) {
 var resume = require("./routes/resume.js");
 var overview = require("./routes/overview.js");
 var chart = require("./routes/chart.js");
+//cors enable
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.get('/movement-count/count',require('./routes/movement').count);
 app.get('/movement-count/total',require('./routes/movement').total);
 app.get('/movement-tags', require('./routes/movement').allTags);
