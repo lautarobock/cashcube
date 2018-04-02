@@ -32,7 +32,7 @@ module.exports.findBalance = function(req, res) {
         uy: {debit:0, credit:0, category: 'Cuentas',style:'info'},
 		// paypal: {debit:0, credit:0, category: 'Cuentas',style:'active'},
 		credito_rio: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
-		tarjeta_cencosud: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
+		// tarjeta_cencosud: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		tarjeta_evo: {debit:0, credit:0, category: 'Tarjeta',style:'danger'},
 		//tarjeta_mel: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
 		deudas_general: {debit:0, credit:0, category: 'Otros',style:'active'},
@@ -40,8 +40,8 @@ module.exports.findBalance = function(req, res) {
         // tarjeta_galicia: {debit:0, credit:0, category: 'Tarjeta',style:'info'},
         // galicia_debito: {debit:0, credit:0, category: 'Cuentas',style:'info'},
         payoneer: {debit:0, credit:0, category: 'Cuentas',style:'info'},
-        payoneer_mel: {debit:0, credit:0, category: 'Cuentas',style:'active'},
-        amex: {debit:0, credit:0, category: 'Tarjeta',style:'danger'}
+        payoneer_mel: {debit:0, credit:0, category: 'Cuentas',style:'active'}
+        // amex: {debit:0, credit:0, category: 'Tarjeta',style:'danger'}
 	};
 
 	var m = req.params.month;
