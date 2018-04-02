@@ -25,6 +25,7 @@ module.exports.findBalance = function(req, res) {
 	var balance = {
 		cash: {debit:0, credit:0, category: 'Cash',style:'danger'},
 		cash_dolar: {debit:0, credit:0, category: 'Cash',style:'danger'},
+        cash_pound: {debit:0, credit:0, category: 'Cash',style:'danger'},
 		cash_peso: {debit:0, credit:0, category: 'Cash',style:'info'},
 		debito_rio: {debit:0, credit:0, category: 'Cuentas',style:'active'},
 		evo: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
