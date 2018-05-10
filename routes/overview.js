@@ -326,6 +326,9 @@ var INCOMES_ACCOUNTS = [{
     name: 'palantir',
     sign: 'U$S'
 },{
+    name: 'ifn',
+    sign: 'AR$'
+},{
     name: 'dmx',
     sign: 'AR$'
 },{
