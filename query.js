@@ -9,12 +9,12 @@ var db = require("./util/db");
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure;
+    BSON = mongo.BSONPure, MongoClient = mongo.MongoClient;
 
 var database= db.config;
 
 var url=require('util').format(database.url);
 
-new Db.connect(url,function(err,nnd){
-    db = nnd;
+MongoClient.connect(url,function(err,nnd){
+    db = nnd.db('cashcube');
 });

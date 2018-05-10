@@ -9,7 +9,8 @@ var mongo = require('mongodb');
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure;
+    BSON = mongo.BSONPure,
+    MongoClient = mongo.MongoClient;
 
 var db;
 
@@ -22,9 +23,9 @@ var database= {
 
 var url=require('util').format('mongodb://%s:%d/%s',database.ip,database.port,database.name);
 
-new Db.connect(url,function(err,nnd){
-    db = nnd;
-});
+// MongoClient.connect(url,function(err,nnd){
+//     db = nnd.db('cashcube');
+// });
 
 exports.findById = function(req, res) {
     var id = req.params.id;

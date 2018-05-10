@@ -5,7 +5,8 @@ var db = require("../util/db");
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure;
+    BSON = mongo.BSONPure,
+    MongoClient = mongo.MongoClient;
 
 var db;
 
@@ -14,8 +15,8 @@ var database= db.config;
 var url=require('util').format(database.url);
 //var url=require('util').format('mongodb://663a9748-776b-4d72-9b91-443da8eeb3c0:e36ef048-0346-460b-aa84-17f96c686ed1@localhost:10000/db');
 
-new Db.connect(url,function(err,nnd){
-    db = nnd;
+MongoClient.connect(url,function(err,nnd){
+    db = nnd.db('cashcube');
 });
 
 /**
@@ -49,18 +50,25 @@ module.exports.findBalance = function(req, res) {
     var def_id = req.params.year+m;
 
 	db.collection("movement", function(err, collection) {
-        var filter = {};
+        // var filter = {};
 
-        filter.date={};
+        var date = new Date(req.params.year,req.params.month-1,1);
+        date.setHours(date.getHours());
+        // filter.date={$lt: date};
+        var filter = {
+            date: {$lt: date}
+        };
 
         //-2 is added to fix UTC change time. (ugly)
-        filter.date['$lt'] = new Date(req.params.year,req.params.month-1,1);
-        filter.date['$lt'].setHours(filter.date['$lt'].getHours()-2);
+        // filter.date['$lt'] = new Date(req.params.year,req.params.month-1,1);
+        // filter.date['$lt'].setHours(filter.date['$lt'].getHours()-2);
 
-        var filterAct = { date: {}};
+        var dateAct = new Date(req.params.year,req.params.month,1);
+        dateAct.setHours(dateAct.getHours());
+        var filterAct = { date: {$lt: dateAct}};
         //-2 is added to fix UTC change time. (ugly)
-        filterAct.date['$lt'] = new Date(req.params.year,req.params.month,1);
-        filterAct.date['$lt'].setHours(filterAct.date['$lt'].getHours()-2);
+        // filterAct.date['$lt'] = new Date(req.params.year,req.params.month,1);
+        // filterAct.date['$lt'].setHours(filterAct.date['$lt'].getHours()-2);
 
 
         console.log("FILTER", filter);
@@ -71,11 +79,16 @@ module.exports.findBalance = function(req, res) {
         var groupTarget = [{$match: filterAct},{$group: {_id:"$accountTarget", total: {$sum: '$amount'}}}];
         var prevGroup = [{$match: filter}, {$group: {_id:"$account", total: {$sum: '$amount'}}}];
         var prevGroupTarget = [{$match: filter}, {$group: {_id:"$accountTarget", total: {$sum: '$amount'}}}];
+        
+        // var items = collection.aggregate(group).toArray();
+        // var itemsTarget = collection.aggregate(groupTarget).toArray();
+        // var prevItems = collection.aggregate(prevGroup).toArray();
+        // var prevItemsTarget = collection.aggregate(prevGroupTarget).toArray();
 
-        collection.aggregate(group, function (err1, items) {
-        	collection.aggregate(groupTarget, function (err2, itemsTarget) {
-        		collection.aggregate(prevGroup, function (err3, prevItems) {
-        			collection.aggregate(prevGroupTarget, function (err4, prevItemsTarget) {
+        collection.aggregate(group).toArray().then(function (items) {
+        	collection.aggregate(groupTarget).toArray().then(function (itemsTarget) {
+        		collection.aggregate(prevGroup).toArray().then(function (prevItems) {
+        			collection.aggregate(prevGroupTarget).toArray().then(function (prevItemsTarget) {
 
 			        	for( var i in items ) {
 			        		var item = items[i];

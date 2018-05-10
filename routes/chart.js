@@ -6,7 +6,7 @@ var overview = require("./overview");
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure;
+    BSON = mongo.BSONPure, MongoClient = mongo.MongoClient;
 
 var db;
 
@@ -14,8 +14,8 @@ var database= db.config;
 
 var url=require('util').format(database.url);
 
-new Db.connect(url,function(err,nnd){
-    db = nnd;
+MongoClient.connect(url,function(err,nnd){
+    db = nnd.db('cashcube');
 });
 
 module.exports.byMonth = function(req, res) {
@@ -35,7 +35,7 @@ module.exports.byMonth = function(req, res) {
     if ( req.query.tags ) QUERY[0].$match.tags = req.query.tags;
 
     db.collection("movement", function(err, collection) {
-        collection.aggregate(QUERY, function (err1, items) {
+        collection.aggregate(QUERY).toArray().then(function (items) {
             res.send(items);
         });
     });
@@ -66,7 +66,7 @@ module.exports.expenses = function(req, res) {
     if ( req.query.to ) QUERY.push({$match: {_id: {$lte:req.query.to} } });
 
     db.collection("movement", function(err, collection) {
-        collection.aggregate(QUERY, function (err1, items) {
+        collection.aggregate(QUERY).toArray().then(function (items) {
             res.send(items);
         });
     });
