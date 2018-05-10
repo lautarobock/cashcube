@@ -11,7 +11,7 @@ var db = require("./db");
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure,
+    BSON = mongo.ObjectID,
     MongoClient = mongo.MongoClient;
 
 var db;
@@ -78,7 +78,7 @@ module.exports.build= function(name,notAuto,orderBy) {
         findById: function(req,res,next) {
             require("../routes/"+name).pre(req,res,next,"findById");
             db.collection(name, function(err, collection) {
-                collection.findOne({"_id":new BSON.ObjectID(req.params.id)},function(err, item) {
+                collection.findOne({"_id": new BSON.ObjectID(req.params.id)},function(err, item) {
                     res.send(item);
                 });
             });
