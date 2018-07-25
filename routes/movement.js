@@ -1,6 +1,7 @@
 var rest = require("../util/rest.js");
 var mongo = require('mongodb');
 var BSON = mongo.BSONPure;
+var MongoClient = require('mongodb').MongoClient;
 
 module.exports = rest.build("movement",false,{date:-1});
 
@@ -16,7 +17,7 @@ var database= db.config;
 var url=require('util').format(database.url);
 //var url=require('util').format('mongodb://663a9748-776b-4d72-9b91-443da8eeb3c0:e36ef048-0346-460b-aa84-17f96c686ed1@localhost:10000/db');
 
-new Db.connect(url,function(err,nnd){
+MongoClient.connect(url).then(nnd => {
     db = nnd;
 });
 

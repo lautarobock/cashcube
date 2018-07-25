@@ -2,6 +2,7 @@
 var mongo = require('mongodb');
 var cube = require("../services/cube.js");
 var db = require("../util/db");
+var MongoClient = require('mongodb').MongoClient;
 var overview = require("./overview");
 
 var Server = mongo.Server,
@@ -14,7 +15,7 @@ var database= db.config;
 
 var url=require('util').format(database.url);
 
-new Db.connect(url,function(err,nnd){
+MongoClient.connect(url).then(nnd => {
     db = nnd;
 });
 
