@@ -89,7 +89,7 @@ module.exports.build= function(name,notAuto,orderBy) {
             require("../routes/"+name).pre(req,res,next,"add");
             db.collection(name, function(err, collection) {
                 collection.insert(req.body, {safe:true}, function (err, result) {
-                    require("../routes/"+name).post(req,res,next,result[0],"add");
+                    require("../routes/"+name).post(req,res,next,result.ops[0],"add");
                     res.send(result[0]);
                 });
             });
