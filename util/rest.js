@@ -12,7 +12,8 @@ var MongoClient = require('mongodb').MongoClient;
 
 var Server = mongo.Server,
     Db = mongo.Db,
-    BSON = mongo.BSONPure;
+    BSON = mongo.BSONPure,
+    ObjectID = require('mongodb').ObjectID;
 
 var db;
 
@@ -75,9 +76,11 @@ module.exports.build= function(name,notAuto,orderBy) {
             });
         },
         findById: function(req,res,next) {
+            console.log(name, 'findById')
             require("../routes/"+name).pre(req,res,next,"findById");
             db.collection(name, function(err, collection) {
-                collection.findOne({"_id":new BSON.ObjectID(req.params.id)},function(err, item) {
+                console.log(err);
+                collection.findOne({"_id":new ObjectID(req.params.id)},function(err, item) {
                     res.send(item);
                 });
             });
@@ -98,7 +101,7 @@ module.exports.build= function(name,notAuto,orderBy) {
                 if ( notAuto ) {
                     id = req.params.id;
                 } else {
-                    id = new BSON.ObjectID(req.params.id);
+                    id = new ObjectID(req.params.id);
                     req.body._id = id;
                 }
                 collection.update({_id:id}, req.body, {safe:true}, function (err, result) {
@@ -114,7 +117,7 @@ module.exports.build= function(name,notAuto,orderBy) {
                 if ( notAuto ) {
                     id = req.params.id;
                 } else {
-                    id = new BSON.ObjectID(req.params.id);
+                    id = new ObjectID(req.params.id);
                 }
                 collection.remove({_id:id},{safe:true}, function(err,result) {
                     res.send(req.body);
