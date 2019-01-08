@@ -29,6 +29,7 @@ module.exports.findBalance = function(req, res) {
         cash_pound: {debit:0, credit:0, category: 'Cash',style:'danger'},
 		cash_peso: {debit:0, credit:0, category: 'Cash',style:'info'},
 		debito_rio: {debit:0, credit:0, category: 'Cuentas',style:'active'},
+		mp: {debit:0, credit:0, category: 'Cuentas',style:'active'},
 		evo: {debit:0, credit:0, category: 'Cuentas',style:'danger'},
         uy: {debit:0, credit:0, category: 'Cuentas',style:'info'},
 		// paypal: {debit:0, credit:0, category: 'Cuentas',style:'active'},
@@ -328,6 +329,9 @@ var INCOMES_ACCOUNTS = [{
     sign: 'U$S'
 },{
     name: 'ifn',
+    sign: 'AR$'
+},{
+    name: 'boli',
     sign: 'AR$'
 },{
     name: 'dmx',
