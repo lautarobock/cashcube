@@ -130,7 +130,7 @@
 			$state.go('movement');
 		};
 		
-		$scope.gotoAccount = function(account, label) {
+		$scope.gotoAccount = function(account, label, searchInBoth) {
 			$rootScope.clearAllFilters();
 			var from = new Date($scope.selected.year + "/" + $scope.selected.month );
 			from.setDate(1);
@@ -139,7 +139,10 @@
 			to.setDate(0);
 			$rootScope.filters.searchFromDate = from;
 			$rootScope.filters.searchToDate = to;
-			$rootScope.filters.searchAccount = account;
+            $rootScope.filters.searchAccount = account;
+            if (searchInBoth) {
+                $rootScope.filters.searchInBoth = true;
+            }
 			if ( label ) {
 				if ( label === '_' ) label = '';
 				$rootScope.filters.searchTags = label;

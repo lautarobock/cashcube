@@ -293,7 +293,7 @@
                                 {{account.category}}
                             </span>
                         </th>
-                        <td>{{getAccount(account.account_id).name}} ({{getCurrency(account.account_id).sign}})</td>
+                        <td><a href="" ng-click="gotoAccount(account.account_id, undefined, true)">{{getAccount(account.account_id).name}} ({{getCurrency(account.account_id).sign}})</a></td>
                         <th title="{{getCurrency(account.account_id).value}}" class="text-right">{{currencies.peso.value/getCurrency(account.account_id).value|number:2}}</td>
                         <td class="text-right" ng-style="styleCurrency(account.actual.credit-account.actual.debit)">
                             {{getCurrency(account.account_id).value*(account.actual.credit-account.actual.debit) | currency:getCurrency(account.account_id).sign+' '}}
