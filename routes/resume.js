@@ -24,7 +24,7 @@ var url=require('util').format(database.url);
 //var url=require('util').format('mongodb://663a9748-776b-4d72-9b91-443da8eeb3c0:e36ef048-0346-460b-aa84-17f96c686ed1@localhost:10000/db');
 
 MongoClient.connect(url).then(nnd => {
-    db = nnd;
+    db = nnd.db();
 });
 
 function getDaysFrom(from,to) {

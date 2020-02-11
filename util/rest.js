@@ -26,7 +26,7 @@ var url=require('util').format(database.url);
 //     db = nnd;
 // });
 MongoClient.connect(url).then(nnd => {
-    db = nnd;
+    db = nnd.db();
 });
 
 /**

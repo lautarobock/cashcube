@@ -17,9 +17,11 @@ var database= db.config;
 var url=require('util').format(database.url);
 //var url=require('util').format('mongodb://663a9748-776b-4d72-9b91-443da8eeb3c0:e36ef048-0346-460b-aa84-17f96c686ed1@localhost:10000/db');
 
-MongoClient.connect(url).then(nnd => {
-    db = nnd;
-});
+MongoClient.connect(url)
+.then(nnd => {
+    db = nnd.db();
+})
+.catch(err => console.error(err));
 
 module.exports.pre = function(req,res,next,operation) {
     if ( operation == 'add' || operation == 'update' ) {
@@ -65,13 +67,18 @@ module.exports.total = function(req, res) {
     db.collection('movement', function(err, collection) {
         var filter = createFilter(req.query);
         collection.find(filter).toArray(function(err, items) {
-            var total = 0;
-            for ( var i=0; i<items.length; i++ ) {
-                total += items[i].amount;
+            if (err) {
+                console.error(err);
+                res.status(500).send(err);
+            } else {
+                var total = 0;
+                for ( var i=0; i<items.length; i++ ) {
+                    total += items[i].amount;
+                }
+                res.send({
+                    value: total
+                });
             }
-            res.send({
-                value: total
-            });
         });
     });
 };
@@ -135,7 +142,7 @@ module.exports.allTags = function(req, res) {
     db.collection('movement', function(err, collection) {
         console.log(err);
         collection.find(
-            {$where: 'this.tags.length>0'},
+            {'tags.0': {$exists: true}},
             {tags:1, account:1, accountTarget:1}
         ).toArray(function(err, c) {
             if ( !err ) {

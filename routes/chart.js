@@ -16,7 +16,7 @@ var database= db.config;
 var url=require('util').format(database.url);
 
 MongoClient.connect(url).then(nnd => {
-    db = nnd;
+    db = nnd.db();
 });
 
 module.exports.byMonth = function(req, res) {
@@ -37,7 +37,7 @@ module.exports.byMonth = function(req, res) {
 
     db.collection("movement", function(err, collection) {
         collection.aggregate(QUERY, function (err1, items) {
-            res.send(items);
+            items.toArray().then(i => res.send(i));
         });
     });
 
@@ -68,7 +68,7 @@ module.exports.expenses = function(req, res) {
 
     db.collection("movement", function(err, collection) {
         collection.aggregate(QUERY, function (err1, items) {
-            res.send(items);
+            items.toArray().then(i => res.send(i));
         });
     });
 

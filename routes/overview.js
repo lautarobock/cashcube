@@ -16,7 +16,7 @@ var url=require('util').format(database.url);
 //var url=require('util').format('mongodb://663a9748-776b-4d72-9b91-443da8eeb3c0:e36ef048-0346-460b-aa84-17f96c686ed1@localhost:10000/db');
 
 MongoClient.connect(url).then(nnd => {
-    db = nnd;
+    db = nnd.db();
 });
 
 /**
@@ -76,66 +76,47 @@ module.exports.findBalance = function(req, res) {
         var prevGroup = [{$match: filter}, {$group: {_id:"$account", total: {$sum: '$amount'}}}];
         var prevGroupTarget = [{$match: filter}, {$group: {_id:"$accountTarget", total: {$sum: '$amount'}}}];
 
-        collection.aggregate(group, function (err1, items) {
-        	collection.aggregate(groupTarget, function (err2, itemsTarget) {
-        		collection.aggregate(prevGroup, function (err3, prevItems) {
-        			collection.aggregate(prevGroupTarget, function (err4, prevItemsTarget) {
+        Promise.all([
+            collection.aggregate(group).forEach(item => {
+                if ( balance[item._id] ) {
+                    balance[item._id].debit = item.total;
+                }
+            }),
+            collection.aggregate(groupTarget).forEach(item => {
+                if ( balance[item._id] ) {
+                    balance[item._id].credit = item.total;
+                }
+            }),
+            collection.aggregate(prevGroup).forEach(item => {
+                if ( balance[item._id] ) {
+                    balance[item._id].prevDebit = item.total;
+                }
+            }),
+            collection.aggregate(prevGroupTarget).forEach(item => {
+                if ( balance[item._id] ) {
+                    balance[item._id].prevCredit = item.total;
+                }
+            })
+        ]).then(() => {
+            var result = [];
+            for ( var k in balance ) {
+                result.push({
+                    account_id: k,
+                    category: balance[k].category,
+                    style: balance[k].style,
+                    actual: {
+                        debit: balance[k].debit,
+                        credit: balance[k].credit
+                    },
+                    prev: {
+                        debit: balance[k].prevDebit,
+                        credit: balance[k].prevCredit
+                    }
+                });
+            }
 
-			        	for( var i in items ) {
-			        		var item = items[i];
-			        		if ( balance[item._id] ) {
-				        		balance[item._id].debit = item.total;
-			        		}
-
-			        	}
-
-			        	for( var i in prevItems ) {
-			        		var item = prevItems[i];
-			        		if ( balance[item._id] ) {
-				        		balance[item._id].prevDebit = item.total;
-			        		}
-
-			        	}
-
-			        	for( var i in itemsTarget ) {
-			        		var item = itemsTarget[i];
-			        		if ( balance[item._id] ) {
-				        		balance[item._id].credit = item.total;
-			        		}
-			        	}
-
-			        	for( var i in prevItemsTarget ) {
-			        		var item = prevItemsTarget[i];
-			        		if ( balance[item._id] ) {
-				        		balance[item._id].prevCredit = item.total;
-			        		}
-			        	}
-
-			        	var result = [];
-			        	for ( var k in balance ) {
-			        		result.push({
-			        			account_id: k,
-                                category: balance[k].category,
-                                style: balance[k].style,
-			        			actual: {
-			        				debit: balance[k].debit,
-			        				credit: balance[k].credit
-			        			},
-			        			prev: {
-			        				debit: balance[k].prevDebit,
-			        				credit: balance[k].prevCredit
-			        			}
-			        		});
-			        	}
-
-			            res.send(result);
-
-			        });
-		        });
-	        });
+            res.send(result);
         });
-
-
     });
 };
 
