@@ -35,7 +35,7 @@
                             <progressbar style="margin-bottom: 0px" ng-show="value.max" max="value.max"
                                 value="value.totalEuros" type="{{barType(value.totalEuros, value.max)}}">
                                 <span style="color:white; white-space:nowrap;">
-                                    {{(value.totalEuros*100/value.max)* currencies['dollar'].value|number:0}}% (US$ {{value.max* currencies['dollar'].value}})
+                                    {{(value.totalEuros*100/value.max)|number:0}}% (US$ {{value.max* currencies['dollar'].value}})
                                 </span>
                             </progressbar>
                             <!-- <span ng-show="value.max">{{value.totalEuros*100/value.max|number:0}}% (€ {{value.max}})</span> -->
